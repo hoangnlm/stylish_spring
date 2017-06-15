@@ -78,8 +78,8 @@
                         <div class="space20"></div>
                         <div class="sep"></div>
                         <!--<form method="POST" action="">-->
-                        <!--<a class="fs-modal-btn-addtobag" href="#">Add to Bag</a>-->
-                        <button class="fs-modal-btn-addtobag">Add to Bag</button>
+                        <!--<a class="fs-modal-btn-addtobag" href="#">Add to Cart</a>-->
+                        <button class="fs-modal-btn-addtobag">Add to Cart</button>
                         <!--</form>-->
                         <a class="fs-product-modal-link-to-detail" href="#">Go to Details</a>
                     </div>

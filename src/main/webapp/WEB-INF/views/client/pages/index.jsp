@@ -138,8 +138,7 @@
                                          data-toggle="modal" >
                                     </div>
                                     <div class="product-overlay">
-                                        <!--                                        <a href="#" class="addcart fa fa-shopping-cart"></a>
-                                                                                <a href="#" class="compare fa fa-signal"></a>-->
+                                        <a href="#" class="compare fa fa-signal"></a>
                                         <a class="likeitem fa fa-heart-o fs-wishlish-add" 
                                            fs-userID="${sessionScope.findUsersID}" 
                                            fs-productID="${product.productID}" ></a>
@@ -276,7 +275,6 @@
                                          fs-product-modal-color="${ltp.productColorListWorking[0].colorID}" 
                                          data-toggle="modal" ></div>
                                     <div class="product-overlay">
-                                        <a href="#" class="addcart fa fa-shopping-cart"></a>
                                         <a href="#" class="compare fa fa-signal"></a>
                                         <a class="likeitem fa fa-heart-o fs-wl-add-lsp"
                                            fs-userID="${sessionScope.findUsersID}" fs-productID="${ltp.productID}" ></a>

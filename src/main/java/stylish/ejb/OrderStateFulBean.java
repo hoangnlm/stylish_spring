@@ -19,6 +19,8 @@ import stylish.entity.SizesByColor;
 @Stateful
 public class OrderStateFulBean implements OrderStateFulBeanLocal, Serializable {
 
+    private static final long serialVersionUID = -7118949152883771763L;
+
     @EJB
     private OrderStateLessBeanLocal orderStateLessBean;
     @EJB
@@ -46,7 +48,6 @@ public class OrderStateFulBean implements OrderStateFulBeanLocal, Serializable {
         if (oldCartLineInfo != null) {
             cartLineInfo.setQuantity(oldCartLineInfo.getQuantity() + cartLineInfo.getQuantity());
             cart.set(cart.indexOf(oldCartLineInfo), cartLineInfo);
-            return;
         } else {
             cart.add(cartLineInfo);
         }

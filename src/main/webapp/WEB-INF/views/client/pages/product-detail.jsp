@@ -99,7 +99,7 @@
                             </div>
                             <div class="space20"></div>
                             <div class="sep"></div>
-                            <button class="btn addtobag" id="fs-product-detail-add-to-cart">Add to Bag</button>
+                            <button class="btn addtobag" id="fs-product-detail-add-to-cart">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -292,7 +292,7 @@
                                                      fs-product-modal-color="${prod.productColorListWorking[0].colorID}" 
                                                      data-toggle="modal" ></div>
                                                 <div class="product-overlay">
-                                                    <a href="#" class="addcart fa fa-shopping-cart"></a>
+                                                    <a href="#" class="compare fa fa-signal"></a>
                                                     <a class="likeitem fa fa-heart-o fs-wl-add-lsp"
                                                        fs-userID="${sessionScope.findUsersID}" fs-productID="${prod.productID}" ></a>
                                                     <input type="hidden" name="emailUser" value="${sessionScope.emailUser}" />

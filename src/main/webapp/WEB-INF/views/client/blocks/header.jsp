@@ -100,6 +100,11 @@
                 </div>
                 <!-- Cart & Search -->
                 <div class="header-xtra pull-right">
+                    <div class="topsignal">
+                        <span>
+                            <i class="fa fa-signal"></i>
+                        </span>
+                    </div>
                     <div class="topcart">
                         <div id="cart">
 
@@ -174,8 +179,8 @@
                 $("#cart").html(response);
             }
         });
-    }
-    ;
+    };
+    
     function checkoutClick() {
         var email = $('input[name=order-emailUser]').val();
         if (email == "" || email == null) {
@@ -183,6 +188,5 @@
         } else {
             window.location = "orders/checkout.html";
         }
-    }
-    ;
+    };
 </script>

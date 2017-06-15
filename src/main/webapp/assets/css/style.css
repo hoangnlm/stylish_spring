@@ -56,7 +56,7 @@ a, a:hover, button, button:hover {
 }
 
 a {
-    color: #FFFFFF;
+    color: #ff6699;
     transition: .4s;
     text-decoration: none;
 }
@@ -1523,6 +1523,10 @@ footer {
     font-size: 14px;
     padding: 0 20px;
     line-height: 48px;
+}
+
+.topsignal {
+    display: inline-block;
 }
 
 .topcart {

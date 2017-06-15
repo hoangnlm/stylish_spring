@@ -126,7 +126,7 @@
                                                  fs-product-modal-color="${product.productColorListWorking[0].colorID}">
                                             </div>
                                             <div class="product-overlay">
-                                                <!--                                                 <a href="#" class="addcart fa fa-shopping-cart"></a> -->
+                                            <a href="#" class="compare fa fa-signal"></a>
                                                 <a class="likeitem fa fa-heart-o fs-wl-add-sub"
                                                    fs-userID="${sessionScope.findUsersID}" fs-productID="${product.productID}"></a>
                                                 <input type="hidden" name="emailUser" value="${sessionScope.emailUser}" />

@@ -106,7 +106,6 @@
                                         <img src="assets/images/products/fashion/5.jpg" class="img-responsive" alt=""/>
                                         <div class="overlay-rmore fa fa-search quickview" data-toggle="modal" data-target="#myModal"></div>
                                         <div class="product-overlay">
-                                            <a href="#" class="addcart fa fa-shopping-cart"></a>
                                             <a href="#" class="compare fa fa-signal"></a>
                                             <a href="#" class="likeitem fa fa-heart-o"></a>
                                         </div>
@@ -123,7 +122,6 @@
                                         <img src="assets/images/products/fashion/15.jpg" class="img-responsive" alt=""/>
                                         <div class="overlay-rmore fa fa-search quickview" data-toggle="modal" data-target="#myModal"></div>
                                         <div class="product-overlay">
-                                            <a href="#" class="addcart fa fa-shopping-cart"></a>
                                             <a href="#" class="compare fa fa-signal"></a>
                                             <a href="#" class="likeitem fa fa-heart-o"></a>
                                         </div>
@@ -140,7 +138,6 @@
                                         <img src="assets/images/products/accessories/8.jpg" class="img-responsive" alt=""/>
                                         <div class="overlay-rmore fa fa-search quickview" data-toggle="modal" data-target="#myModal"></div>
                                         <div class="product-overlay">
-                                            <a href="#" class="addcart fa fa-shopping-cart"></a>
                                             <a href="#" class="compare fa fa-signal"></a>
                                             <a href="#" class="likeitem fa fa-heart-o"></a>
                                         </div>
@@ -157,7 +154,6 @@
                                         <img src="assets/images/products/fashion/18.jpg" class="img-responsive" alt=""/>
                                         <div class="overlay-rmore fa fa-search quickview" data-toggle="modal" data-target="#myModal"></div>
                                         <div class="product-overlay">
-                                            <a href="#" class="addcart fa fa-shopping-cart"></a>
                                             <a href="#" class="compare fa fa-signal"></a>
                                             <a href="#" class="likeitem fa fa-heart-o"></a>
                                         </div>
@@ -174,7 +170,6 @@
                                         <img src="assets/images/products/fashion/10.jpg" class="img-responsive" alt=""/>
                                         <div class="overlay-rmore fa fa-search quickview" data-toggle="modal" data-target="#myModal"></div>
                                         <div class="product-overlay">
-                                            <a href="#" class="addcart fa fa-shopping-cart"></a>
                                             <a href="#" class="compare fa fa-signal"></a>
                                             <a href="#" class="likeitem fa fa-heart-o"></a>
                                         </div>
@@ -191,7 +186,6 @@
                                         <img src="assets/images/products/accessories/5.jpg" class="img-responsive" alt=""/>
                                         <div class="overlay-rmore fa fa-search quickview" data-toggle="modal" data-target="#myModal"></div>
                                         <div class="product-overlay">
-                                            <a href="#" class="addcart fa fa-shopping-cart"></a>
                                             <a href="#" class="compare fa fa-signal"></a>
                                             <a href="#" class="likeitem fa fa-heart-o"></a>
                                         </div>
