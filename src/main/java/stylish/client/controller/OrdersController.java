@@ -84,7 +84,7 @@ public class OrdersController {
     @RequestMapping(value = "checkout", method = RequestMethod.GET)
     public String checkout(ModelMap model, HttpServletRequest request) {
         String email = (String) request.getSession().getAttribute("emailUser");
-        if (email == null || orderStateFulBean.showCart().size() == 0) {
+        if (email == null || orderStateFulBean.showCart().isEmpty()) {
             return "redirect:/index.html";
         } else {
             Users users = usersStateLessBean.findUserByEmail(email);
@@ -205,7 +205,7 @@ public class OrdersController {
 
     @RequestMapping(value = "shoppingcart")
     public String shoppingcart(ModelMap model, HttpServletRequest request) {
-        if (orderStateFulBean.showCart().size() == 0 || orderStateFulBean.showCart() == null) {
+        if (orderStateFulBean.showCart().isEmpty() || orderStateFulBean.showCart() == null) {
             return "redirect:/index.html";
         }
         //2 dòng này thêm để render ra menu chính
@@ -257,7 +257,7 @@ public class OrdersController {
         CartLineInfo cartLineInfo = orderStateFulBean.getProductInListByID(productid, sizeid, colorid);
         if (cartLineInfo != null) {
             orderStateFulBean.deleteProduct(cartLineInfo);
-            if (orderStateFulBean.showCart().size() == 0 || orderStateFulBean.showCart() == null) {
+            if (orderStateFulBean.showCart().isEmpty() || orderStateFulBean.showCart() == null) {
                 return "redirect:/index.html";
             }
         }
@@ -341,14 +341,14 @@ public class OrdersController {
         String str_subtotal = "";
         float subTotal = 0;
         int cartSize = 0;
-        if (orderStateFulBean.showCart().size() == 0) {
+        if (orderStateFulBean.showCart().isEmpty()) {
             subTotal = 0;
             cartSize = 0;
         } else {
             subTotal = orderStateFulBean.subTotal();
             cartSize = orderStateFulBean.showCart().size();
             str_cart_button = "<div class=\"cart-btn\">\n"
-                    + "                                <a href=\"orders/shoppingcart.html\">VIEW BAG</a>\n"
+                    + "                                <a href=\"orders/shoppingcart.html\">VIEW CART</a>\n"
                     + "                                <button onclick=\"checkoutClick();\" style=\"background: #FF6699;\n"
                     + "                                font-size: 11px;\n"
                     + "                                color: #fff;\n"
@@ -406,7 +406,7 @@ public class OrdersController {
                 if (users != null) {
                     List<Users> userList = orderStateLessBean.getAllUserUseDiscountVoucherByVouID(discountVoucher.getVoucherID());
                     if (userList != null) {
-                        if (userList.size() != 0) {
+                        if (!userList.isEmpty()) {
                             for (Users user : userList) {
                                 if (user.getUserID() == users.getUserID()) { // da su dung voucher nay
                                     CheckoutResponse checkoutResponse = new CheckoutResponse();
