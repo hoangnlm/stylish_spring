@@ -15,11 +15,11 @@ import javax.persistence.TemporalType;
 @Entity
 public class ProductRating implements Serializable {
 
+    private static final long serialVersionUID = -3221422754869563879L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ratingID;
-//    private Integer productID;
-//    private Integer userID;
     private Integer rating;
     @Temporal(TemporalType.DATE)
     private Date ratingDate;

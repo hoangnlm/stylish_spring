@@ -212,9 +212,11 @@
                                     <p>
                                         <b>${review.user.firstName} ${review.user.lastName}</b>, <fmt:formatDate value="${review.ratingDate}" pattern="dd MMM, yyyy" timeZone="US"/>
                                     </p>
-                                    <p style="margin-top: 7px; margin-bottom: 7px">
-                                        ${review.review}
-                                    </p>
+                                    <c:if test="${review.status == 1}">
+                                        <p style="margin-top: 7px; margin-bottom: 7px">
+                                            ${review.review}
+                                        </p>
+                                    </c:if>
                                     <select id="fs-rating-star-${no.index}" name="fs-rating-star-${no.index}" data-current-rating="${review.rating}">
                                         <option value="1">1</option>
                                         <option value="2">2</option>

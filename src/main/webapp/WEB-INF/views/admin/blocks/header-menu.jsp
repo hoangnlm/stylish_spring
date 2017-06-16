@@ -15,7 +15,7 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="index.html" target="_blank"><img src="assets/images/basic/logo2.png" alt="Stylish Store" height="34"/></a>
-        
+
     </div>
     <!-- /.navbar-header -->
 
@@ -31,7 +31,7 @@
                 <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="admin/logout.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a href="admin/logout.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                 </li>
             </ul>
             <!-- /.dropdown-user -->
@@ -44,19 +44,19 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
-                    <a href="#"><i class="fa fa-key fa-fw"></i> User Role<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-key fa-fw"></i> User Roles<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="admin/user/role.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+                            <a href="admin/user/role/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                         </li>
                         <li>
-                            <a href="admin/user/role/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+                            <a href="admin/user/role.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-users fa-fw"></i> User<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="admin/user/list.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
@@ -67,39 +67,39 @@
                 </li>
 
                 <li>
-                    <a href="#"><i class="fa fa-cube fa-fw"></i> Product Category<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-cube fa-fw"></i> Product Categories<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li>
-                            <a href="admin/product-category.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
-                        </li>
                         <li>
                             <a href="admin/product-category/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                         </li>
+                        <li>
+                            <a href="admin/product-category.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+                        </li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
 
                 <li>
-                    <a href="#"><i class="fa fa-cubes fa-fw"></i> Product SubCategory<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-cubes fa-fw"></i> Product SubCategories<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li>
-                            <a href="admin/product-subcategory.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
-                        </li>
                         <li>
                             <a href="admin/product-subcategory/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                         </li>
+                        <li>
+                            <a href="admin/product-subcategory.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+                        </li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
 
                 <li>
-                    <a href="#"><i class="fa fa-diamond fa-fw"></i> Product<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-diamond fa-fw"></i> Products<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="admin/product.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+                            <a href="admin/product/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                         </li>
                         <li>
-                            <a href="admin/product/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+                            <a href="admin/product.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -119,13 +119,23 @@
                 </li>
 
                 <li>
-                    <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Discount<span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Discounts<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
+                        <li>
+                            <a href="admin/orders/discountadd.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+                        </li>
                         <li>
                             <a href="admin/orders/discountlist.html"><i class="fa fa-wpforms" aria-hidden="true"></i> List</a>
                         </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
+
+                <li>
+                    <a href="#"><i class="fa fa-gear fa-fw"></i> Comments<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
                         <li>
-                            <a href="admin/orders/discountadd.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+                            <a href="admin/comment/view.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -135,10 +145,10 @@
                     <a href="#"><i class="fa fa-thumb-tack fa-fw"></i> Blog Category<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="admin/blog/category.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+                            <a href="admin/blog/category/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                         </li>
                         <li>
-                            <a href="admin/blog/category/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+                            <a href="admin/blog/category.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -148,10 +158,10 @@
                     <a href="#"><i class="fa fa-newspaper-o fa-fw"></i> Blog<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="admin/blog/list.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+                            <a href="admin/blog/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                         </li>
                         <li>
-                            <a href="admin/blog/create.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+                            <a href="admin/blog/list.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
                         </li>
                         <li>
                             <a href="admin/blog/listchartblog.html"><i class="fa fa-list" aria-hidden="true"></i> Statistics</a>

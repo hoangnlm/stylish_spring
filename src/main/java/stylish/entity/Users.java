@@ -20,6 +20,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class Users implements Serializable {
 
+    private static final long serialVersionUID = 5030477661232628891L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
@@ -199,6 +201,10 @@ public class Users implements Serializable {
 
     public void setProductRatingList(List<ProductRating> productRatingList) {
         this.productRatingList = productRatingList;
+    }
+
+    public String getFullName() {
+        return firstName + lastName;
     }
 
     @Override

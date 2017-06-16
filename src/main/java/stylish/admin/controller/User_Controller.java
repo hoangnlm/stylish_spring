@@ -72,12 +72,18 @@ public class User_Controller {
 
         int error = rolesStateLessBean.addRoles(newRole);
 
-        if (error == 1) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-success\">Create New Roles Successfully!</div>");
-        } else if (error == 2) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Exitsted! </div>");
-        } else if (error == 0) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error was happened!</div>");
+        switch (error) {
+            case 1:
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-success\">Create New Roles Successfully!</div>");
+                break;
+            case 2:
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Exitsted! </div>");
+                break;
+            case 0:
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error was happened!</div>");
+                break;
+            default:
+                break;
         }
         redirectAttributes.addFlashAttribute("role", newRole);
         return "redirect:/admin/user/role/create.html";
@@ -115,12 +121,18 @@ public class User_Controller {
     public String userRoleUpdate(ModelMap model, @PathVariable("roleID") int roleID,
             RedirectAttributes redirectAttributes, @ModelAttribute("roleupdate") Roles roleupdate) {
         int error = rolesStateLessBean.editRoles(roleupdate);
-        if (error == 1) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-success\">Update Roles Successfully!</div>");
-        } else if (error == 2) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Exitsted! </div>");
-        } else if (error == 0) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error was happened!</div>");
+        switch (error) {
+            case 1:
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-success\">Update Roles Successfully!</div>");
+                break;
+            case 2:
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Exitsted! </div>");
+                break;
+            case 0:
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error was happened!</div>");
+                break;
+            default:
+                break;
         }
         redirectAttributes.addFlashAttribute("roleupdate", roleupdate);
         return "redirect:/admin/user/role/edit/" + roleID + ".html";
@@ -167,12 +179,16 @@ public class User_Controller {
     public String deteleRoleID(@PathVariable("roleID") int roleID, ModelMap model) {
 
         int error = rolesStateLessBean.deleteRole(roleID);
-        if (error == 2) {
-            model.addAttribute("error", "Không thể xóa");
-        } else if (error == 1) {
-            model.addAttribute("error", "OK");
-        } else {
-            model.addAttribute("error", "lỗi");
+        switch (error) {
+            case 2:
+                model.addAttribute("error", "Không thể xóa");
+                break;
+            case 1:
+                model.addAttribute("error", "OK");
+                break;
+            default:
+                model.addAttribute("error", "lỗi");
+                break;
         }
 
         return "redirect:/admin/user/role.html";

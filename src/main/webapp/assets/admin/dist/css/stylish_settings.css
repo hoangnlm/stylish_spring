@@ -32,6 +32,22 @@
     margin-top: 48px;
 }
 
+/* Chinh lai icon cho trang admin comment */
+#comment-dataTables td.details-control {
+    background: url(../../../images/details_open.gif) no-repeat center center;
+    cursor: pointer;
+}
+
+#comment-dataTables tr.shown td.details-control {
+    background: url(../../../images/details_close.gif) no-repeat center center;
+}
+
+#comment-dataTables .btn-danger {
+    background-color: red;
+    border-color: red;
+}
+
+
 
 .fs-valign-middle {
     vertical-align: middle !important; 

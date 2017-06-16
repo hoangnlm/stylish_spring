@@ -8,17 +8,11 @@
       <properties/>
     </persistence-unit>-->
   
-    <!--    <persistence-unit name="stylishstore_PU" transaction-type="JTA">
+    <persistence-unit name="stylishstore_PU" transaction-type="JTA">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>jdbc/f21508t1_stylish_store_2017_3</jta-data-source>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties/>
-    </persistence-unit>-->
-  
-    <persistence-unit name="stylishstore_PU" transaction-type="JTA">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <jta-data-source>jdbc/f21508t1_stylish_store_2017_4</jta-data-source>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
-        <properties/>
     </persistence-unit>
+    
 </persistence>

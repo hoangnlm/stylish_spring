@@ -1,10 +1,45 @@
-/* 
- * 
- * MỌI NGƯỜI VIẾT JAVASCRIPT VÀO ĐÂY.
- * 
- * NHỚ LÀ: VIẾT CÁI GÌ, THÌ CHÚ THÍCH CÁI ĐÓ, CÔNG DỤNG ĐỂ LÀM GÌ
- * 
- */
+
+/* AJAX COMMENT ADMIN */
+$(document).ready(function () {
+    $(".toggle").click(function () {
+        var button = $(this).closest("div.toggle").find("input.bs-toggle");
+        var id = button.attr("id");
+        var ratingStatus = button.attr("ratingStatus") == 0 ? 1 : 0;   // Toggle status
+        var check = button.attr("checked");
+
+        $.ajax({
+            url: "admin/comment/update.html",
+            method: "POST",
+            data: {ratingID: id, status: ratingStatus},
+            success: function (response) {
+                if (response === '0') {
+                    // Update status on view comment-list
+                    $("#" + id).attr("ratingStatus", ratingStatus);
+                    check ? button.removeAttr("checked") : button.attr("checked", "checked");
+
+                    swal({
+                        title: "<h1 style='color: #31b131;'>Success</h1>",
+                        text: ratingStatus === 1 ? "This comment has been <strong style='color: blue;'>enabled!</strong" : "This comment has been <strong style='color: red;'>disabled!</strong",
+                        timer: 2000,
+                        showConfirmButton: false,
+                        html: true
+                    });
+                } else if (response === '1') {
+                    swal({
+                        title: "<h1 style='color: #F65D20;'>Error</h1>",
+                        text: "Update comment failed!",
+                        timer: 2000,
+                        showConfirmButton: false,
+                        html: true
+                    });
+                }
+            }
+        });
+    });
+});
+
+/* END AJAX COMMENT ADMIN */
+
 
 $(document).ready(function () {
     /* Cấu hình cho datatable */
@@ -15,7 +50,7 @@ $(document).ready(function () {
     setTimeout(function () {
         $("#fs-error-div").hide("fade", 1500);
     }, 3000);
-    /*==============================VINH - PRODUCT============================*/
+
     /* Pie chart returning visitor */
 //    $.ajax({
 //        url: "admin/ajax/getReturningVisitorData.html",
@@ -3347,9 +3382,7 @@ $(document).ready(function () {
         }
     });
 
-    /*==========================END VINH - PRODUCT============================*/
 
-    /*=============================== THANH - BLOG =================================*/
     /*    
      * CẤU HÌNH DATEPICKER CHO BLOG
      */
@@ -3382,8 +3415,7 @@ $(document).ready(function () {
             $("#fs-blog-category-error").text("Category cannot be empty!");
         } else if (blogCateVal.length < 5 || blogCateVal.length > 20) {
             $("#fs-blog-category-error").text("Category has 5 - 20 characters!");
-        }
-        else {
+        } else {
             $("#fs-blog-category-error").text("");
         }
     });
@@ -3443,23 +3475,17 @@ $(document).ready(function () {
             $("#fs-select-box-blog-category-error").text("Please select a Category!.");
         } else if (blogTitle == "" || blogTitle == (" ") < 0) {
             $("#fs-blog-title-error").text("Title cannot be empty!");
-        }
-        else if (blogTitle.length < 5 || blogTitle.length > 100) {
+        } else if (blogTitle.length < 5 || blogTitle.length > 100) {
             $("#fs-blog-title-error").text("Title has 5 - 100 characters!");
-        }
-        else if (blogCateValSummary.length < 15 || blogCateValSummary.length > 1000) {
+        } else if (blogCateValSummary.length < 15 || blogCateValSummary.length > 1000) {
             $("#fs-blog-summary-error").text("Summary has 15 - 1000 characters!");
-        }
-        else if (blogCateValSummary == "" || blogCateValSummary == (" ") < 0) {
+        } else if (blogCateValSummary == "" || blogCateValSummary == (" ") < 0) {
             $("#fs-blog-summary-error").text("Summary cannot be empty!");
-        }
-        else if (blogImg == "") {
+        } else if (blogImg == "") {
             $("#fs-error-mess-blog-img").text("Image cannot be empty!");
-        }
-        else if (blogContent == "") {
+        } else if (blogContent == "") {
             $("#fs-blog-content-error").text("Content cannot be empty!");
-        }
-        else {
+        } else {
             $("#fs-form-create-blog").submit();
         }
     });
@@ -3505,17 +3531,13 @@ $(document).ready(function () {
             $("#fs-select-box-blog-category-error").text("Please select a Category!.");
         } else if (blogTitle == "" || blogTitle == (" ") < 0) {
             $("#fs-blog-title-error").text("Title cannot be empty!");
-        }
-        else if (blogTitle.length < 5 || blogTitle.length > 100) {
+        } else if (blogTitle.length < 5 || blogTitle.length > 100) {
             $("#fs-blog-title-error").text("Title has 5 - 100 characters!");
-        }
-        else if (blogCateValSummary == "" || blogCateValSummary == (" ") < 0) {
+        } else if (blogCateValSummary == "" || blogCateValSummary == (" ") < 0) {
             $("#fs-blog-summary-error").text("Summary cannot be empty!");
-        }
-        else if (blogCateValSummary.length < 15 || blogCateValSummary.length > 1000) {
+        } else if (blogCateValSummary.length < 15 || blogCateValSummary.length > 1000) {
             $("#fs-blog-summary-error").text("Summary has 15 - 1000 characters!");
-        }
-        else {
+        } else {
             $("#fs-form-update-blog").submit();
         }
     });
@@ -3581,8 +3603,7 @@ $(document).ready(function () {
             };
             image_holder.show();
             reader.readAsDataURL($(this)[0].files[0]);
-        }
-        else {
+        } else {
             alert("Your Browser does not support FileReader!.");
         }
     });
@@ -3756,7 +3777,8 @@ $(document).ready(function () {
         });
 
         return beginStr + dataStr + endStr;
-    };
+    }
+    ;
 
     function UserIDTableFromJson(json) {
         var beginStr = '<table class="heavyTable" style="width: 40%;border: 1px solid #38678f;max-width: 380px; height: 20px; border-collapse: collapse;background: white;" >' +
@@ -3789,7 +3811,8 @@ $(document).ready(function () {
         });
 
         return beginStr + dataStr + endStr;
-    };
+    }
+    ;
 
     $("#fs-user-dataTables").on("click", ".fs-user-dataTable-control-button", function () {
         var userID = $(this).attr("fs-userID");
@@ -3799,8 +3822,7 @@ $(document).ready(function () {
             // This row is already open - close it
             row.child.hide();
             tr.removeClass('shown');
-        }
-        else {
+        } else {
             //Gọi Ajax
             $.ajax({
                 url: "admin/user/ajax/getUserAddress.html",
@@ -3874,7 +3896,6 @@ $(document).ready(function () {
 
 
     // BẮT VALIDATION FORM ADD ROLE BẰNG CLICK
-
     $("#fs-button-create-role").click(function (e) {
         e.preventDefault();
         var roleName = $("#fs-roleName-create").val().trim();
@@ -3894,8 +3915,7 @@ $(document).ready(function () {
             div.addClass("has-error has-feedback");
             div.append('<span id="glypcn-fs-roleName-create" class="glyphicon glyphicon-remove form-control-feedback"></span>');
             return false;
-        }
-        else {
+        } else {
             $("#fs-form-create-role").submit();
             var div = $("#fs-roleName-create").closest("div.fs-aaa");
             div.removeClass("has-error");
@@ -4009,8 +4029,7 @@ $(document).ready(function () {
             div.addClass("has-error has-feedback");
             div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
             return false;
-        }
-        else {
+        } else {
             $("#fs-form-update-role").submit();
             var div = $("#fs-roleName-update").closest("div.fa-ccc");
             div.removeClass("has-error");
@@ -4092,34 +4111,32 @@ $(document).ready(function () {
             cancelButtonText: "No, cancel!",
             closeOnConfirm: false
         },
-        function (isConfirm) {
-            if (!isConfirm)
-                return;
-            $("#fs-role-list-id-" + roleID).remove();
-            $.ajax({
-                url: "admin/user/role/delete/" + roleID + ".html",
-                type: "POST",
-                data: {
-                    roleID: roleID
-                },
+                function (isConfirm) {
+                    if (!isConfirm)
+                        return;
+                    $("#fs-role-list-id-" + roleID).remove();
+                    $.ajax({
+                        url: "admin/user/role/delete/" + roleID + ".html",
+                        type: "POST",
+                        data: {
+                            roleID: roleID
+                        },
 //            dataType: "html",
-                success: function (response) {
-                    swal("Done!", "It was succesfully deleted!", "success");
+                        success: function (response) {
+                            swal("Done!", "It was succesfully deleted!", "success");
 //                window.location = window.location.href
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    swal("Error deleting!", "Please try again", "error");
-                }
-            });
-        });
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            swal("Error deleting!", "Please try again", "error");
+                        }
+                    });
+                });
     });
 //    $(".fs-button-detele-role").prop('disable', true);
 
 //    $
 
-    /*==============================END DUONG - USER============================*/
 
-    /*==============================NGAN - ORDER============================*/
     //Thiết lập cho bảng order list
     $('#tableOrder').DataTable({
         responsive: true,
@@ -4578,6 +4595,6 @@ $(document).ready(function () {
             }
         })
     });
-    /*==============================END NGAN - ORDER============================*/
+
 
 });

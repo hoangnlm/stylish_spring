@@ -15,6 +15,9 @@
         <!-- Bootstrap Core CSS -->
         <link href="assets/admin/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
 
+        <!-- Bootstrap Toggle CSS -->
+        <link href="assets/admin/vendor/bootstrap-toggle/bootstrap-toggle.min.css" rel="stylesheet">
+
         <!-- For morris.js chart -->
         <link rel="stylesheet" href="assets/admin/vendor/morrisjs/morris.css">
 
@@ -56,19 +59,9 @@
 
         <!-- Custom Stylish Store CSS -->
         <link href="assets/admin/dist/css/stylish_settings.css" rel="stylesheet" type="text/css"/>
-    </head>
 
-    <body id="admin">        
-        <div id="wrapper">
-
-            <!-- HEADER - MENU -->
-            <tiles:insertAttribute name="header" />
-
-            <!-- PAGE CONTENT -->
-            <tiles:insertAttribute name="content" />
-
-        </div>
-        <!-- /#wrapper -->
+        
+        <!--JAVASCRIPT-->
         <script src="assets/ckeditor/ckeditor.js" type="text/javascript"></script>
         <script src="assets/ckfinder/ckfinder.js" type="text/javascript"></script>
 
@@ -105,6 +98,9 @@
         <!--bootstrap x-editable-->
         <script src="assets/admin/dist/js/bootstrap-editable.js" type="text/javascript"></script>
 
+        <!--bootstrap toggle-->
+        <script src="assets/admin/vendor/bootstrap-toggle/bootstrap-toggle.min.js" type="text/javascript"></script>
+
         <!--Flot Chart-->
         <script src="assets/admin/vendor/flot/jquery.flot.js"></script>
         <script src="assets/admin/vendor/flot/jquery.flot.pie.js"></script>
@@ -115,6 +111,19 @@
 
         <!-- Page-Level Demo Scripts - Tables - Use for reference -->
         <script src="assets/admin/dist/js/stylish_settings.js" type="text/javascript"></script>
+    </head>
+
+    <body id="admin">        
+        <div id="wrapper">
+
+            <!-- HEADER - MENU -->
+            <tiles:insertAttribute name="header" />
+
+            <!-- PAGE CONTENT -->
+            <tiles:insertAttribute name="content" />
+
+        </div>
+        <!-- /#wrapper -->
 
     </body>
 

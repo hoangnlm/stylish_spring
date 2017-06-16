@@ -45,29 +45,33 @@ public class LoginController {
             HttpServletResponse response,
             RedirectAttributes redirectAttributes) {
         int error = usersStateLessBean.login(email, sharedFunc.encodePassword(password));
-        if (error == 1) {
-            session.setAttribute("email", email);
-            if (remember != null && remember == 1) {
-                Cookie ckEmail = new Cookie("emailA", email);
-                ckEmail.setMaxAge(24 * 60 * 60);
-                response.addCookie(ckEmail);
-                Cookie ckPassword = new Cookie("passwordA", sharedFunc.encodePassword(password));
-                ckPassword.setMaxAge(24 * 60 * 60);
-                response.addCookie(ckPassword);
-            }
+        switch (error) {
+            case 1:
+                session.setAttribute("email", email);
+                if (remember != null && remember == 1) {
+                    Cookie ckEmail = new Cookie("emailA", email);
+                    ckEmail.setMaxAge(24 * 60 * 60);
+                    response.addCookie(ckEmail);
+                    Cookie ckPassword = new Cookie("passwordA", sharedFunc.encodePassword(password));
+                    ckPassword.setMaxAge(24 * 60 * 60);
+                    response.addCookie(ckPassword);
+                }
 
-            if (session.getAttribute("request_url") == null || ((String) session.getAttribute("request_url")).equals("/admin/logout.html")) {
-                session.removeAttribute("request_url");
-                return "redirect:/admin/index.html";
-            } else {
-                return "redirect:" + session.getAttribute("request_url");
-            }
-        } else if (error == 2) {
-            model.addAttribute("error", "<div class=\"alert alert-danger\">FAILED!. Error Email Wrong!</div>");
-        } else if (error == 3) {
-            model.addAttribute("error", "<div class=\"alert alert-danger\">FAILED!. Error Wrong!</div>");
-        } else {
-            model.addAttribute("error", "<div class=\"alert alert-danger\">FAILED!. Error Password Wrong!</div>");
+                if (session.getAttribute("request_url") == null || ((String) session.getAttribute("request_url")).equals("/admin/logout.html")) {
+                    session.removeAttribute("request_url");
+                    return "redirect:/admin/index.html";
+                } else {
+                    return "redirect:" + session.getAttribute("request_url");
+                }
+            case 2:
+                model.addAttribute("error", "<div class=\"alert alert-danger\">FAILED!. Error Email Wrong!</div>");
+                break;
+            case 3:
+                model.addAttribute("error", "<div class=\"alert alert-danger\">FAILED!. Error Wrong!</div>");
+                break;
+            default:
+                model.addAttribute("error", "<div class=\"alert alert-danger\">FAILED!. Error Password Wrong!</div>");
+                break;
         }
         return "admin/login";
     }

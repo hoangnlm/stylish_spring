@@ -213,6 +213,436 @@ $(document).ready(function () {
 
 
 
+    /* AJAX PRODUCT RATING */
+    $('#fs-rating-star').barrating({
+        theme: 'fontawesome-stars-o',
+        showSelectedRating: false,
+        //readonly: true,
+        onSelect: function (value, text, event) {
+            if (typeof (event) !== 'undefined') {
+                // rating was selected by a user
+                $("#fs-div-vote-value").html("<strong style=\"font-size: 20px; color: #FF6699\">" + value + " </strong>Star");
+                $("#fs-rating-star").val(value);
+            } else {
+                // rating was selected programmatically
+                // by calling `set` method
+            }
+        }
+    });
+
+    var currentRating = $('#fs-rating-star-result').data('current-rating');
+    $('#fs-rating-star-result').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: currentRating,
+        showSelectedRating: false,
+        readonly: true
+    });
+
+    for (var i = 0; i < parseInt($("#fs-number-of-rating").attr("fs-nort")); i++) {
+        var rating = $('#fs-rating-star-' + i).data('current-rating');
+        $('#fs-rating-star-' + i).barrating({
+            theme: 'fontawesome-stars-o',
+            initialRating: rating,
+            showSelectedRating: false,
+            readonly: true
+        });
+    }
+    ;
+
+    $("#fs-product-detail-page").on("click", "#fs-btn-rating-review", function () {
+        var ratingVal = $("#fs-rating-star").val();
+        var review = $("#fs-review-product").val();
+        var userID = $(this).attr("fs-user-id");
+        var productID = $(this).attr("fs-product-id");
+        $.ajax({
+            url: "ajax/submitReviewRating.html",
+            method: "POST",
+            data: {
+                productID: productID,
+                userID: userID,
+                ratingVal: ratingVal,
+                review: review
+            },
+            beforeSend: function (xhr) {
+                $("#fs-ajax-loading-2").css("display", "block");
+            },
+            success: function (response) {
+                if (response == "ok") {
+                    setTimeout(function () {
+                        $("#fs-ajax-loading-2").css("display", "none");
+                        $("#fs-form-rating-review").empty();
+                        $("#fs-form-rating-review").html("<h3>Thank you for your review! </h3>");
+                        $.notify({
+                            icon: 'glyphicon glyphicon-ok-sign',
+                            title: '<strong>Thank you!</strong>',
+                            message: "You voted " + ratingVal + " Star for this Product!."
+                        }, {
+                            type: 'success',
+                            placement: {
+                                from: 'top',
+                                align: 'right'
+                            },
+                            delay: 2500,
+                            timer: 200,
+                            mouse_over: 'pause',
+                            animate: {
+                                enter: 'animated fadeInRight',
+                                exit: 'animated fadeOutRight'
+                            },
+                            template: '<div data-notify="container" class="col-xs-11 col-sm-6 col-md-5 col-lg-3 alert alert-{0}" role="alert">' +
+                                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                    '<span data-notify="icon"></span> ' +
+                                    '<span data-notify="title">{1}</span> ' +
+                                    '<span data-notify="message">{2}</span>' +
+                                    '<div class="progress" data-notify="progressbar">' +
+                                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                    '</div>' +
+                                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                    '</div>'
+                        });
+                    }, 600);
+                } else {
+                    $.notify({
+                        icon: 'glyphicon glyphicon-warning-sign',
+                        title: '<strong>Error!</strong>',
+                        message: 'Something was wrong! Please try again later!.'
+                    }, {
+                        type: 'danger',
+                        placement: {
+                            from: 'top',
+                            align: 'right'
+                        },
+                        delay: 3000,
+                        timer: 200,
+                        mouse_over: 'pause',
+                        animate: {
+                            enter: 'animated fadeInRight',
+                            exit: 'animated fadeOutRight'
+                        },
+                        template: '<div data-notify="container" class="col-xs-11 col-sm-6 col-md-5 col-lg-3 alert alert-{0}" role="alert">' +
+                                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                                '<span data-notify="icon"></span> ' +
+                                '<span data-notify="title">{1}</span> ' +
+                                '<span data-notify="message">{2}</span>' +
+                                '<div class="progress" data-notify="progressbar">' +
+                                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+                                '</div>' +
+                                '<a href="{3}" target="{4}" data-notify="url"></a>' +
+                                '</div>'
+                    });
+                }
+            }
+        });
+    });
+
+    /* END AJAX PRODUCT RATING */
+
+
+
+    /* COMPARE LAYOUT SCRIPT */
+
+    // Compare layout script
+    jQuery(document).ready(function ($) {
+        function productsTable(element) {
+            this.element = element;
+            this.table = this.element.children('.cd-products-table');
+            this.tableHeight = this.table.height();
+            this.productsWrapper = this.table.children('.cd-products-wrapper');
+            this.tableColumns = this.productsWrapper.children('.cd-products-columns');
+            this.products = this.tableColumns.children('.product');
+            this.productsNumber = this.products.length;
+            this.productWidth = this.products.eq(0).width();
+            this.productsTopInfo = this.table.find('.top-info');
+            this.featuresTopInfo = this.table.children('.features').children('.top-info');
+            this.topInfoHeight = this.featuresTopInfo.innerHeight() + 30;
+            this.leftScrolling = false;
+            this.filterBtn = this.element.find('.filter');
+            this.resetBtn = this.element.find('.reset');
+            this.filtering = false,
+                    this.selectedproductsNumber = 0;
+            this.filterActive = false;
+            this.navigation = this.table.children('.cd-table-navigation');
+            // bind table events
+            this.bindEvents();
+        }
+
+        productsTable.prototype.bindEvents = function () {
+            var self = this;
+            //detect scroll left inside producst table
+            self.productsWrapper.on('scroll', function () {
+                if (!self.leftScrolling) {
+                    self.leftScrolling = true;
+                    (!window.requestAnimationFrame) ? setTimeout(function () {
+                        self.updateLeftScrolling();
+                    }, 250) : window.requestAnimationFrame(function () {
+                        self.updateLeftScrolling();
+                    });
+                }
+            });
+            //select single product to filter
+//            self.products.on('click', '.top-info', function () {
+//                var product = $(this).parents('.product');
+//                if (!self.filtering && product.hasClass('selected')) {
+//                    product.removeClass('selected');
+//                    self.selectedproductsNumber = self.selectedproductsNumber - 1;
+//                    self.upadteFilterBtn();
+//                } else if (!self.filtering && !product.hasClass('selected')) {
+//                    product.addClass('selected');
+//                    self.selectedproductsNumber = self.selectedproductsNumber + 1;
+//                    self.upadteFilterBtn();
+//                }
+//            });
+            //filter products
+            self.filterBtn.on('click', function (event) {
+                event.preventDefault();
+                if (self.filterActive) {
+                    self.filtering = true;
+                    self.showSelection();
+                    self.filterActive = false;
+                    self.filterBtn.removeClass('active');
+                }
+            });
+            //reset product selection
+            self.resetBtn.on('click', function (event) {
+                event.preventDefault();
+                if (self.filtering) {
+                    self.filtering = false;
+                    self.resetSelection();
+                } else {
+                    self.products.removeClass('selected');
+                }
+                self.selectedproductsNumber = 0;
+                self.upadteFilterBtn();
+            });
+            //scroll inside products table
+            this.navigation.on('click', 'a', function (event) {
+                event.preventDefault();
+                self.updateSlider($(event.target).hasClass('next'));
+            });
+        }
+
+        productsTable.prototype.upadteFilterBtn = function () {
+            //show/hide filter btn
+            if (this.selectedproductsNumber >= 2) {
+                this.filterActive = true;
+                this.filterBtn.addClass('active');
+            } else {
+                this.filterActive = false;
+                this.filterBtn.removeClass('active');
+            }
+        }
+
+        productsTable.prototype.updateLeftScrolling = function () {
+            var totalTableWidth = parseInt(this.tableColumns.eq(0).outerWidth(true)),
+                    tableViewport = parseInt(this.element.width()),
+                    scrollLeft = this.productsWrapper.scrollLeft();
+
+            (scrollLeft > 0) ? this.table.addClass('scrolling') : this.table.removeClass('scrolling');
+
+            if (this.table.hasClass('top-fixed') && checkMQ() == 'desktop') {
+                setTranformX(this.productsTopInfo, '-' + scrollLeft);
+                setTranformX(this.featuresTopInfo, '0');
+            }
+
+            this.leftScrolling = false;
+
+            this.updateNavigationVisibility(scrollLeft);
+        }
+
+        productsTable.prototype.updateNavigationVisibility = function (scrollLeft) {
+            (scrollLeft > 0) ? this.navigation.find('.prev').removeClass('inactive') : this.navigation.find('.prev').addClass('inactive');
+            (scrollLeft < this.tableColumns.outerWidth(true) - this.productsWrapper.width() && this.tableColumns.outerWidth(true) > this.productsWrapper.width()) ? this.navigation.find('.next').removeClass('inactive') : this.navigation.find('.next').addClass('inactive');
+        }
+
+        productsTable.prototype.updateTopScrolling = function (scrollTop) {
+            var offsetTop = this.table.offset().top,
+                    tableScrollLeft = this.productsWrapper.scrollLeft();
+
+            if (offsetTop <= scrollTop && offsetTop + this.tableHeight - this.topInfoHeight >= scrollTop) {
+                //fix products top-info && arrows navigation
+                if (!this.table.hasClass('top-fixed') && $(document).height() > offsetTop + $(window).height() + 200) {
+                    this.table.addClass('top-fixed').removeClass('top-scrolling');
+                    if (checkMQ() == 'desktop') {
+                        this.productsTopInfo.css('top', '0');
+                        this.navigation.find('a').css('top', '0px');
+                    }
+                }
+
+            } else if (offsetTop <= scrollTop) {
+                //product top-info && arrows navigation -  scroll with table
+                this.table.removeClass('top-fixed').addClass('top-scrolling');
+                if (checkMQ() == 'desktop') {
+                    this.productsTopInfo.css('top', (this.tableHeight - this.topInfoHeight) + 'px');
+                    this.navigation.find('a').css('top', (this.tableHeight - this.topInfoHeight) + 'px');
+                }
+            } else {
+                //product top-info && arrows navigation -  reset style
+                this.table.removeClass('top-fixed top-scrolling');
+                this.productsTopInfo.attr('style', '');
+                this.navigation.find('a').attr('style', '');
+            }
+
+            this.updateLeftScrolling();
+        }
+
+        productsTable.prototype.updateProperties = function () {
+            this.tableHeight = this.table.height();
+            this.productWidth = this.products.eq(0).width();
+            this.topInfoHeight = this.featuresTopInfo.innerHeight() + 30;
+            this.tableColumns.css('width', this.productWidth * this.productsNumber + 'px');
+        }
+
+        productsTable.prototype.showSelection = function () {
+            this.element.addClass('filtering');
+            this.filterProducts();
+        }
+
+        productsTable.prototype.resetSelection = function () {
+            this.tableColumns.css('width', this.productWidth * this.productsNumber + 'px');
+            this.element.removeClass('no-product-transition');
+            this.resetProductsVisibility();
+        }
+
+        productsTable.prototype.filterProducts = function () {
+            var self = this,
+                    containerOffsetLeft = self.tableColumns.offset().left,
+                    scrollLeft = self.productsWrapper.scrollLeft(),
+                    selectedProducts = this.products.filter('.selected'),
+                    numberProducts = selectedProducts.length;
+
+            selectedProducts.each(function (index) {
+                var product = $(this),
+                        leftTranslate = containerOffsetLeft + index * self.productWidth + scrollLeft - product.offset().left;
+                setTranformX(product, leftTranslate);
+
+                if (index == numberProducts - 1) {
+                    product.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
+                        setTimeout(function () {
+                            self.element.addClass('no-product-transition');
+                        }, 50);
+                        setTimeout(function () {
+                            self.element.addClass('filtered');
+                            self.productsWrapper.scrollLeft(0);
+                            self.tableColumns.css('width', self.productWidth * numberProducts + 'px');
+                            selectedProducts.attr('style', '');
+                            product.off('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
+                            self.updateNavigationVisibility(0);
+                        }, 100);
+                    });
+                }
+            });
+
+            if ($('.no-csstransitions').length > 0) {
+                //browser not supporting css transitions
+                self.element.addClass('filtered');
+                self.productsWrapper.scrollLeft(0);
+                self.tableColumns.css('width', self.productWidth * numberProducts + 'px');
+                selectedProducts.attr('style', '');
+                self.updateNavigationVisibility(0);
+            }
+        }
+
+        productsTable.prototype.resetProductsVisibility = function () {
+            var self = this,
+                    containerOffsetLeft = self.tableColumns.offset().left,
+                    selectedProducts = this.products.filter('.selected'),
+                    numberProducts = selectedProducts.length,
+                    scrollLeft = self.productsWrapper.scrollLeft(),
+                    n = 0;
+
+            self.element.addClass('no-product-transition').removeClass('filtered');
+
+            self.products.each(function (index) {
+                var product = $(this);
+                if (product.hasClass('selected')) {
+                    n = n + 1;
+                    var leftTranslate = (-index + n - 1) * self.productWidth;
+                    setTranformX(product, leftTranslate);
+                }
+            });
+
+            setTimeout(function () {
+                self.element.removeClass('no-product-transition filtering');
+                setTranformX(selectedProducts, '0');
+                selectedProducts.removeClass('selected').attr('style', '');
+            }, 50);
+        }
+
+        productsTable.prototype.updateSlider = function (bool) {
+            var scrollLeft = this.productsWrapper.scrollLeft();
+            scrollLeft = (bool) ? scrollLeft + this.productWidth : scrollLeft - this.productWidth;
+
+            if (scrollLeft < 0)
+                scrollLeft = 0;
+            if (scrollLeft > this.tableColumns.outerWidth(true) - this.productsWrapper.width())
+                scrollLeft = this.tableColumns.outerWidth(true) - this.productsWrapper.width();
+
+            this.productsWrapper.animate({scrollLeft: scrollLeft}, 200);
+        }
+
+        var comparisonTables = [];
+        $('.cd-products-comparison-table').each(function () {
+            //create a productsTable object for each .cd-products-comparison-table
+            comparisonTables.push(new productsTable($(this)));
+        });
+
+        var windowScrolling = false;
+        //detect window scroll - fix product top-info on scrolling
+        $(window).on('scroll', function () {
+            if (!windowScrolling) {
+                windowScrolling = true;
+                (!window.requestAnimationFrame) ? setTimeout(checkScrolling, 250) : window.requestAnimationFrame(checkScrolling);
+            }
+        });
+
+        var windowResize = false;
+        //detect window resize - reset .cd-products-comparison-table properties
+        $(window).on('resize', function () {
+            if (!windowResize) {
+                windowResize = true;
+                (!window.requestAnimationFrame) ? setTimeout(checkResize, 250) : window.requestAnimationFrame(checkResize);
+            }
+        });
+
+        function checkScrolling() {
+            var scrollTop = $(window).scrollTop();
+            comparisonTables.forEach(function (element) {
+                element.updateTopScrolling(scrollTop);
+            });
+
+            windowScrolling = false;
+        }
+
+        function checkResize() {
+            comparisonTables.forEach(function (element) {
+                element.updateProperties();
+            });
+
+            windowResize = false;
+        }
+
+        function checkMQ() {
+            //check if mobile or desktop device
+            return window.getComputedStyle(comparisonTables[0].element.get(0), '::after').getPropertyValue('content').replace(/'/g, "").replace(/"/g, "");
+        }
+
+        function setTranformX(element, value) {
+            element.css({
+                '-moz-transform': 'translateX(' + value + 'px)',
+                '-webkit-transform': 'translateX(' + value + 'px)',
+                '-ms-transform': 'translateX(' + value + 'px)',
+                '-o-transform': 'translateX(' + value + 'px)',
+                'transform': 'translateX(' + value + 'px)'
+            });
+        }
+    });
+
+    /* END COMPARE LAYOUT SCRIPT */
+
+
+
+
+
     /* USER JS AREA */
     /* REGISTER FORM */
     $("#txtBirthday").datepicker({
@@ -850,127 +1280,6 @@ $(document).ready(function () {
     //            e.preventDefault();
     //        }
     //    });
-
-    $('#fs-rating-star').barrating({
-        theme: 'fontawesome-stars-o',
-        showSelectedRating: false,
-        //readonly: true,
-        onSelect: function (value, text, event) {
-            if (typeof (event) !== 'undefined') {
-                // rating was selected by a user
-                $("#fs-div-vote-value").html("<strong style=\"font-size: 20px; color: #FF6699\">" + value + " </strong>Star");
-                $("#fs-rating-star").val(value);
-            } else {
-                // rating was selected programmatically
-                // by calling `set` method
-            }
-        }
-    });
-
-    var currentRating = $('#fs-rating-star-result').data('current-rating');
-    $('#fs-rating-star-result').barrating({
-        theme: 'fontawesome-stars-o',
-        initialRating: currentRating,
-        showSelectedRating: false,
-        readonly: true,
-    });
-
-    for (var i = 0; i < parseInt($("#fs-number-of-rating").attr("fs-nort")); i++) {
-        var rating = $('#fs-rating-star-' + i).data('current-rating');
-        $('#fs-rating-star-' + i).barrating({
-            theme: 'fontawesome-stars-o',
-            initialRating: rating,
-            showSelectedRating: false,
-            readonly: true
-        });
-    }
-    ;
-
-    $("#fs-product-detail-page").on("click", "#fs-btn-rating-review", function () {
-        var ratingVal = $("#fs-rating-star").val();
-        var review = $("#fs-review-product").val();
-        var userID = $(this).attr("fs-user-id");
-        var productID = $(this).attr("fs-product-id");
-        $.ajax({
-            url: "ajax/submitReviewRating.html",
-            method: "POST",
-            data: {
-                productID: productID,
-                userID: userID,
-                ratingVal: ratingVal,
-                review: review
-            },
-            beforeSend: function (xhr) {
-                $("#fs-ajax-loading-2").css("display", "block");
-            },
-            success: function (response) {
-                if (response == "ok") {
-                    setTimeout(function () {
-                        $("#fs-ajax-loading-2").css("display", "none");
-                        $("#fs-form-rating-review").empty();
-                        $("#fs-form-rating-review").html("<h3>Thank you for your review! </h3>");
-                        $.notify({
-                            icon: 'glyphicon glyphicon-ok-sign',
-                            title: '<strong>Thank you!</strong>',
-                            message: "You voted " + ratingVal + " Star for this Product!."
-                        }, {
-                            type: 'success',
-                            placement: {
-                                from: 'top',
-                                align: 'right'
-                            },
-                            delay: 2500,
-                            timer: 200,
-                            mouse_over: 'pause',
-                            animate: {
-                                enter: 'animated fadeInRight',
-                                exit: 'animated fadeOutRight'
-                            },
-                            template: '<div data-notify="container" class="col-xs-11 col-sm-6 col-md-5 col-lg-3 alert alert-{0}" role="alert">' +
-                                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                                    '<span data-notify="icon"></span> ' +
-                                    '<span data-notify="title">{1}</span> ' +
-                                    '<span data-notify="message">{2}</span>' +
-                                    '<div class="progress" data-notify="progressbar">' +
-                                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                                    '</div>' +
-                                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                                    '</div>'
-                        });
-                    }, 600);
-                } else {
-                    $.notify({
-                        icon: 'glyphicon glyphicon-warning-sign',
-                        title: '<strong>Error!</strong>',
-                        message: 'Something was wrong! Please try again later!.'
-                    }, {
-                        type: 'danger',
-                        placement: {
-                            from: 'top',
-                            align: 'right'
-                        },
-                        delay: 3000,
-                        timer: 200,
-                        mouse_over: 'pause',
-                        animate: {
-                            enter: 'animated fadeInRight',
-                            exit: 'animated fadeOutRight'
-                        },
-                        template: '<div data-notify="container" class="col-xs-11 col-sm-6 col-md-5 col-lg-3 alert alert-{0}" role="alert">' +
-                                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                                '<span data-notify="icon"></span> ' +
-                                '<span data-notify="title">{1}</span> ' +
-                                '<span data-notify="message">{2}</span>' +
-                                '<div class="progress" data-notify="progressbar">' +
-                                '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                                '</div>' +
-                                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                                '</div>'
-                    });
-                }
-            }
-        });
-    });
 
     $("#fs-product-detail-page").on("click", "#fs-btn-login-to-review", function () {
         $("#loginModal").modal("show");
