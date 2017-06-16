@@ -101,13 +101,16 @@
                 <!-- Cart & Search -->
                 <div class="header-xtra pull-right">
                     <div class="topsignal">
-                        <span>
-                            <i class="fa fa-signal"></i>
-                        </span>
+                        <span><i class="fa fa-signal"></i></span>
+                        <div id="compare">
+                            <div class="compare-info">
+                                <h3>asdfasdfasd asdf</h3>
+                            </div>
+                        </div>
                     </div>
                     <div class="topcart">
+                        <span><i class="fa fa-shopping-cart"></i></span>
                         <div id="cart">
-
                         </div>
                         <input id="order-emailUser" name="order-emailUser" type="hidden" value="${sessionScope.emailUser}"/>
                     </div>
@@ -179,8 +182,9 @@
                 $("#cart").html(response);
             }
         });
-    };
-    
+    }
+    ;
+
     function checkoutClick() {
         var email = $('input[name=order-emailUser]').val();
         if (email == "" || email == null) {
@@ -188,5 +192,6 @@
         } else {
             window.location = "orders/checkout.html";
         }
-    };
+    }
+    ;
 </script>

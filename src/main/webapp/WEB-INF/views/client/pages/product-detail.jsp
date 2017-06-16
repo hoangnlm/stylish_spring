@@ -93,9 +93,12 @@
                             <div class="space20"></div>
                             <div class="share">
                                 <span>
-                                    <a href="#" class="fa fa-heart-o"></a>
+                                    <a class="compare fa fa-signal fs-compare-add" fs-productID="${targetProduct.productID}"></a>
+                                    <a class="fa fa-heart-o fs-wishlish-add" 
+                                       fs-userID="${sessionScope.findUsersID}" 
+                                       fs-productID="${targetProduct.productID}"></a>
+                                    <input type="hidden" name="emailUser" value="${sessionScope.emailUser}" />
                                 </span>
-                                <div class="addthis_native_toolbox"></div>
                             </div>
                             <div class="space20"></div>
                             <div class="sep"></div>
@@ -347,7 +350,9 @@
 
 <!-- BREADCRUMBS -->
 
+<!-- Modal -->
 <jsp:include page="../blocks/modal.jsp" flush="true"/>
+
 
 <!--EQUAL-HEIGHT COLUMNS-->
 <script>

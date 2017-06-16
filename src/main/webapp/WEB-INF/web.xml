@@ -94,4 +94,9 @@
         <ejb-ref-type>Session</ejb-ref-type>
         <local>stylish.ejb.UserAddressesStateLessBeanLocal</local>
     </ejb-local-ref>
+    <ejb-local-ref>
+        <ejb-ref-name>CompareStateFullBean</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>stylish.ejb.CompareStateFullBeanLocal</local>
+    </ejb-local-ref>
 </web-app>

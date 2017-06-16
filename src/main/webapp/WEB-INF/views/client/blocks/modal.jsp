@@ -1,4 +1,34 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<!--Modal thong bao dang nhap-->
+<div id="fs-modal-mess" class="modal fade fs-modal-wl-mess" tabindex="-1" role="dialog" aria-labelledby="messlodalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-content fs-modal-wl-content">
+        <p class="text-center fs-wl-text"><b>If you want add a product to your wishlish, <br/><br/>you should login to your account!!</b></p>
+        <div class="modal-header">
+            <a class="close fs-modal-wl-close" data-dismiss="modal" aria-label="Close">x</a>
+        </div>
+    </div>
+</div>
+
+<!--MODAL THONG BAO CHO KHI CO MODAL-->
+<div id="fs-wl-ajax-error" class="modal fade fs-modal-mess-wl" tabindex="-1" role="dialog">
+    <div class="modal-content fs-modal-wl-content">
+        <!--<h1 id="fs-mess-wl" style="color: #31b131; text-align: center">SUCCESS</h1>-->
+        <h1 id="fs-mess-wl-success" style="color: #31b131; text-align: center"></h1>
+        <h1 id="fs-mess-wl-error" style="color: #F65D20; text-align: center"></h1>
+
+        <div class="modal-header">
+            <button class="close" data-dismiss="modal">&times;</button>
+            <!--<h1 id="fs-mess-wl" style="color: #31b131; text-align: center"></h1>-->
+        </div>
+        <div class="modal-body">
+            <!--<p id="fs-mess-body-wl">Add Wish List success.</p>-->
+            <p id="fs-mess-body-wl"></p>
+        </div>
+    </div>
+</div>
+
+<!--PRODUCT DETAILS MODAL-->
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-ku">
         <div class="modal-content">
@@ -65,16 +95,6 @@
                             </div>
                         </div>
                         <div class="space20"></div>
-                        <div class="share">
-                            <span>
-                                <a class="fa fa-heart-o fs-wl-add-detail"
-                                   fs-userID="${sessionScope.findUsersID}" ></a>
-                                   <input type="hidden" name="emailUser" value="${sessionScope.emailUser}" />
-                                <a href="#" class="fa fa-signal" onclick="return false;"></a>
-                                <a href="#" class="fa fa-envelope-o" onclick="return false;"></a>
-                            </span>
-                            <div class="addthis_native_toolbox"></div>
-                        </div>
                         <div class="space20"></div>
                         <div class="sep"></div>
                         <!--<form method="POST" action="">-->

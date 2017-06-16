@@ -231,6 +231,26 @@ div#my-owl img{
     background: url(../images/bg/bg9.jpg) no-repeat top fixed;
 }
 
+.compare-info{
+    border: solid 1px #666;
+    width: 330px;
+    background: #fff;
+    padding: 25px 25px 35px;
+    position: absolute;
+    right: 0;
+    margin-top: 30px;
+    opacity: 0;
+    visibility: hidden;
+    transition: .4s;
+    z-index: 99999;
+    height: 465px;
+    overflow: auto;
+    overflow-x: hidden !important;
+}
+
+.product-overlay a{
+    cursor: pointer;
+}
 
 /*Content Pages*/
 .side-widget{

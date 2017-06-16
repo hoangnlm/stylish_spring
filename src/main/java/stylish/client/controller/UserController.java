@@ -264,7 +264,7 @@ public class UserController {
 //                String path = app.getRealPath("/assets/images/avatar/") + "/" + updateUser.getAvatar();
 //                image.transferTo(new File(path));
 //            } else {
-                updateUser.setAvatar(oldUser.getAvatar());
+            updateUser.setAvatar(oldUser.getAvatar());
 //            }
         } catch (Exception ex) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
@@ -323,22 +323,26 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "ajax/addWishList", method = RequestMethod.POST)
     public String addWL(@RequestParam("userID") int userID, @RequestParam("productID") int productID) {
-        WishList wishList = new WishList();
         Users findUserID = usersStateLessBean.getUserByID(userID);
         Products findProductID = productStateLessBean.findProductByID(productID);
-        wishList.setUser(findUserID);
-        wishList.setProduct(findProductID);
-        try {
-            wishList.setCreateDate(new Date());
-        } catch (Exception ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+        WishList search = usersStateLessBean.findWishProductID(productID, userID);
+        if (search == null) {
+            WishList wishList = new WishList();
+            wishList.setUser(findUserID);
+            wishList.setProduct(findProductID);
+            try {
+                wishList.setCreateDate(new Date());
+            } catch (Exception ex) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            int error = usersStateLessBean.addWishlist(wishList, userID, productID);
+            if (error == 1) {
+                return "1"; // thanh cong
+            } else {
+                return "0"; // loi
+            }
         }
-        int error = usersStateLessBean.addWishlist(wishList, userID, productID);
-        if (error == 1) {
-            return "1"; // thanh cong
-        } else {
-            return "0"; // loi
-        }
+        return "2"; // Duplicated product
     }
 
     @ResponseBody

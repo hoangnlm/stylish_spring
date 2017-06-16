@@ -33,7 +33,6 @@ body {
     font-family: 'Raleway', sans-serif;
     font-size: 16px;
     color: #444;
-    background: #FFF url("../images/pattern/wood_pattern.png");
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -1537,7 +1536,7 @@ footer {
     display: inline-block;
 }
 
-.cart-info {
+.cart-info, .compare-info {
     border: solid 1px #666;
     width: 330px;
     background: #fff;
@@ -1554,7 +1553,7 @@ footer {
     overflow-x: hidden !important;
 }
 
-.cart-info:after {
+.cart-info:after, .compare-info:after {
     content: "";
     height: 12px;
     background: #fff;
@@ -1566,19 +1565,19 @@ footer {
     opacity: 0;
 }
 
-.topcart:hover .cart-info {
+.topcart:hover .cart-info, .topsignal:hover .compare-info {
     opacity: 1;
     visibility: visible;
     margin-top: 12px;
     transition: .4s;
 }
 
-.topcart:hover span {
+.topcart:hover span, .topsignal:hover span {
     background: #FF6699;
     color: #fff;
 }
 
-.cart-info small {
+.cart-info small, .compare-info small {
     color: #444;
     font-size: 14px;
     text-transform: none;
@@ -1588,7 +1587,7 @@ footer {
     display: table;
 }
 
-.cart-info small em {
+.cart-info small em, .compare-info small em {
     font-style: normal;
     color: #FF6699;
 }

@@ -16,6 +16,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class WishList implements Serializable {
 
+    private static final long serialVersionUID = 924878530828727472L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer wishID;

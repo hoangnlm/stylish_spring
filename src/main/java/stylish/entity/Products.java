@@ -22,6 +22,8 @@ import javax.persistence.TemporalType;
 @Entity
 public class Products implements Serializable {
 
+    private static final long serialVersionUID = -2871738725128641228L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productID;
@@ -227,4 +229,10 @@ public class Products implements Serializable {
         this.productRatingList = productRatingList;
     }
 
+    @Override
+    public String toString() {
+        return "Products{" + "productID=" + productID + ", productName=" + productName + ", productNameNA=" + productNameNA + ", price=" + price + ", urlImg=" + urlImg + ", productDescription=" + productDescription + ", productDiscount=" + productDiscount + ", postedDate=" + postedDate + ", productViews=" + productViews + ", status=" + status + ", category=" + category + ", subCate=" + subCate + '}';
+    }
+
+    
 }

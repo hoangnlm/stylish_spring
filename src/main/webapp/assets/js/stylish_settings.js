@@ -1,4 +1,218 @@
 $(document).ready(function () {
+
+    /* AJAX FOR PRODUCT COMPARISION */
+    function ajaxCompareProduct() {
+        var productID = $(this).attr("fs-productID");
+        if (productID) {
+            $.ajax({
+                url: "compare/ajax/add.html",
+                method: "GET",
+                data: {
+                    productID: productID
+                },
+                success: function (response) {
+                    if (response == "0") {
+                        swal({
+                            title: "<h1 style='color: #31b131;'>Success</h1>",
+                            text: "Added to compare list successfully!",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            html: true
+                        });
+
+                        // LOAD MENU COMPARE TREN HEADER
+                        $.ajax({
+                            url: "compare/ajax/getCompare.html",
+                            method: "GET",
+                            dataType: 'html',
+                            success: function (response) {
+                                $("#compare").html(response).fadeIn(10000);
+                            }
+                        });
+                    } else if (response == "1") {
+                        swal({
+                            title: "<h1 style='color: #F65D20;' >Error!",
+                            text: "This product has been added!",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            html: true
+                        });
+                    } else if (response == "2") {
+                        swal({
+                            title: "<h1 style='color: #F65D20;' >Error!",
+                            text: "This product not found!",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            html: true
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    // ADD COMPARE-LIST: PAGE HOME FEATURED PRODUCTS
+    $(".fs-compare-add").click(ajaxCompareProduct);
+
+    // ADD COMPARE-LIST: PAGE HOME LATEST PRODUCTS
+    $(".fs-compare-add-lsp").click(ajaxCompareProduct);
+
+    // ADD COMPARE-LIST: SUB_CATEGORY
+    $(".fs-compare-add-sub").click(ajaxCompareProduct);
+
+    // DELETE COMPARE-LIST ITEM 
+    $(".fs-compare-del").click(function () {
+        var compareID = $(this).attr("fs-compare-del-id");
+//        console.log("delete compare list item");
+//        console.log(compareID);
+        //        alert(compareID);
+        if (!window.confirm('Are you sure to delete this?')) {
+            return;
+        }
+        if (compareID) {
+            $("#fs-compare-del-" + compareID).remove();
+            $.ajax({
+                url: "compare/ajax/delete/" + compareID + ".html",
+                method: "GET",
+                data: {
+                    compareID: compareID
+                },
+                success: function (response) {
+                    if (response === "0") {
+                        swal({
+                            title: "<h1 style='color: #ff0000;'>Delete</h1>",
+                            text: "Deleted successfully!",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            html: true
+                        });
+                        // LOAD MENU COMPARE TREN HEADER
+                        $.ajax({
+                            url: "compare/ajax/getCompare.html",
+                            method: "GET",
+                            dataType: 'html',
+                            success: function (response) {
+                                $("#compare").html(response).fadeIn(1000);
+                                console.log("compare/ajax/getCompare.html");
+                            }
+                        });
+                    } else if (response === "2") {
+                        location.assign("compare/view.html");
+                    }
+                }
+            });
+        }
+    });
+
+    // LOAD MENU COMPARE TREN HEADER
+    $.ajax({
+        url: "compare/ajax/getCompare.html",
+        method: "GET",
+        dataType: 'html',
+        success: function (response) {
+            $("#compare").html(response).fadeIn(1000);
+        }
+    });
+
+    /* END OF AJAX FOR PRODUCT COMPARISION */
+
+
+
+    /* AJAX WISHLIST */
+    function ajaxWishList() {
+        var userID = $(this).attr("fs-userID");
+        var productID = $(this).attr("fs-productID");
+        var input = $("input[name='emailUser']");
+        if (input.val() != "") {
+            //Có session
+            $.ajax({
+                url: "user/ajax/addWishList.html",
+                method: "POST",
+                data: {
+                    userID: userID,
+                    productID: productID
+                },
+                success: function (response) {
+                    if (response == "1") {
+                        swal({
+                            title: "<h1 style='color: #31b131;'>Success</h1>",
+                            text: "Add Wish List success.",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            html: true
+                        });
+                    } else if (response == "0") {
+                        swal({
+                            title: "<h1 style='color: #F65D20;' >Error!",
+                            text: "Adding failed!",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            html: true
+                        });
+                    } else if (response == "2") {
+                        swal({
+                            title: "<h1 style='color: #F65D20;' >Error!",
+                            text: "This product has been added!",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            html: true
+                        });
+                    }
+                }
+            });
+
+        } else {
+            //Khong có session
+            $("#fs-modal-mess").modal("show");
+            $(".fs-btn-login-wl").click(function () {
+                $("#fs-modal-mess").modal("hide");
+//                window.location = window.location.href;
+                //                $("#loginModal").modal("show");
+            });
+        }
+    }
+
+    // ADD WISH-LIST: PAGE HOME FEATURED PRODUCTS
+    $(".fs-wishlish-add").click(ajaxWishList);
+
+    // ADD WISH-LIST: PAGE HOME LATEST PRODUCTS
+    $(".fs-wl-add-lsp").click(ajaxWishList);
+
+    // ADD WISH-LIST: SUB_CATEGORY
+    $(".fs-wl-add-sub").click(ajaxWishList);
+
+    // ADD WISH-LIST: PRODUCT DETAILS MODAL & PAGE
+    $(".fs-wl-add-detail").click(ajaxWishList);
+
+    // DELETE WISHLIST 
+    $(".fs-btn-delete-wl").click(function () {
+        var wishID = $(this).attr("fs-wl-wlID");
+        //        alert(wishID);
+        $("#fs-list-id-" + wishID).remove();
+        $.ajax({
+            url: "user/ajax/deleteWishList/" + wishID + ".html",
+            method: "POST",
+            data: {
+                wishID: wishID
+            },
+            success: function (response) {
+                if (response == "1") {
+                    swal({
+                        title: "<h1 style='color: #ff0000;'>Delete</h1>",
+                        text: "Deleted Wish List successfully!",
+                        timer: 2000,
+                        showConfirmButton: false,
+                        html: true
+                    });
+                }
+            }
+        });
+    });
+
+    /* END AJAX WISHLIST */
+
+
+
     /* USER JS AREA */
     /* REGISTER FORM */
     $("#txtBirthday").datepicker({
@@ -2721,7 +2935,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     // ORDER
 
     $("select#select-quantity-shoppingcart").selectBoxIt();
@@ -4276,253 +4490,7 @@ $(document).ready(function () {
         }
     });
 
-
-    // ADD WISH-LIST: PAGE HOME FEATURED PRODUCTS
-
-    $(".fs-wishlish-add").click(function () {
-        var userID = $(this).attr("fs-userID");
-        var productID = $(this).attr("fs-productID");
-        var input = $("input[name='emailUser']");
-        if (input.val() != "") {
-            //Có session
-            if (!$(this).hasClass("fs-heart-color")) {
-                $(this).addClass("fs-heart-color");
-                $.ajax({
-                    url: "user/ajax/addWishList.html",
-                    method: "POST",
-                    data: {
-                        userID: userID,
-                        productID: productID
-                    },
-                    success: function (response) {
-                        if (response == "1") {
-                            swal({
-                                title: "<h1 style='color: #31b131;'>Success</h1>",
-                                text: "Add Wish List success.",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        } else if (response == "0") {
-                            swal({
-                                title: "<h1 style='color: #F65D20;' >Error!",
-                                text: "Error, Fail add wishlist",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        }
-                    }
-                });
-            } else {
-                $(this).removeClass("fs-heart-color");
-                $.ajax({
-                    url: "user/ajax/deleteWishListt.html",
-                    method: "POST",
-                    data: {
-                        userID: userID,
-                        productID: productID
-                    },
-                    success: function (response) {
-                        if (response == "1") {
-                            swal({
-                                title: "<h1 style='color: #ff0000;' >Delete</h1>",
-                                text: "Delete Wish List success.",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        }
-                    }
-                });
-            }
-
-        } else {
-            //Khong có session
-            $("#fs-modal-mess").modal("show");
-            $(".fs-btn-login-wl").click(function () {
-                $("#fs-modal-mess").modal("hide");
-                window.location = window.location.href;
-                //                $("#loginModal").modal("show");
-            });
-        }
-    });
-
-
-    // ADD WISH-LIST: PAGE HOME LATEST PRODUCTS
-
-    $(".fs-wl-add-lsp").click(function () {
-        var userID = $(this).attr("fs-userID");
-        var productID = $(this).attr("fs-productID");
-        var input = $("input[name='emailUser']");
-        if (input.val() != "") {
-            //Có session
-            //            $(this).addClass("fs-heart-color");
-            if (!$(this).hasClass("fs-heart-color")) {
-                $(this).addClass("fs-heart-color");
-                $.ajax({
-                    url: "user/ajax/addWishList.html",
-                    method: "POST",
-                    data: {
-                        userID: userID,
-                        productID: productID
-                    },
-                    success: function (response) {
-                        if (response == "1") {
-                            swal({
-                                title: "<h1 style='color: #31b131;'>Success</h1>",
-                                text: "Add Wish List success.",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        } else if (response == "0") {
-                            swal({
-                                title: "<h1 style='color: #F65D20;' >Error!",
-                                text: "Error, Fail add wishlist",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        }
-                    }
-                });
-            } else {
-                $(this).removeClass("fs-heart-color");
-                $.ajax({
-                    url: "user/ajax/deleteWishListt.html",
-                    method: "POST",
-                    data: {
-                        userID: userID,
-                        productID: productID
-                    },
-                    success: function (response) {
-                        if (response == "1") {
-                            swal({
-                                title: "<h1 style='color: #ff0000;' >Delete</h1>",
-                                text: "Delete Wish List success.",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        }
-                    }
-                });
-            }
-
-        } else {
-            //Khong có session
-            $("#fs-modal-mess").modal("show");
-            $(".fs-btn-login-wl").click(function () {
-                $("#fs-modal-mess").modal("hide");
-                window.location = window.location.href;
-                //                $("#loginModal").modal("show");
-            });
-        }
-    });
-
-
-    // ADD WISH-LIST: SUB_CATEGORY
-
-    $(".fs-wl-add-sub").click(function () {
-        var userID = $(this).attr("fs-userID");
-        var productID = $(this).attr("fs-productID");
-        var input = $("input[name='emailUser']");
-        if (input.val() != "") {
-            //Có session
-            if (!$(this).hasClass("fs-heart-color")) {
-                $(this).addClass("fs-heart-color");
-                $.ajax({
-                    url: "user/ajax/addWishList.html",
-                    method: "POST",
-                    data: {
-                        userID: userID,
-                        productID: productID
-                    },
-                    success: function (response) {
-                        if (response == "1") {
-                            swal({
-                                title: "<h1 style='color: #31b131;'>Success</h1>",
-                                text: "Add Wish List success.",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        } else if (response == "0") {
-                            swal({
-                                title: "<h1 style='color: #F65D20;' >Error!",
-                                text: "Error, Fail add wishlist",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        }
-                    }
-                });
-            } else {
-                $(this).removeClass("fs-heart-color");
-                $.ajax({
-                    url: "user/ajax/deleteWishListt.html",
-                    method: "POST",
-                    data: {
-                        productID: productID,
-                        userID: userID
-                    },
-                    success: function (response) {
-                        if (response == "1") {
-                            swal({
-                                title: "<h1 style='color: #ff0000;' >Delete</h1>",
-                                text: "Delete Wish List success.",
-                                timer: 2000,
-                                showConfirmButton: false,
-                                html: true
-                            });
-                        }
-                    }
-                });
-            }
-
-        } else {
-            //Khong có session
-            $("#fs-modal-mess").modal("show");
-            $(".fs-btn-login-wl").click(function () {
-                $("#fs-modal-mess").modal("hide");
-                window.location = window.location.href;
-                //                $("#loginModal").modal("show");
-            });
-        }
-    });
-
-    // DELETE WISHLIST 
-
-    $(".fs-btn-delete-wl").click(function () {
-        var wishID = $(this).attr("fs-wl-wlID");
-        //        alert(wishID);
-        $("#fs-list-id-" + wishID).remove();
-        $.ajax({
-            url: "user/ajax/deleteWishList/" + wishID + ".html",
-            method: "POST",
-            data: {
-                wishID: wishID
-            },
-            success: function (response) {
-                if (response == "1") {
-                    swal({
-                        title: "<h1 style='color: #ff0000;'>Delete</h1>",
-                        text: "Delete Wish List success.",
-                        timer: 2000,
-                        showConfirmButton: false,
-                        html: true
-                    });
-
-                }
-            }
-        });
-    });
-
-
-//BLOG
-
+    //BLOG
     var mincount = 2;
     var maxcount = 4;
     $(".image-gallery-ul li").slice(2).hide();

@@ -44,7 +44,7 @@ public class GeneralController {
         List<Blogs> blogListIndex = blogsSB.getAllBlogsIndex();
         for (Categories cate : cateList) {
             List<Products> productListByCate = cate.getProductList();
-            Collections.shuffle(productListByCate);
+//            Collections.shuffle(productListByCate);
         }
         List<Object> bestSellerList = productStateLessBean.getTop3ProductBestSeller();
         List<Products> mostViewList = productStateLessBean.getTop3ProductMostViewed();
@@ -85,28 +85,29 @@ public class GeneralController {
     ) {
         String err = "";
         int error = usersStateLessBean.checkLoginUser(email, sharedFunc.encodePassword(password));
-        if (error == 1) {
-            session.setAttribute("emailUser", email);
-            err = (String) session.getAttribute("emailUser");
-            Users userfindUserID = usersStateLessBean.findUserByEmail(email);
-            session.setAttribute("findUsersID", userfindUserID.getUserID());
-            session.setAttribute("USfirstname", userfindUserID.getFirstName() + " " + userfindUserID.getLastName());
-
-            if (checkremember != null && checkremember == 1) {
-                Cookie ckEmail = new Cookie("emailU", email);
-                ckEmail.setMaxAge(24 * 60 * 60);
-                response.addCookie(ckEmail);
-                Cookie ckPassword = new Cookie("passwordU", sharedFunc.encodePassword(password));
-                ckPassword.setMaxAge(24 * 60 * 60);
-                response.addCookie(ckPassword);
-            }
-            return err;
-        } else if (error == 2) {
-            return "2";
-        } else if (error == 3) {
-            return "4";
-        } else {
-            return "3";
+        switch (error) {
+            case 1:
+                session.setAttribute("emailUser", email);
+                err = (String) session.getAttribute("emailUser");
+                Users userfindUserID = usersStateLessBean.findUserByEmail(email);
+                session.setAttribute("findUsersID", userfindUserID.getUserID());
+                session.setAttribute("USfirstname", userfindUserID.getFirstName() + " " + userfindUserID.getLastName());
+                
+                if (checkremember != null && checkremember == 1) {
+                    Cookie ckEmail = new Cookie("emailU", email);
+                    ckEmail.setMaxAge(24 * 60 * 60);
+                    response.addCookie(ckEmail);
+                    Cookie ckPassword = new Cookie("passwordU", sharedFunc.encodePassword(password));
+                    ckPassword.setMaxAge(24 * 60 * 60);
+                    response.addCookie(ckPassword);
+                }
+                return err;
+            case 2:
+                return "2";
+            case 3:
+                return "4";
+            default:
+                return "3";
         }
     }
 

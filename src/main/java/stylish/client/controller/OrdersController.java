@@ -384,9 +384,8 @@ public class OrdersController {
             }
         }
         //<div class=\"ci-edit\"><button onclick=\"deleteItem(" + cartLineInfo.getProduct().getProductID() + "," + cartLineInfo.getSizesByColor().getSizeID() + "," + cartLineInfo.getSizesByColor().getColor().getColorID() + ");\" class=\"edit fa fa-trash\"></button></div>\n"
-        str_cart_big = "<span><i class=\"fa fa-shopping-cart\"></i></span>\n"
-                + "<div class=\"cart-info\">\n"
-                + "<small>You have <em class=\"highlight\">" + cartSize + " item(s)</em> in your shopping bag</small>\n"
+        str_cart_big += "<div class=\"cart-info\">\n"
+                + "<small>You have <em class=\"highlight\">" + cartSize + " item(s)</em> in your shopping cart!</small>\n"
                 + str_cart_detail
                 + str_subtotal
                 + str_cart_button
