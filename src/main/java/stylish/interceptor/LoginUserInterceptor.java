@@ -17,7 +17,6 @@ public class LoginUserInterceptor extends HandlerInterceptorAdapter {
             return true;
         } else {
             response.sendRedirect(request.getContextPath() + "/index.html");
-            //request.getContextPath(): get lấy đường link gốc (contextPath) của request. ở đây là http://localhost:8080/fashionshop
             return false;
         }
     }

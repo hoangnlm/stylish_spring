@@ -19,6 +19,11 @@
                                             Login
                                         </a>
                                     </span>
+                                    <span class="fa fa-sign-in">
+                                        <a class="fs-login-page" href="#registerModal" data-toggle="modal" data-target="#registerModal">
+                                            Register
+                                        </a>
+                                    </span>
                                 </c:if>
                                 <c:if test="${not empty sessionScope.emailUser}">
                                     <span>${sessionScope.USfirstname} <i class="fa fa-caret-down"></i></span>

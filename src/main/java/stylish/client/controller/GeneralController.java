@@ -79,12 +79,13 @@ public class GeneralController {
     public String login(ModelMap model,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            @RequestParam(value = "checkremember", required = false) Short checkremember,
+            @RequestParam(value = "checkremember", required = false) String checkremember,
             HttpSession session, RedirectAttributes redirectAttributes,
             HttpServletResponse response
     ) {
         String err = "";
         int error = usersStateLessBean.checkLoginUser(email, sharedFunc.encodePassword(password));
+        int checkremember2 = (checkremember != null && !checkremember.isEmpty()) ? 1 : 0;
         switch (error) {
             case 1:
                 session.setAttribute("emailUser", email);
@@ -93,7 +94,7 @@ public class GeneralController {
                 session.setAttribute("findUsersID", userfindUserID.getUserID());
                 session.setAttribute("USfirstname", userfindUserID.getFirstName() + " " + userfindUserID.getLastName());
                 
-                if (checkremember != null && checkremember == 1) {
+                if (checkremember2 == 1) {
                     Cookie ckEmail = new Cookie("emailU", email);
                     ckEmail.setMaxAge(24 * 60 * 60);
                     response.addCookie(ckEmail);

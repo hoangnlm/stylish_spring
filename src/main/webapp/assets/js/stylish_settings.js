@@ -1,3 +1,174 @@
+/* DEFINE CONSTANTS */
+var RE_PHONE_NUMBER_VN = /^(\+84|0)\d{9,11}$/;
+
+var FORM_RULE_CLIENT_LOGIN = {
+    email: {
+        required: true,
+        email: true
+    },
+    password: {
+        required: true
+    }
+};
+
+var FORM_RULE_CLIENT_REGISTER = {
+    email: {
+        required: true,
+        email: true
+    },
+    password: {
+        required: true,
+        minlength: 6,
+        maxlength: 100
+    },
+    repassword: {
+        required: true,
+        equalTo: "#register-password"
+    },
+    firstName: {
+        required: true,
+        minlength: 1,
+        maxlength: 50
+    },
+    lastName: {
+        required: true,
+        minlength: 1,
+        maxlength: 50
+    },
+    birthday: {
+        required: true,
+        minDate: "1960-01-01",
+        maxDate: "2001-12-31"
+    },
+    phoneNumber: {
+        required: true,
+        minlength: 10,
+        pattern: RE_PHONE_NUMBER_VN
+    },
+    address: {
+        required: true,
+        minlength: 1,
+        maxlength: 50
+    }
+};
+
+
+/* ON DOCUMENT READY */
+$(function () {
+
+    // Validate Forms
+    proValidate("#fs-form-login-user", FORM_RULE_CLIENT_LOGIN);
+    proValidate("#fs-form-create-user", FORM_RULE_CLIENT_REGISTER);
+
+    // Form Ajax
+    $('#fs-form-login-user').ajaxForm({
+        success: function (response) {
+            switch (response) {
+                case "2":
+                    $("#login-error").text("Email is wrong!");
+                    $("#login-email").select();
+                    highlightInvalid($("#login-email"));
+                    break;
+                case "3":
+                    $("#login-error").text("Password is wrong!");
+                    $("#login-password").select();
+                    highlightInvalid($("#login-password"));
+                    break;
+                case "4":
+                    $("#login-error").text("Login failed! Please try again later!");
+                    break;
+                default:
+                    location.reload();
+            }
+        }
+    });
+    $('#fs-form-create-user').ajaxForm({
+        success: function (response) {
+            switch (response) {
+                case "2":   // Duplicate user
+                    $("#register-error").text("This email has been registered!");
+                    $("#register-email").select();
+                    highlightInvalid($("#register-email"));
+                    break;
+                case "0":   // Loi register khac
+                    $("#register-error").text("Register failed! Please try again later!");
+                    break;
+                default:
+                    location.reload();
+            }
+        }
+    });
+
+
+    /* CUSTOM METHOD FOR JQUERY VALIDATOR */
+    // Regex
+    $.validator.addMethod("pattern", function (value, element, param) { // param: regex object
+        return this.optional(element) || param.test(value);
+    }, "Please input the right format for this field.");
+    
+    // Min date
+    $.validator.addMethod("minDate", function (value, element, param) {
+        var minDate = new Date(param);
+        var inputDate = new Date(value);
+        return inputDate >= minDate;
+    }, "Date must be from {0}.");
+    
+    // Max date
+    $.validator.addMethod("maxDate", function (value, element, param) {
+        var maxDate = new Date(param);
+        var inputDate = new Date(value);
+        return inputDate <= maxDate;
+    }, "Date must be below {0}.");
+
+});
+
+
+/* COMMON FUNCTIONS */
+// Validation Function (Hàng độc nha !!!)
+// Author: HoangNLM
+function proValidate(formId, formRule) {
+    $(formId).validate({
+        rules: formRule,
+        errorElement: "em",
+        errorClass: "help-block",
+        errorPlacement: function (error, element) { // error: jQuery object, element: DOM object
+            // If element is a checkbox, insert after label
+            if (element.prop("type") === "checkbox") {
+                error.insertAfter(element.parent("label"));
+            } else {
+                error.insertAfter(element);
+            }
+            // Insert bootstrap feedback icon in the input
+            $("<span class='glyphicon glyphicon-remove form-control-feedback'></span>").insertAfter(element);
+        },
+        success: function (label, element) {    // valid
+            highlightValid($(element));
+        },
+        highlight: function (element) {     // invalid
+            highlightInvalid($(element));
+        }
+    });
+}
+
+// Highlight input on valid
+function highlightValid(element) { // element: jquery object
+    element.parents(".has-feedback").addClass("has-success").removeClass("has-error");
+    element.next("span").addClass("glyphicon-ok").removeClass("glyphicon-remove");
+}
+
+// Highlight input on invalid
+function highlightInvalid(element) { // element: jquery object
+    element.parents(".has-feedback").addClass("has-error").removeClass("has-success");
+    element.next("span").addClass("glyphicon-remove").removeClass("glyphicon-ok");
+}
+
+
+
+
+
+
+
+
 $(document).ready(function () {
 
     /* AJAX FOR PRODUCT COMPARISION */
@@ -19,7 +190,6 @@ $(document).ready(function () {
                             showConfirmButton: false,
                             html: true
                         });
-
                         // LOAD MENU COMPARE TREN HEADER
                         $.ajax({
                             url: "compare/ajax/getCompare.html",
@@ -53,13 +223,10 @@ $(document).ready(function () {
 
     // ADD COMPARE-LIST: PAGE HOME FEATURED PRODUCTS
     $(".fs-compare-add").click(ajaxCompareProduct);
-
     // ADD COMPARE-LIST: PAGE HOME LATEST PRODUCTS
     $(".fs-compare-add-lsp").click(ajaxCompareProduct);
-
     // ADD COMPARE-LIST: SUB_CATEGORY
     $(".fs-compare-add-sub").click(ajaxCompareProduct);
-
     // DELETE COMPARE-LIST ITEM 
     $(".fs-compare-del").click(function () {
         var compareID = $(this).attr("fs-compare-del-id");
@@ -103,7 +270,6 @@ $(document).ready(function () {
             });
         }
     });
-
     // LOAD MENU COMPARE TREN HEADER
     $.ajax({
         url: "compare/ajax/getCompare.html",
@@ -113,7 +279,6 @@ $(document).ready(function () {
             $("#compare").html(response).fadeIn(1000);
         }
     });
-
     /* END OF AJAX FOR PRODUCT COMPARISION */
 
 
@@ -160,7 +325,6 @@ $(document).ready(function () {
                     }
                 }
             });
-
         } else {
             //Khong có session
             $("#fs-modal-mess").modal("show");
@@ -174,16 +338,12 @@ $(document).ready(function () {
 
     // ADD WISH-LIST: PAGE HOME FEATURED PRODUCTS
     $(".fs-wishlish-add").click(ajaxWishList);
-
     // ADD WISH-LIST: PAGE HOME LATEST PRODUCTS
     $(".fs-wl-add-lsp").click(ajaxWishList);
-
     // ADD WISH-LIST: SUB_CATEGORY
     $(".fs-wl-add-sub").click(ajaxWishList);
-
     // ADD WISH-LIST: PRODUCT DETAILS MODAL & PAGE
     $(".fs-wl-add-detail").click(ajaxWishList);
-
     // DELETE WISHLIST 
     $(".fs-btn-delete-wl").click(function () {
         var wishID = $(this).attr("fs-wl-wlID");
@@ -208,7 +368,6 @@ $(document).ready(function () {
             }
         });
     });
-
     /* END AJAX WISHLIST */
 
 
@@ -229,7 +388,6 @@ $(document).ready(function () {
             }
         }
     });
-
     var currentRating = $('#fs-rating-star-result').data('current-rating');
     $('#fs-rating-star-result').barrating({
         theme: 'fontawesome-stars-o',
@@ -237,7 +395,6 @@ $(document).ready(function () {
         showSelectedRating: false,
         readonly: true
     });
-
     for (var i = 0; i < parseInt($("#fs-number-of-rating").attr("fs-nort")); i++) {
         var rating = $('#fs-rating-star-' + i).data('current-rating');
         $('#fs-rating-star-' + i).barrating({
@@ -248,7 +405,6 @@ $(document).ready(function () {
         });
     }
     ;
-
     $("#fs-product-detail-page").on("click", "#fs-btn-rating-review", function () {
         var ratingVal = $("#fs-rating-star").val();
         var review = $("#fs-review-product").val();
@@ -334,7 +490,6 @@ $(document).ready(function () {
             }
         });
     });
-
     /* END AJAX PRODUCT RATING */
 
 
@@ -436,16 +591,13 @@ $(document).ready(function () {
             var totalTableWidth = parseInt(this.tableColumns.eq(0).outerWidth(true)),
                     tableViewport = parseInt(this.element.width()),
                     scrollLeft = this.productsWrapper.scrollLeft();
-
             (scrollLeft > 0) ? this.table.addClass('scrolling') : this.table.removeClass('scrolling');
-
             if (this.table.hasClass('top-fixed') && checkMQ() == 'desktop') {
                 setTranformX(this.productsTopInfo, '-' + scrollLeft);
                 setTranformX(this.featuresTopInfo, '0');
             }
 
             this.leftScrolling = false;
-
             this.updateNavigationVisibility(scrollLeft);
         }
 
@@ -457,7 +609,6 @@ $(document).ready(function () {
         productsTable.prototype.updateTopScrolling = function (scrollTop) {
             var offsetTop = this.table.offset().top,
                     tableScrollLeft = this.productsWrapper.scrollLeft();
-
             if (offsetTop <= scrollTop && offsetTop + this.tableHeight - this.topInfoHeight >= scrollTop) {
                 //fix products top-info && arrows navigation
                 if (!this.table.hasClass('top-fixed') && $(document).height() > offsetTop + $(window).height() + 200) {
@@ -509,12 +660,10 @@ $(document).ready(function () {
                     scrollLeft = self.productsWrapper.scrollLeft(),
                     selectedProducts = this.products.filter('.selected'),
                     numberProducts = selectedProducts.length;
-
             selectedProducts.each(function (index) {
                 var product = $(this),
                         leftTranslate = containerOffsetLeft + index * self.productWidth + scrollLeft - product.offset().left;
                 setTranformX(product, leftTranslate);
-
                 if (index == numberProducts - 1) {
                     product.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
                         setTimeout(function () {
@@ -531,7 +680,6 @@ $(document).ready(function () {
                     });
                 }
             });
-
             if ($('.no-csstransitions').length > 0) {
                 //browser not supporting css transitions
                 self.element.addClass('filtered');
@@ -549,9 +697,7 @@ $(document).ready(function () {
                     numberProducts = selectedProducts.length,
                     scrollLeft = self.productsWrapper.scrollLeft(),
                     n = 0;
-
             self.element.addClass('no-product-transition').removeClass('filtered');
-
             self.products.each(function (index) {
                 var product = $(this);
                 if (product.hasClass('selected')) {
@@ -560,7 +706,6 @@ $(document).ready(function () {
                     setTranformX(product, leftTranslate);
                 }
             });
-
             setTimeout(function () {
                 self.element.removeClass('no-product-transition filtering');
                 setTranformX(selectedProducts, '0');
@@ -571,12 +716,10 @@ $(document).ready(function () {
         productsTable.prototype.updateSlider = function (bool) {
             var scrollLeft = this.productsWrapper.scrollLeft();
             scrollLeft = (bool) ? scrollLeft + this.productWidth : scrollLeft - this.productWidth;
-
             if (scrollLeft < 0)
                 scrollLeft = 0;
             if (scrollLeft > this.tableColumns.outerWidth(true) - this.productsWrapper.width())
                 scrollLeft = this.tableColumns.outerWidth(true) - this.productsWrapper.width();
-
             this.productsWrapper.animate({scrollLeft: scrollLeft}, 200);
         }
 
@@ -585,7 +728,6 @@ $(document).ready(function () {
             //create a productsTable object for each .cd-products-comparison-table
             comparisonTables.push(new productsTable($(this)));
         });
-
         var windowScrolling = false;
         //detect window scroll - fix product top-info on scrolling
         $(window).on('scroll', function () {
@@ -594,7 +736,6 @@ $(document).ready(function () {
                 (!window.requestAnimationFrame) ? setTimeout(checkScrolling, 250) : window.requestAnimationFrame(checkScrolling);
             }
         });
-
         var windowResize = false;
         //detect window resize - reset .cd-products-comparison-table properties
         $(window).on('resize', function () {
@@ -603,13 +744,11 @@ $(document).ready(function () {
                 (!window.requestAnimationFrame) ? setTimeout(checkResize, 250) : window.requestAnimationFrame(checkResize);
             }
         });
-
         function checkScrolling() {
             var scrollTop = $(window).scrollTop();
             comparisonTables.forEach(function (element) {
                 element.updateTopScrolling(scrollTop);
             });
-
             windowScrolling = false;
         }
 
@@ -617,7 +756,6 @@ $(document).ready(function () {
             comparisonTables.forEach(function (element) {
                 element.updateProperties();
             });
-
             windowResize = false;
         }
 
@@ -636,7 +774,6 @@ $(document).ready(function () {
             });
         }
     });
-
     /* END COMPARE LAYOUT SCRIPT */
 
 
@@ -653,11 +790,9 @@ $(document).ready(function () {
         defaultDate: '01/01/1960',
         yearRange: "1960:1999"
     });
-
     $("#loginModal").on("change", "#fs-upImage", function () {
         var type = $(this)[0].files[0].type;
         var arrayMimeType = ['image/jpeg', 'image/png'];
-
         if (arrayMimeType.indexOf(type) == -1) { //Khong co trong danh sach mime hinh
             $(this).val("");
             $("#fs-upfile-create-user-error").text("Select 'jpeg' , 'png'");
@@ -665,11 +800,9 @@ $(document).ready(function () {
             $("#fs-upfile-create-user-error").text("");
         }
     });
-
     $("#fs-form-update-account").on("change", "#fs-upImage-acc", function () {
         var type = $(this)[0].files[0].type;
         var arrayMimeType = ['image/jpeg', 'image/png'];
-
         if (arrayMimeType.indexOf(type) == -1) { //Khong co trong danh sach mime hinh
             $(this).val("");
             $("#fs-upfile-update-user-error").text("Select 'jpeg' , 'png'");
@@ -677,8 +810,6 @@ $(document).ready(function () {
             $("#fs-upfile-update-user-error").text("");
         }
     });
-
-
     /* --------------- SEARCH PRODUCT BY NAME -------------------- */
     $("body").on("keyup", "#fs-search-top-input", function () {
         var kw = $(this).val();
@@ -693,8 +824,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
     /* --------------- PRODUCT INDEX -------------------- */
     /* LOAD IMG TO RECENT VIEW FROM LOCALSTORAGE */
     // Check browser support
@@ -724,7 +853,6 @@ $(document).ready(function () {
         autoPlay: 2500,
         stopOnHover: true
     });
-
     /* Rating */
     for (var i = 0; i < 3; i++) {
         var rating = $('#fs-index-top-rating-result-' + i).data('current-rating');
@@ -740,7 +868,6 @@ $(document).ready(function () {
         filter: '.isotope_to_all',
         sortBy: 'random'
     });
-
     /* INDEX - CHANGE IMG WHEN CHOOSE COLOR */
     $("body").on("click", ".fs-index-color-img", function () {
         var colorID = $(this).attr("fs-index-color-img");
@@ -771,7 +898,6 @@ $(document).ready(function () {
             }
         });
     });
-
     /* FUNCTION FOR OWL CAROUSEL */
     function fsCreateOwlCarousel() {
         var sync1 = $(".sync1");
@@ -800,7 +926,6 @@ $(document).ready(function () {
                 el.find(".owl-item").eq(0).addClass("synced");
             }
         });
-
         function syncPosition(el) {
             var current = this.currentItem;
             $(".sync2")
@@ -818,7 +943,6 @@ $(document).ready(function () {
             var number = $(this).data("owlItem");
             sync1.trigger("owl.goTo", number);
         });
-
         function center(number) {
             var sync2visible = sync2.data("owlCarousel").owl.visibleItems;
             var num = number;
@@ -860,7 +984,6 @@ $(document).ready(function () {
         var number = $(this).data("owlItem");
         sync1.trigger("owl.goTo", number);
     });
-
     function center(number) {
         var sync2visible = sync2.data("owlCarousel").owl.visibleItems;
         var num = number;
@@ -871,7 +994,6 @@ $(document).ready(function () {
             }
         }
         ;
-
         if (found == false) {
             if (num > sync2visible[sync2visible.length - 1]) {
                 sync2.trigger("owl.goTo", num - sync2visible.length + 2)
@@ -889,7 +1011,6 @@ $(document).ready(function () {
         ;
     }
     ;
-
     // prettyPhoto
     // ---------------------------------------------------------------------------------------
     $("a[rel^='prettyPhoto']").prettyPhoto({
@@ -897,8 +1018,6 @@ $(document).ready(function () {
         slideshow: 5000,
         autoplay_slideshow: true
     });
-
-
     /* AJAX CALL MODAL */
     $("body").on("click", ".fs-product-modal", function () {
         $(".fs-quantity-in-stock").text("---");
@@ -922,8 +1041,6 @@ $(document).ready(function () {
                 $("h3.fs-product-name").text(response.productName);
                 $("h3.fs-product-name").attr("fs-product-modal-id", productID);
                 $("div.fs-product-price").text("$ " + response.price + ".00");
-
-
                 /* Init color img  */
                 var colorImgStr = "<p>Color<span>*</span></p>";
                 var sizeStr = "";
@@ -1060,7 +1177,6 @@ $(document).ready(function () {
                 fsCreateOwlCarousel();
                 /* Change Size */
                 var str_change_size = "";
-
                 $.each(response.sizeListWorking, function (i, item) {
                     if (item.quantity == 0) {
                         str_change_size += "<div class=\"fs-particular-size fs-unselectable\" fs-size=\"" + item.sizeID + "\">" + item.productSize + "</div>";
@@ -1102,7 +1218,6 @@ $(document).ready(function () {
         $('#error-cart-product-modal').html("");
         $(this).data("oldVal", $(this).val()); //Lấy value từ input, lưu vào key "oldValue"
     });
-
     $(".fs-modal-input-number").on("change", function () {
         var currentValue = parseInt($(".fs-modal-input-number").val());
         var minValue = parseInt($(".fs-modal-input-number").attr("min"));
@@ -1200,7 +1315,6 @@ $(document).ready(function () {
         }
 
         var sizeID = $(this).attr("fs-size");
-
         $.ajax({
             url: "ajax/checkquantity.html",
             method: "POST",
@@ -1243,7 +1357,6 @@ $(document).ready(function () {
             $(".fs-input-number").val(1);
         }
     });
-
     $(".fs-input-number").focusin(function () {
         $("#error-product-detail").html("");
         $(this).data("oldValue", $(this).val()); //Lấy value từ input, lưu vào key "oldValue"
@@ -1265,7 +1378,6 @@ $(document).ready(function () {
             $(this).val($(this).data('oldValue'));
         }
     });
-
     //    $(".fs-input-number").keydown(function (e) {
     //        $("#error-product-detail").html("");
     //        var press = e.keyCode || e.which;
@@ -1421,7 +1533,6 @@ $(document).ready(function () {
             });
         }
     });
-
     /* AJAX ON CHANGE SORT PRODUCT BY  */
     $("#fs-shop-content").on("change", "#fs-sort-product-by", function () {
         var sortBy = $(this).val(); //1: Newest; 2: Low to High Price; 3: High to Low Price
@@ -1437,7 +1548,6 @@ $(document).ready(function () {
             to = numberOfProducts;
         }
         var currentProductPageInfo = from + " - " + to;
-
         var fromPrice = $("#fs-price-from-text").text(); //Lọc giá Product "Từ"
         var toPrice = $("#fs-price-to-text").text(); //Lọc giá Product "Đến
 
@@ -1463,7 +1573,6 @@ $(document).ready(function () {
                     $("#fs-ajax-loading").css("display", "none");
                     if (response != 0) {
                         $(".fs-change-currentProductPageInfo").text(currentProductPageInfo);
-
                         //Change product content
                         var result = "";
                         $.each(response, function (i, prod) {
@@ -1552,7 +1661,6 @@ $(document).ready(function () {
             }
         });
     });
-
     /* AJAX ON CHANGE NUMBER OF PRODUCT PER PAGE */
     $("#fs-shop-content").on("change", "#fs-number-of-item-on-page", function () {
         var sortBy = $("#fs-sort-product-by").val(); //1: Newest; 2: Low to High Price; 3: High to Low Price
@@ -1561,7 +1669,6 @@ $(document).ready(function () {
         var cateID = $(this).attr("fs-category");
         var numberOfProducts = parseInt($("#fs-number-of-products").text());
         var numberOfPages = Math.ceil(numberOfProducts / itemPerPage);
-
         var fromPrice = $("#fs-price-from-text").text(); //Lọc giá Product "Từ"
         var toPrice = $("#fs-price-to-text").text(); //Lọc giá Product "Đến"
 
@@ -1572,10 +1679,8 @@ $(document).ready(function () {
             to = numberOfProducts;
         }
         var currentProductPageInfo = from + " - " + to;
-
         //Change pagination
         var pagination = "<li><span class=\"fs-page-number fs-page-number-active\" fs-page-number=\"1\" fs-category=\"" + cateID + "\">1</span></li>";
-
         if (numberOfPages > 1) {
             for (var i = 2; i <= numberOfPages; i++) {
                 pagination += "<li><span class=\"fs-page-number\" fs-page-number=\"" + i + "\" fs-category=\"" + cateID + "\">" + i + "</span></li>";
@@ -1605,10 +1710,8 @@ $(document).ready(function () {
                     $("#fs-ajax-loading").css("display", "none");
                     if (response != 0) {
                         $(".fs-change-currentProductPageInfo").text(currentProductPageInfo);
-
                         //Change pagination
                         $(".fs-ul-page-nav").html(pagination);
-
                         //Change product content
                         var result = "";
                         $.each(response, function (i, prod) {
@@ -1697,7 +1800,6 @@ $(document).ready(function () {
             }
         });
     });
-
     /* FILTER PRODUCT BY PRICE */
     $("#fs-shop-content").on("click", "#fs-btn-filter-price", function () {
 
@@ -1708,7 +1810,6 @@ $(document).ready(function () {
         var cateID = $("#fs-price-from").attr("fs-category");
         var sortBy = $("#fs-sort-product-by").val(); //1: Newest; 2: Low to High Price; 3: High to Low Price
         var itemPerPage = $("#fs-number-of-item-on-page").val();
-
         if (fromPrice == "") {
             fromPrice = $("#fs-price-from-text").attr("fs-min-price");
         }
@@ -1773,7 +1874,6 @@ $(document).ready(function () {
                                 } else {
                                     //Tổng số sản phẩm
                                     var numberOfPages = Math.ceil(parseInt(numberOfProducts) / itemPerPage);
-
                                     //Change pagination
                                     var pagination = "<li><span class=\"fs-page-number fs-page-number-active\" fs-page-number=\"1\" fs-category=\"" + cateID + "\">1</span></li>";
                                     if (numberOfPages > 1) {
@@ -1783,7 +1883,6 @@ $(document).ready(function () {
                                     }
 
                                     $(".fs-ul-page-nav").html(pagination);
-
                                     //change productPageInfo
                                     var from = (page - 1) * itemPerPage + 1;
                                     var to = (page - 1) * itemPerPage + parseInt(itemPerPage);
@@ -1793,7 +1892,6 @@ $(document).ready(function () {
                                     var currentProductPageInfo = from + " - " + to;
                                     $(".fs-change-currentProductPageInfo").text(currentProductPageInfo);
                                     $(".fs-number-of-products").text(numberOfProducts);
-
                                     //Change product content
                                     var result = "";
                                     $.each(response, function (i, prod) {
@@ -1877,7 +1975,6 @@ $(document).ready(function () {
                                         }
                                     });
                                     $("#fs-change-data-here").html(result);
-
                                     $("#fs-price-from").val("");
                                     $("#fs-price-to").val("");
                                 }
@@ -1887,10 +1984,8 @@ $(document).ready(function () {
                 }
 
             });
-
         }
     });
-
     /* FILTER PRODUCT BY COLOR */
     $("#fs-shop-content").on("change", ".fs-color-checkbox", function () {
         if (this.checked) { //Check
@@ -1908,7 +2003,6 @@ $(document).ready(function () {
         var cateID = $("#fs-price-from").attr("fs-category");
         var sortBy = $("#fs-sort-product-by").val(); //1: Newest; 2: Low to High Price; 3: High to Low Price
         var itemPerPage = $("#fs-number-of-item-on-page").val();
-
         $.ajax({
             url: "ajax/getNumberOfProductsByFilter_OfACategory.html",
             method: "POST",
@@ -1943,7 +2037,6 @@ $(document).ready(function () {
                             $("#fs-ajax-loading").css("display", "none");
                             if (response.length == 0) {
                                 $("#fs-change-data-here").html("<div class='col-xs-12'><h1>Nothing To Show!</h1></div>");
-
                                 //change productPageInfo
                                 var from = 0;
                                 var to = 0;
@@ -1953,7 +2046,6 @@ $(document).ready(function () {
                             } else {
                                 //Tổng số sản phẩm
                                 var numberOfPages = Math.ceil(parseInt(numberOfProducts) / itemPerPage);
-
                                 //Change pagination
                                 var pagination = "<li><span class=\"fs-page-number fs-page-number-active\" fs-page-number=\"1\" fs-category=\"" + cateID + "\">1</span></li>";
                                 if (numberOfPages > 1) {
@@ -1963,7 +2055,6 @@ $(document).ready(function () {
                                 }
 
                                 $(".fs-ul-page-nav").html(pagination);
-
                                 //change productPageInfo
                                 var from = (page - 1) * itemPerPage + 1;
                                 var to = (page - 1) * itemPerPage + parseInt(itemPerPage);
@@ -1973,7 +2064,6 @@ $(document).ready(function () {
                                 var currentProductPageInfo = from + " - " + to;
                                 $(".fs-change-currentProductPageInfo").text(currentProductPageInfo);
                                 $(".fs-number-of-products").text(numberOfProducts);
-
                                 //Change product content
                                 var result = "";
                                 $.each(response, function (i, prod) {
@@ -2064,7 +2154,6 @@ $(document).ready(function () {
             }
         });
     });
-
     /* FILTER PRODUCT BY SIZE */
     $("#fs-shop-content").on("change", ".fs-size-checkbox", function () {
         if (this.checked) { //Check
@@ -2082,7 +2171,6 @@ $(document).ready(function () {
         var cateID = $("#fs-price-from").attr("fs-category");
         var sortBy = $("#fs-sort-product-by").val(); //1: Newest; 2: Low to High Price; 3: High to Low Price
         var itemPerPage = $("#fs-number-of-item-on-page").val();
-
         $.ajax({
             url: "ajax/getNumberOfProductsByFilter_OfACategory.html",
             method: "POST",
@@ -2126,17 +2214,14 @@ $(document).ready(function () {
                             } else {
                                 //Tổng số sản phẩm
                                 var numberOfPages = Math.ceil(parseInt(numberOfProducts) / itemPerPage);
-
                                 //Change pagination
                                 var pagination = "<li><span class=\"fs-page-number fs-page-number-active\" fs-page-number=\"1\" fs-category=\"" + cateID + "\">1</span></li>";
-
                                 if (numberOfPages > 1) {
                                     for (var i = 2; i <= numberOfPages; i++) {
                                         pagination += "<li><span class=\"fs-page-number\" fs-page-number=\"" + i + "\" fs-category=\"" + cateID + "\">" + i + "</span></li>";
                                     }
                                 }
                                 $(".fs-ul-page-nav").html(pagination);
-
                                 //change productPageInfo
                                 var from = (page - 1) * itemPerPage + 1;
                                 var to = (page - 1) * itemPerPage + parseInt(itemPerPage);
@@ -2146,7 +2231,6 @@ $(document).ready(function () {
                                 var currentProductPageInfo = from + " - " + to;
                                 $(".fs-change-currentProductPageInfo").text(currentProductPageInfo);
                                 $(".fs-number-of-products").text(numberOfProducts);
-
                                 //Change product content
                                 var result = "";
                                 $.each(response, function (i, prod) {
@@ -2237,12 +2321,10 @@ $(document).ready(function () {
             }
         });
     });
-
     /* PRODUCT SUB-CATEGORY-GRID */
     /* AJAX PAGINATION */
     var colorFilterArrSubCate = [];
     var sizeFilterArrSubCate = [];
-
     /* AJAX ON CLICK PAGE */
     $("#fs-shop-content-sub-category").on("click", ".fs-page-number", function () {
         var input = $("input[name='emailUser']").val();
@@ -2380,14 +2462,12 @@ $(document).ready(function () {
             });
         }
     });
-
     //    MODAL WISH-LIST
 
     $("#fs-shop-content-sub-category").on("click", ".fs-wl-add-sub-a", function () {
         var input = $("input[name='emailUser']");
         var userID = $(this).attr("fs-userID");
         var productID = $(this).attr("fs-productID");
-
         if (input.val() != "") {
             //Có session
             if (!$(this).hasClass("fs-heart-color")) {
@@ -2454,7 +2534,6 @@ $(document).ready(function () {
 
 
     });
-
     /* AJAX ON CHANGE SORT PRODUCT BY  */
     $("#fs-shop-content-sub-category").on("change", "#fs-sort-product-by", function () {
         var sortBy = $(this).val(); //1: Newest; 2: Low to High Price; 3: High to Low Price
@@ -2790,7 +2869,6 @@ $(document).ready(function () {
                                     //change productPageInfo
                                     var from = 0;
                                     var to = 0;
-
                                     var currentProductPageInfo = from + " - " + to;
                                     $(".fs-change-currentProductPageInfo").text(currentProductPageInfo);
                                     $(".fs-number-of-products").text(numberOfProducts);
@@ -3244,7 +3322,6 @@ $(document).ready(function () {
             }
         });
     });
-
     // ORDER
 
     $("select#select-quantity-shoppingcart").selectBoxIt();
@@ -3257,7 +3334,6 @@ $(document).ready(function () {
             $("#cart").html(response).fadeIn(1000);
         }
     });
-
     //order-history.jsp
     //$("#loginModal").modal('hide'); show
     if (window.location.href.includes("order-history")) {
@@ -3274,7 +3350,6 @@ $(document).ready(function () {
         });
     }
     ;
-
     //checkout.jsp
     //Discount in checkout.jsp
     //Load form discount in checkout
@@ -3563,12 +3638,10 @@ $(document).ready(function () {
         }
         ;
     });
-
     //Cancel Order side client in order-history-detail.jsp
     $('#confirm-cancel-order').on('show.bs.modal', function (e) {
         $(this).find('.btn-cancel-order-ok').attr('href', $(e.relatedTarget).data('href'));
     });
-
     //Add to cart in product-detail.jsp
     $("#fs-product-detail-add-to-cart").on("click", function () {
         var colorID = $(".fs-product-color .fs-product-selected").find("img").attr("fs-color");
@@ -3633,7 +3706,6 @@ $(document).ready(function () {
             }
         }
     });
-
     //Add to cart in modal.jsp
     $(".fs-modal-btn-addtobag").on("click", function () {
         var errorHead = "<div class=\"alert alert-danger\"><strong>";
@@ -3687,7 +3759,6 @@ $(document).ready(function () {
     $(".fs-modal-close").on("click", function () {
         $('#error-cart-product-modal').html("");
     });
-
     //    var orderUrl = window.location.href;
     //    if (orderUrl.includes("order-history")) {
     //        window.onbeforeunload = function () {
@@ -3703,9 +3774,7 @@ $(document).ready(function () {
     //            });
     //        }
     //    }
-    /*==========================END NGAN - ORDER==================================*/
 
-    /*===========================DUONG - USER===================================*/
     //THÔNG BÁO KHI CLICK VÀO ADD ADDRESS KHI VƯỢT QUÁ MỨC CHO PHÉP
     //    $(".fs-add-address-user").on("click", function () {
     //        var userID = $(this).attr("fs-userID");
@@ -3781,8 +3850,6 @@ $(document).ready(function () {
             });
         });
     });
-
-
     // CHINH TRANG THAI CHO MODAL(BAM RA NGOAI KHONG TAT MODAL)
 
     $("#loginModal").on("hidden.bs.modal", function (e) {
@@ -3793,7 +3860,6 @@ $(document).ready(function () {
         $(this).find("#fs-error-show").text("");
         $(this).find("#fs-error-show-register").text("");
     });
-
     // BẮT LỖI FORM LOGIN USER MODAL
 
     function checkEmail(email) {
@@ -3828,69 +3894,68 @@ $(document).ready(function () {
         }
     }
     ;
-
     // VALIDATION CLICK BUTTON LOGIN
-
-    $(".fs-button-login-user").click(function (e) {
-        e.preventDefault();
-        var email = $("#fs-email-login-user").val().trim();
-        var pass = $("#fs-pass-login-user").val().trim();
-        //        var checkremember = $("#fs-check-remember").val();
-        var checkremember = $('input[name="checkremember"]:checked').val();
-        //        alert(checkremember);
-        if (!checkEmail(email)) {
-            return false;
-        } else if (pass == "") { // => đúng là pass != ==
-            $("#fs-pass-login-user-error").text("Password cannot be empty!");
-            $("#fs-pass-login-user").focus();
-            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (pass.length < 6 || pass.length > 100) { //=> đúng là  <=6 pass.length < 100 
-            $("#fs-pass-login-user-error").text("Password 6 to 100 characters!");
-            $("#fs-pass-login-user").focus();
-            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-pass-login-user-error").text("");
-            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-login-user").remove();
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            $.ajax({
-                url: "login.html",
-                method: "POST",
-                data: {
-                    email: email,
-                    password: pass,
-                    checkremember: checkremember
-                },
-                //dataType: 'html',
-                success: function (response) {
-                    if (response == "2") {
-                        EmailWrong(email);
-                    } else if (response == "3") {
-                        PassWrong(pass);
-                    } else if (response == "4") {
-                        $("#fs-error-show").text("Fail account wrong!");
-                    } else {
-                        var currentUrl = window.location.href;
-                        window.location = currentUrl;
-                        $("#loginModal").modal('hide');
-                    }
-                }
-            });
-            return true;
-        }
-    });
+//    $(".fs-button-login-user").click(function (e) {
+//        e.preventDefault();
+//        var email = $("#fs-email-login-user").val().trim();
+//        var pass = $("#fs-pass-login-user").val().trim();
+//        //        var checkremember = $("#fs-check-remember").val();
+//        var checkremember = $('input[name="checkremember"]:checked').val();
+//        //        alert(checkremember);
+//        if (!checkEmail(email)) {
+//            return false;
+//        } else if (pass == "") { // => đúng là pass != ==
+//            $("#fs-pass-login-user-error").text("Password cannot be empty!");
+//            $("#fs-pass-login-user").focus();
+//            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-login-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (pass.length < 6 || pass.length > 100) { //=> đúng là  <=6 pass.length < 100 
+//            $("#fs-pass-login-user-error").text("Password 6 to 100 characters!");
+//            $("#fs-pass-login-user").focus();
+//            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-login-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-pass-login-user-error").text("");
+//            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-login-user").remove();
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            $.ajax({
+//                url: "login.html",
+//                method: "POST",
+//                data: {
+//                    email: email,
+//                    password: pass,
+//                    checkremember: checkremember
+//                },
+//                //dataType: 'html',
+//                success: function (response) {
+//                    if (response == "2") {
+//                        EmailWrong(email);
+//                    } else if (response == "3") {
+//                        PassWrong(pass);
+//                    } else if (response == "4") {
+//                        $("#fs-error-show").text("Fail account wrong!");
+//                    } else {
+//                        var currentUrl = window.location.href;
+//                        window.location = currentUrl;
+//                        $("#loginModal").modal('hide');
+//                    }
+//                }
+//            });
+//            return true;
+//        }
+//    });
+//
 
     function EmailWrong(email) {
         email = $("#fs-email-login-user").val().trim();
@@ -3906,7 +3971,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function PassWrong(password) {
         password = $("#fs-pass-login-user").val().trim();
         if ($("#loginModal").modal('show')) {
@@ -3921,47 +3985,48 @@ $(document).ready(function () {
         }
     }
     ;
-
     // VALIDATION KEYUP 
-
-    $("#fs-email-login-user").keyup(function () {
-        var email = $("#fs-email-login-user").val().trim();
-        //        $("#fs-error-show").text("");
-        if (!checkEmail(email)) {
-            return false;
-        }
-    });
-    $("#fs-pass-login-user").keyup(function () {
-        var pass = $("#fs-pass-login-user").val().trim();
-        //        $("#fs-error-show").text("");
-        if (pass == "") {
-            $("#fs-pass-login-user-error").text("Password cannot be empty!");
-            $("#fs-pass-login-user").focus();
-            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (pass.length < 6 || pass.length > 100) {
-            $("#fs-pass-login-user-error").text("Password 6 to 100 characters!");
-            $("#fs-pass-login-user").focus();
-            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-pass-login-user-error").text("");
-            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-login-user").remove();
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    });
+    /*
+     $("#fs-email-login-user").keyup(function () {
+     var email = $("#fs-email-login-user").val().trim();
+     //        $("#fs-error-show").text("");
+     if (!checkEmail(email)) {
+     return false;
+     }
+     });
+     $("#fs-pass-login-user").keyup(function () {
+     var pass = $("#fs-pass-login-user").val().trim();
+     //        $("#fs-error-show").text("");
+     if (pass == "") {
+     $("#fs-pass-login-user-error").text("Password cannot be empty!");
+     $("#fs-pass-login-user").focus();
+     var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
+     div.removeClass("has-success");
+     $("#glypcn-fs-login-user").remove();
+     div.addClass("has-error has-feedback");
+     div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+     return false;
+     } else if (pass.length < 6 || pass.length > 100) {
+     $("#fs-pass-login-user-error").text("Password 6 to 100 characters!");
+     $("#fs-pass-login-user").focus();
+     var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
+     div.removeClass("has-success");
+     $("#glypcn-fs-login-user").remove();
+     div.addClass("has-error has-feedback");
+     div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+     return false;
+     } else {
+     $("#fs-pass-login-user-error").text("");
+     var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
+     div.removeClass("has-error");
+     div.addClass("has-success has-feedback");
+     $("#glypcn-fs-login-user").remove();
+     div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+     return true;
+     }
+     });
+     
+     */
 
     // BẮT VALIDATION TRÊN FORM CREATE
 
@@ -3997,7 +4062,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checkPass(password) {
         password = $("#password").val().trim();
         if (password == "") {
@@ -4029,7 +4093,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checkRePass(repassword, password) {
         repassword = $("#Repassword").val().trim();
         password = $("#password").val().trim();
@@ -4071,7 +4134,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checkFirstName(firstname) {
         firstname = $("#fs-create-firstname").val().trim();
         if (firstname == "") {
@@ -4103,7 +4165,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checkLastName(lastname) {
         lastname = $("#fs-create-lastname").val().trim();
         if (lastname == "") {
@@ -4135,7 +4196,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checkBirthDay(birthday) {
         birthday = $("#txtBirthday").val().trim();
         if (birthday == "") {
@@ -4158,7 +4218,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checkPhone(phone) {
         //        var regex = new RegExp(/^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/);
         var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
@@ -4193,7 +4252,6 @@ $(document).ready(function () {
 
     }
     ;
-
     function checkAddress(address) {
         address = $("#fs-create-address").val().trim();
         if (address == "") {
@@ -4226,152 +4284,144 @@ $(document).ready(function () {
     }
     ;
 
-    $("body").on("click", "#fs-button-create-user", function (e) {
-        e.preventDefault();
-        console.log("123");
-        var email = $("#fs-create-email").val().trim();
-        var password = $("#password").val().trim();
-        var repassword = $("#Repassword").val().trim();
-        var firstname = $("#fs-create-firstname").val().trim();
-        var lastname = $("#fs-create-lastname").val().trim();
-        var birthday = $("#txtBirthday").val();
-        var gender = $('input[name="gender"]:checked').val();
-        var phone = $("#fs-create-phone").val().trim();
-        var address = $("#fs-create-address").val().trim();
-        var formData = new FormData();
-//        var mfile = $("#fs-upImage")[0].files[0];
-        formData.append("email", email);
-        formData.append("password", password);
-        formData.append("firstName", firstname);
-        formData.append("lastName", lastname);
-        formData.append("gender", gender);
-        formData.append("birthday", birthday);
-//        formData.append("upImage", mfile);
-        formData.append("phoneNumber", phone);
-        formData.append("address", address);
-
-        if (!checkemail(email)) {
-            return false;
-        }
-
-        if (!checkPass(password)) {
-            return false;
-        }
-        if (!checkRePass(repassword, password)) {
-            return false;
-        }
-        if (!checkFirstName(firstname)) {
-            return true;
-        }
-        if (!checkLastName(lastname)) {
-            return false;
-        }
-        if (!checkBirthDay(birthday)) {
-            return false;
-        }
-
-        if (phone != "") {
-            if (!checkPhone(phone)) {
-                return false;
-            }
-            if (!checkAddress(address)) {
-                return false;
-            }
-        } else {
-            $("#fs-phone-create-user-error").text("");
-            $("#fs-address-create-user-error").text("");
-        }
-
-        //        else {
-        $.ajax({
-            url: "user/register.html",
-            method: "POST",
-            //data: $("#fs-form-create-user").serialize(),
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            //dataType: 'html',
-            success: function (response) {
-                console.log(response);
-                if (response == "2") {
-                    $("#fs-error-show-register").html("<div class=\"alert alert-danger\">FAILED!. Account is exists!</div>");
-                } else if (response == "0") {
-                    $("#fs-error-show-register").html("<div class=\"alert alert-danger\">FAILED!. Error was happened!!</div>");
-                } else {
-                    var currentUrl = window.location.href;
-                    window.location = currentUrl;
-                    $("#loginModal").modal('hide');
-                }
-
-            }
-        });
-        //        }
-    });
-    //        VALIDATION REGISTER KEYUP
-
-    $("#fs-create-email").keyup(function () {
-        var email = $("#fs-create-email").val().trim();
-        if (!checkemail(email)) {
-            return false;
-        }
-    });
-    $("#password").keyup(function () {
-        var password = $("#password").val().trim();
-        if (!checkPass(password)) {
-            return false;
-        }
-    });
-    $("#Repassword").keyup(function () {
-        var repassword = $("#Repassword").val().trim();
-        var password = $("#password").val().trim();
-        if (!checkRePass(repassword, password)) {
-            return false;
-        }
-    });
-    $("#fs-create-firstname").keyup(function () {
-        var firstname = $("#fs-create-firstname").val().trim();
-        if (!checkFirstName(firstname)) {
-            return false;
-        }
-    });
-    $("#fs-create-lastname").keyup(function () {
-        var lastname = $("#fs-create-lastname").val().trim();
-        if (!checkLastName(lastname)) {
-            return false;
-        }
-    });
-    $("#txtBirthday").keyup(function () {
-        var birthday = $("#txtBirthday").val().trim();
-        if (!checkBirthDay(birthday)) {
-            return false;
-        }
-    });
-    $("#fs-create-phone").keyup(function () {
-        var phone = $("#fs-create-phone").val().trim();
-        if (!checkPhone(phone)) {
-            return false;
-        }
-    });
-    $("#fs-create-address").keyup(function () {
-        var address = $("#fs-create-address").val().trim();
-        if (!checkAddress(address)) {
-            return false;
-        }
-    });
+    /*
+     $("body").on("click", "#fs-button-create-user", function (e) {
+     e.preventDefault();
+     console.log("123");
+     var email = $("#fs-create-email").val().trim();
+     var password = $("#password").val().trim();
+     var repassword = $("#Repassword").val().trim();
+     var firstname = $("#fs-create-firstname").val().trim();
+     var lastname = $("#fs-create-lastname").val().trim();
+     var birthday = $("#txtBirthday").val();
+     var gender = $('input[name="gender"]:checked').val();
+     var phone = $("#fs-create-phone").val().trim();
+     var address = $("#fs-create-address").val().trim();
+     var formData = new FormData();
+     //        var mfile = $("#fs-upImage")[0].files[0];
+     formData.append("email", email);
+     formData.append("password", password);
+     formData.append("firstName", firstname);
+     formData.append("lastName", lastname);
+     formData.append("gender", gender);
+     formData.append("birthday", birthday);
+     //        formData.append("upImage", mfile);
+     formData.append("phoneNumber", phone);
+     formData.append("address", address);
+     if (!checkemail(email)) {
+     return false;
+     }
+     
+     if (!checkPass(password)) {
+     return false;
+     }
+     if (!checkRePass(repassword, password)) {
+     return false;
+     }
+     if (!checkFirstName(firstname)) {
+     return true;
+     }
+     if (!checkLastName(lastname)) {
+     return false;
+     }
+     if (!checkBirthDay(birthday)) {
+     return false;
+     }
+     
+     if (phone != "") {
+     if (!checkPhone(phone)) {
+     return false;
+     }
+     if (!checkAddress(address)) {
+     return false;
+     }
+     } else {
+     $("#fs-phone-create-user-error").text("");
+     $("#fs-address-create-user-error").text("");
+     }
+     
+     //        else {
+     $.ajax({
+     url: "user/register.html",
+     method: "POST",
+     //data: $("#fs-form-create-user").serialize(),
+     data: formData,
+     cache: false,
+     contentType: false,
+     processData: false,
+     //dataType: 'html',
+     success: function (response) {
+     console.log(response);
+     if (response == "2") {
+     $("#fs-error-show-register").html("<div class=\"alert alert-danger\">FAILED!. Account is exists!</div>");
+     } else if (response == "0") {
+     $("#fs-error-show-register").html("<div class=\"alert alert-danger\">FAILED!. Error was happened!!</div>");
+     } else {
+     var currentUrl = window.location.href;
+     window.location = currentUrl;
+     $("#loginModal").modal('hide');
+     }
+     
+     }
+     });
+     //        }
+     });
+     //        VALIDATION REGISTER KEYUP
+     
+     $("#fs-create-email").keyup(function () {
+     var email = $("#fs-create-email").val().trim();
+     if (!checkemail(email)) {
+     return false;
+     }
+     });
+     $("#password").keyup(function () {
+     var password = $("#password").val().trim();
+     if (!checkPass(password)) {
+     return false;
+     }
+     });
+     $("#Repassword").keyup(function () {
+     var repassword = $("#Repassword").val().trim();
+     var password = $("#password").val().trim();
+     if (!checkRePass(repassword, password)) {
+     return false;
+     }
+     });
+     $("#fs-create-firstname").keyup(function () {
+     var firstname = $("#fs-create-firstname").val().trim();
+     if (!checkFirstName(firstname)) {
+     return false;
+     }
+     });
+     $("#fs-create-lastname").keyup(function () {
+     var lastname = $("#fs-create-lastname").val().trim();
+     if (!checkLastName(lastname)) {
+     return false;
+     }
+     });
+     $("#txtBirthday").keyup(function () {
+     var birthday = $("#txtBirthday").val().trim();
+     if (!checkBirthDay(birthday)) {
+     return false;
+     }
+     });
+     $("#fs-create-phone").keyup(function () {
+     var phone = $("#fs-create-phone").val().trim();
+     if (!checkPhone(phone)) {
+     return false;
+     }
+     });
+     $("#fs-create-address").keyup(function () {
+     var address = $("#fs-create-address").val().trim();
+     if (!checkAddress(address)) {
+     return false;
+     }
+     });
+     */
 
     //    BẮT VALIDATION CẬP NHẬT THÔNG TIN CÁ NHÂN     
 
-    $("#txtbirthday").click(function () {
-        $("#txtbirthday").datepicker({
-            dateFormat: "dd/mm/yy",
-            showAnim: "drop",
-            changeMonth: true,
-            changeYear: true,
-            defaultDate: '01/01/1960',
-            yearRange: "1960:1999"
-        });
-    });
+
     // BẮT VỚI UPDATE ACCOUNT CLICK
 
 
@@ -4408,7 +4458,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checkfirstName(firstname) {
         firstname = $("#fs-update-firstname").val().trim();
         if (firstname == "") {
@@ -4440,7 +4489,6 @@ $(document).ready(function () {
         }
     }
     ;
-
     function checklastName(lastname) {
         lastname = $("#fs-update-lastname").val().trim();
         if (lastname == "") {
@@ -4472,8 +4520,6 @@ $(document).ready(function () {
         }
     }
     ;
-
-
     function checkbirthDay(birthday) {
         birthday = $("#txtbirthday").val().trim();
         if (birthday == "") {
@@ -4497,35 +4543,35 @@ $(document).ready(function () {
     }
     ;
 
-    $(".fs-button-update-user").click(function (e) {
-        var email = $("#fs-update-email").val().trim();
-        var firstname = $("#fs-update-firstname").val().trim();
-        var lastname = $("#fs-update-lastname").val().trim();
-        var birthday = $("#txtbirthday").val().trim();
-        e.preventDefault();
-        if (!emailcheck(email)) {
-            return false;
-        } else if (!checkfirstName(firstname)) {
-            return false;
-        } else if (!checklastName(lastname)) {
-            return false;
-        } else if (!checkbirthDay(birthday)) {
-            return false;
-        } else {
-            $("#fs-form-update-account").submit();
-        }
-    });
 
-
-
+//    $(".fs-button-update-user").click(function (e) {
+//        var email = $("#fs-update-email").val().trim();
+//        var firstname = $("#fs-update-firstname").val().trim();
+//        var lastname = $("#fs-update-lastname").val().trim();
+//        var birthday = $("#txtbirthday").val().trim();
+//        e.preventDefault();
+//        if (!emailcheck(email)) {
+//            return false;
+//        } else if (!checkfirstName(firstname)) {
+//            return false;
+//        } else if (!checklastName(lastname)) {
+//            return false;
+//        } else if (!checkbirthDay(birthday)) {
+//            return false;
+//        } else {
+//            $("#fs-form-update-account").submit();
+//        }
+//    });
     // VALIDATION KEYUP UPDATE-ACCOUNT
 
-    $("#fs-update-email").keyup(function () {
-        var email = $("#fs-update-email").val().trim();
-        if (!emailcheck(email)) {
-            return false;
-        }
-    });
+//    $("#fs-update-email").keyup(function () {
+//        var email = $("#fs-update-email").val().trim();
+//        if (!emailcheck(email)) {
+//            return false;
+//        }
+//    });
+
+
     // BẮT EMAIL TRÙNG:
     //    $("#fs-update-email").keyup(function () {
     //        var email = $("#fs-update-email").val();
@@ -4561,243 +4607,226 @@ $(document).ready(function () {
     //            }
     //        });
     //    });
-    $("#fs-update-firstname").keyup(function () {
-        var firstname = $("#fs-update-firstname").val().trim();
-        if (!checkfirstName(firstname)) {
-            return false;
-        }
-    });
-    $("#fs-update-lastname").keyup(function () {
-        var lastname = $("#fs-update-lastname").val().trim();
-        if (!checklastName(lastname)) {
-            return false;
-        }
-    });
 
-    $("#txtbirthday").keyup(function () {
-        var birthday = $("#txtbirthday").val().trim();
-        if (!checkbirthDay(birthday)) {
-            return false;
-        }
-    });
+//    $("#fs-update-firstname").keyup(function () {
+//        var firstname = $("#fs-update-firstname").val().trim();
+//        if (!checkfirstName(firstname)) {
+//            return false;
+//        }
+//    });
+//    $("#fs-update-lastname").keyup(function () {
+//        var lastname = $("#fs-update-lastname").val().trim();
+//        if (!checklastName(lastname)) {
+//            return false;
+//        }
+//    });
+//    $("#txtbirthday").keyup(function () {
+//        var birthday = $("#txtbirthday").val().trim();
+//        if (!checkbirthDay(birthday)) {
+//            return false;
+//        }
+//    });
+
 
     // VALIDATION CHANGE PASS CLICK
 
-    $(".fs-button-change-pass").click(function (e) {
-        e.preventDefault();
-        var oldpass = $(".fs-old-pass").val().trim();
-        var pass = $(".fs-password").val().trim();
-        var repass = $(".fs-repass").val().trim();
+//    $(".fs-button-change-pass").click(function (e) {
+//        e.preventDefault();
+//        var oldpass = $(".fs-old-pass").val().trim();
+//        var pass = $(".fs-password").val().trim();
+//        var repass = $(".fs-repass").val().trim();
+//        if (oldpass == "") {
+//            $("#fs-oldpass-user-error").text("Current Password cannot be empty!");
+//        } else if (oldpass.length < 6 || oldpass.length > 100) {
+//            $("#fs-oldpass-user-error").text("Current Password has 6 to 100 characters!");
+//        } else {
+//            $("#fs-oldpass-user-error").text("");
+//        }
+//
+//        if (pass == "") {
+//            $("#fs-pass-user-error").text("Password cannot be empty!");
+//        } else if (pass.length < 6 || pass.length > 100) {
+//            $("#fs-pass-user-error").text("Password has 6 to 100 characters!");
+//        } else {
+//            $("#fs-pass-user-error").text("");
+//        }
+//
+//        if (repass == "") {
+//            $("#fs-repass-user-error").text("Password Confirm cannot be empty!");
+//        } else if (repass != pass) {
+//            $("#fs-repass-user-error").text("Password Confirm is different with Password");
+//        } else if (repass.length < 6 || repass.length > 100) {
+//            $("#fs-repass-user-error").text("Password Confirm has 6 to 100 characters!");
+//        } else {
+//            $("#fs-repass-user-error").text("");
+//            $(".fs-form-change-pass").submit();
+//        }
+//
+//
+//
+//    });
 
-        if (oldpass == "") {
-            $("#fs-oldpass-user-error").text("Current Password cannot be empty!");
-        } else if (oldpass.length < 6 || oldpass.length > 100) {
-            $("#fs-oldpass-user-error").text("Current Password has 6 to 100 characters!");
-        } else {
-            $("#fs-oldpass-user-error").text("");
-        }
 
-        if (pass == "") {
-            $("#fs-pass-user-error").text("Password cannot be empty!");
-        } else if (pass.length < 6 || pass.length > 100) {
-            $("#fs-pass-user-error").text("Password has 6 to 100 characters!");
-        } else {
-            $("#fs-pass-user-error").text("");
-        }
+// VALIDATION CHANGE PASS KEYUP
 
-        if (repass == "") {
-            $("#fs-repass-user-error").text("Password Confirm cannot be empty!");
-        } else if (repass != pass) {
-            $("#fs-repass-user-error").text("Password Confirm is different with Password");
-        } else if (repass.length < 6 || repass.length > 100) {
-            $("#fs-repass-user-error").text("Password Confirm has 6 to 100 characters!");
-        } else {
-            $("#fs-repass-user-error").text("");
-            $(".fs-form-change-pass").submit();
-        }
-
-
-
-    });
-
-    // VALIDATION CHANGE PASS KEYUP
-
-    $(".fs-old-pass").keyup(function () {
-        var oldpass = $(".fs-old-pass").val().trim();
-
-        if (oldpass == "") {
-            $("#fs-oldpass-user-error").text("Current Password cannot be empty!");
-        } else if (oldpass.length < 6 || oldpass.length > 100) {
-            $("#fs-oldpass-user-error").text("Current Password has 6 to 100 characters!");
-        } else {
-            $("#fs-oldpass-user-error").text("");
-        }
-    });
-
-    $(".fs-password").keyup(function () {
-        var pass = $(".fs-password").val().trim();
-
-        if (pass == "") {
-            $("#fs-pass-user-error").text("Password cannot be empty!");
-        } else if (pass.length < 6 || pass.length > 100) {
-            $("#fs-pass-user-error").text("Password has 6 to 100 characters!");
-        } else {
-            $("#fs-pass-user-error").text("");
-        }
-    });
-
-    $(".fs-repass").keyup(function () {
-        var repass = $(".fs-repass").val().trim();
-        var pass = $(".fs-password").val().trim();
-
-        if (repass == "") {
-            $("#fs-repass-user-error").text("Password Confirm cannot be empty!");
-        } else if (repass != pass) {
-            $("#fs-repass-user-error").text("Password Confirm is different with Password");
-        } else if (repass.length < 6 || repass.length > 100) {
-            $("#fs-repass-user-error").text("Password Confirm has 6 to 100 characters!");
-        } else {
-            $("#fs-repass-user-error").text("");
-        }
-    });
-
+//    $(".fs-old-pass").keyup(function () {
+//        var oldpass = $(".fs-old-pass").val().trim();
+//        if (oldpass == "") {
+//            $("#fs-oldpass-user-error").text("Current Password cannot be empty!");
+//        } else if (oldpass.length < 6 || oldpass.length > 100) {
+//            $("#fs-oldpass-user-error").text("Current Password has 6 to 100 characters!");
+//        } else {
+//            $("#fs-oldpass-user-error").text("");
+//        }
+//    });
+//    $(".fs-password").keyup(function () {
+//        var pass = $(".fs-password").val().trim();
+//        if (pass == "") {
+//            $("#fs-pass-user-error").text("Password cannot be empty!");
+//        } else if (pass.length < 6 || pass.length > 100) {
+//            $("#fs-pass-user-error").text("Password has 6 to 100 characters!");
+//        } else {
+//            $("#fs-pass-user-error").text("");
+//        }
+//    });
+//    $(".fs-repass").keyup(function () {
+//        var repass = $(".fs-repass").val().trim();
+//        var pass = $(".fs-password").val().trim();
+//        if (repass == "") {
+//            $("#fs-repass-user-error").text("Password Confirm cannot be empty!");
+//        } else if (repass != pass) {
+//            $("#fs-repass-user-error").text("Password Confirm is different with Password");
+//        } else if (repass.length < 6 || repass.length > 100) {
+//            $("#fs-repass-user-error").text("Password Confirm has 6 to 100 characters!");
+//        } else {
+//            $("#fs-repass-user-error").text("");
+//        }
+//    });
     // VALIDATION CREATE ADDRESS CLICK
 
-    $(".fs-button-add-address").click(function (e) {
-        e.preventDefault();
-        var address = $(".fs-address-add").val().trim();
-        var phone = $(".fs-phone-add").val().trim();
-        //        phone = phone.replace('(+84)', '0');
-        //        phone = phone.replace('+84', '0');
-        //        phone = phone.replace('0084', '0');
-        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
+//    $(".fs-button-add-address").click(function (e) {
+//        e.preventDefault();
+//        var address = $(".fs-address-add").val().trim();
+//        var phone = $(".fs-phone-add").val().trim();
+//        //        phone = phone.replace('(+84)', '0');
+//        //        phone = phone.replace('+84', '0');
+//        //        phone = phone.replace('0084', '0');
+//        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
+//        if (address == "") {
+//            $("#fs-address-add-user-error").text("Address cannot be empty!");
+//        } else if (address.length < 10 || address.length > 255) {
+//            $("#fs-address-add-user-error").text("Address has 10 to 255 characters!");
+//        } else {
+//            $("#fs-address-add-user-error").text("");
+//        }
+//
+//        if (phone == "") {
+//            $("#fs-phone-add-user-error").text("Phone Number cannot be empty!");
+//        } else if (!regex.test(phone)) {
+//            $("#fs-phone-add-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
+//        } else {
+//            $("#fs-phone-add-user-error").text("");
+//            $(".fs-form-add-address").submit();
+//        }
 
-        if (address == "") {
-            $("#fs-address-add-user-error").text("Address cannot be empty!");
-        } else if (address.length < 10 || address.length > 255) {
-            $("#fs-address-add-user-error").text("Address has 10 to 255 characters!");
-        } else {
-            $("#fs-address-add-user-error").text("");
-        }
+    //        if((address.length > 10 && address.length < 255) && regex.test(phone)){
+    //            var userID = $(this).attr("fs-userID");
+    //            $.ajax({
+    //                url: "user/address-add/"+ userID +".html",
+    //                method: "POST",
+    //                data:{userID: userID},
+    //                success: function (response) {
+    //                    if(response == "1"){
+    //                        alert("trùng");
+    //                    }else if(response == "2") {
+    //                        alert("ok");
+    //                    }else{
+    //                        alert("hihi");
+    //                    }
+    //                }
+    //            });
+    //        }
 
-        if (phone == "") {
-            $("#fs-phone-add-user-error").text("Phone Number cannot be empty!");
-        } else if (!regex.test(phone)) {
-            $("#fs-phone-add-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
-        } else {
-            $("#fs-phone-add-user-error").text("");
-            $(".fs-form-add-address").submit();
-        }
-
-        //        if((address.length > 10 && address.length < 255) && regex.test(phone)){
-        //            var userID = $(this).attr("fs-userID");
-        //            $.ajax({
-        //                url: "user/address-add/"+ userID +".html",
-        //                method: "POST",
-        //                data:{userID: userID},
-        //                success: function (response) {
-        //                    if(response == "1"){
-        //                        alert("trùng");
-        //                    }else if(response == "2") {
-        //                        alert("ok");
-        //                    }else{
-        //                        alert("hihi");
-        //                    }
-        //                }
-        //            });
-        //        }
-
-    });
-
-    $(".fs-button-reset-address").click(function () {
-        $("#fs-phone-add-user-error").text("");
-        $("#fs-address-add-user-error").text("");
-    });
-
+//    });
+//    $(".fs-button-reset-address").click(function () {
+//        $("#fs-phone-add-user-error").text("");
+//        $("#fs-address-add-user-error").text("");
+//    });
     // VALIDATION CREATE-ADDRESS KEYUP
 
-    $(".fs-address-add").keyup(function () {
-        var address = $(".fs-address-add").val().trim();
+//    $(".fs-address-add").keyup(function () {
+//        var address = $(".fs-address-add").val().trim();
+//        if (address == "") {
+//            $("#fs-address-add-user-error").text("Address cannot be empty!");
+//        } else if (address.length < 10 || address.length > 255) {
+//            $("#fs-address-add-user-error").text("Address has 10 to 255 characters!");
+//        } else {
+//            $("#fs-address-add-user-error").text("");
+//        }
+//    });
+//    $(".fs-phone-add").keyup(function () {
+//        var phone = $(".fs-phone-add").val().trim();
+//        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
+//        if (phone == "") {
+//            $("#fs-phone-add-user-error").text("Phone Number cannot be empty!");
+//        } else if (!regex.test(phone)) {
+//            $("#fs-phone-add-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
+//        } else {
+//            $("#fs-phone-add-user-error").text("");
+//        }
+//    });
+//    // VALIDATION UPDATE-ADDRESS CLICK
+//
+//    $(".fs-button-update-address").click(function (e) {
+//        e.preventDefault();
+//        var address = $(".fs-update-address").val().trim();
+//        var phone = $(".fs-update-phone").val().trim();
+//        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
+//        if (address == "") {
+//            $("#fs-address-update-user-error").text("Address cannot be empty!");
+//        } else if (address.length < 10 || address.length > 255) {
+//            $("#fs-address-update-user-error").text("Address has 10 to 255 characters!");
+//        } else {
+//            $("#fs-address-update-user-error").text("");
+//        }
+//
+//        if (phone == "") {
+//            $("#fs-phone-update-user-error").text("Phone Number cannot be empty!");
+//        } else if (!regex.test(phone)) {
+//            $("#fs-phone-update-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
+//        } else {
+//            $("#fs-phone-update-user-error").text("");
+//            //            $(".fs-form-update-address").submit();
+//        }
+//
+//        if ((address.length > 10 && address.length < 255) && regex.test(phone)) {
+//            $(".fs-form-update-address").submit();
+//        }
+//    });
+//    // VALIDATION UPDATE-ADDRESS KEYUP
+//
+//    $(".fs-update-address").keyup(function () {
+//        var address = $(".fs-update-address").val().trim();
+//        if (address == "") {
+//            $("#fs-address-update-user-error").text("Address cannot be empty!");
+//        } else if (address.length < 10 || address.length > 255) {
+//            $("#fs-address-update-user-error").text("Address has 10 to 255 characters!");
+//        } else {
+//            $("#fs-address-update-user-error").text("");
+//        }
+//    });
+//    $(".fs-update-phone").keyup(function () {
+//        var phone = $(".fs-update-phone").val().trim();
+//        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
+//        if (phone == "") {
+//            $("#fs-phone-update-user-error").text("Phone Number cannot be empty!");
+//        } else if (!regex.test(phone)) {
+//            $("#fs-phone-update-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
+//        } else {
+//            $("#fs-phone-update-user-error").text("");
+//        }
+//    });
 
-        if (address == "") {
-            $("#fs-address-add-user-error").text("Address cannot be empty!");
-        } else if (address.length < 10 || address.length > 255) {
-            $("#fs-address-add-user-error").text("Address has 10 to 255 characters!");
-        } else {
-            $("#fs-address-add-user-error").text("");
-        }
-    });
-
-    $(".fs-phone-add").keyup(function () {
-        var phone = $(".fs-phone-add").val().trim();
-        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
-
-        if (phone == "") {
-            $("#fs-phone-add-user-error").text("Phone Number cannot be empty!");
-        } else if (!regex.test(phone)) {
-            $("#fs-phone-add-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
-        } else {
-            $("#fs-phone-add-user-error").text("");
-        }
-    });
-
-
-    // VALIDATION UPDATE-ADDRESS CLICK
-
-    $(".fs-button-update-address").click(function (e) {
-        e.preventDefault();
-        var address = $(".fs-update-address").val().trim();
-        var phone = $(".fs-update-phone").val().trim();
-        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
-
-        if (address == "") {
-            $("#fs-address-update-user-error").text("Address cannot be empty!");
-        } else if (address.length < 10 || address.length > 255) {
-            $("#fs-address-update-user-error").text("Address has 10 to 255 characters!");
-        } else {
-            $("#fs-address-update-user-error").text("");
-        }
-
-        if (phone == "") {
-            $("#fs-phone-update-user-error").text("Phone Number cannot be empty!");
-        } else if (!regex.test(phone)) {
-            $("#fs-phone-update-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
-        } else {
-            $("#fs-phone-update-user-error").text("");
-            //            $(".fs-form-update-address").submit();
-        }
-
-        if ((address.length > 10 && address.length < 255) && regex.test(phone)) {
-            $(".fs-form-update-address").submit();
-        }
-    });
-
-    // VALIDATION UPDATE-ADDRESS KEYUP
-
-    $(".fs-update-address").keyup(function () {
-        var address = $(".fs-update-address").val().trim();
-
-        if (address == "") {
-            $("#fs-address-update-user-error").text("Address cannot be empty!");
-        } else if (address.length < 10 || address.length > 255) {
-            $("#fs-address-update-user-error").text("Address has 10 to 255 characters!");
-        } else {
-            $("#fs-address-update-user-error").text("");
-        }
-    });
-
-    $(".fs-update-phone").keyup(function () {
-        var phone = $(".fs-update-phone").val().trim();
-        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
-
-        if (phone == "") {
-            $("#fs-phone-update-user-error").text("Phone Number cannot be empty!");
-        } else if (!regex.test(phone)) {
-            $("#fs-phone-update-user-error").text("Phone begin 01 or 09 and 10 to 11 number");
-        } else {
-            $("#fs-phone-update-user-error").text("");
-        }
-    });
 
     //BLOG
     var mincount = 2;
@@ -4810,5 +4839,4 @@ $(document).ready(function () {
             maxcount = maxcount + 2;
         }
     });
-
 });

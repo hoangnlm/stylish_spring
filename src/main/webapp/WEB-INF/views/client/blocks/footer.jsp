@@ -110,7 +110,7 @@
                     <li><a href="#">Customer Service</a></li>
                 </ul>
                 <br>
-                <p>Copyright 2017 &middot; Designed & Developed by <a href="#">HoangNLM.</a> All rights reserved</p>
+                <p>Copyright 2017 &middot; Designed & Developed by <a href="http://www.nguyenleminhhoang.com" target="_blank">HoangNLM.</a> All rights reserved</p>
             </div>
             <div class="col-md-5 col-sm-5">
                 <img src="assets/images/basic/payment.png" class="pull-right img-responsive payment" alt=""/>

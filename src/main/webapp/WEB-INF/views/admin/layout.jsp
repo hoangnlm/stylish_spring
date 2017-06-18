@@ -60,15 +60,17 @@
         <!-- Custom Stylish Store CSS -->
         <link href="assets/admin/dist/css/stylish_settings.css" rel="stylesheet" type="text/css"/>
 
-        
+
         <!--JAVASCRIPT-->
         <script src="assets/ckeditor/ckeditor.js" type="text/javascript"></script>
         <script src="assets/ckfinder/ckfinder.js" type="text/javascript"></script>
 
         <!-- jQuery -->
         <script src="assets/admin/vendor/jquery/jquery.min.js"></script>
-
+        <script src="assets/js/jquery.validate.min.js"></script>
+        <script src="assets/js/jquery.form.min.js"></script>
         <script src="assets/js/jquery-ui-1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+
         <!-- For morris.js chart -->
         <script src="assets/admin/vendor/morrisjs/morris.min.js" type="text/javascript"></script>
         <script src="assets/admin/vendor/raphael/raphael.min.js" type="text/javascript"></script>

@@ -8,153 +8,151 @@
     }
 </style>
 
-
-<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<!--LOGIN MODAL-->
+<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true" data-backdrop="true" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content login-modal">
             <div class="modal-header login-modal-header">
                 <button type="button" class="close" style="color: black" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title text-center" id="loginModalLabel"><i class="fa fa-user" style="font-size: 20px;"></i> USER AUTHENTICATION</h4>
+                <h4 class="modal-title text-center" id="loginModalLabel"><i class="fa fa-user" style="font-size: 20px;"></i> USER LOGIN</h4>
             </div>
             <div class="modal-body">
-                <div class="">
-                    <div role="tabpanel" class="login-tab">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a id="signin-taba" href="#home" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-sign-in"></i> LOGIN</a></li>
-                            <li role="presentation"><a id="signup-taba" href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-user-plus"></i> REGISTER</a></li>
-                        </ul>
+                <form name="fs-form-login-user" action="login.html" method="post" class="form-login fs-login-modal" id="fs-form-login-user" autocomplete="off"> 
+
+                    <div class="form-group">
+                        <p class="form-alert" id="login-error"></p>
                     </div>
 
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active text-center" id="home">
-                            &nbsp;&nbsp;
-                            <span id="login_fail" class="response_error" style="display: none;">Loggin failed, please try again.</span>
-                            <span style="color: red; font-size: 20px;" id="fs-error-show"></span>
-                            <div class="clearfix"></div>
-                            <form name="fs-form-login-user" action="user/login.html" method="post" class="form-login fs-login-modal" id="fs-form-login-user"> 
-                                <!--action="user/login.html"--> 
+                    <div class="form-group has-feedback">
+                        <label for="login-email"><i class="fa fa-envelope"></i> Email <em class="asterisk">*</em></label>
+                        <input type="email" class="form-control" id="login-email" name="email"/>
+                    </div>
 
+                    <div class="form-group has-feedback">
+                        <label for="login-password"><i class="fa fa-key"></i> Password <em class="asterisk">*</em></label>
+                        <input type="password" class="form-control" id="login-password" name="password"/>
+                    </div>
 
-                                <ul class="form-list row">
-                                    <li class="col-md-12 col-sm-12" style="text-align: left">
-                                        <label ><i class="fa fa-envelope"></i> Email <em>*</em></label>
-                                        <div class="fs-email-user">
-                                            <input type="email" id="fs-email-login-user" name="email" class="input-text" autofocus >
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-email-login-user-error"></p>
-                                        </div>
-
-                                    </li>
-                                    <li class="col-md-12 col-sm-12" style="text-align: left">
-                                        <label ><i class="fa fa-key"></i> Your password <em>*</em></label>
-                                        <div class="fs-pass-user">
-                                            <input type="password" id="fs-pass-login-user" name="password" class="input-text" >
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-pass-login-user-error"></p>
-                                        </div>
-
-                                    </li> 
-                                    <li class="col-md-6 col-sm-12">                                                
-                                        <input name="checkremember" id="fs-check-remember" class="input-chkbox" type="checkbox" value="1">
-                                        <label for="fs-check-remember" >Remember me</label>
-                                    </li>
-                                </ul>
-                                <div class="buttons-set">
-                                    <button class="btn-black fs-button-login-user" type="submit"><span>Login</span></button>
-                                </div>
-                            </form>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="profile">
-                            &nbsp;&nbsp;
-                            <span id="registration_fail" class="response_error" style="display: none;">Registration failed, please try again.</span>
-                            <span id="fs-error-show-register"></span>
-                            <div class="clearfix" ></div>
-                            <form name="fs-form-create-user" class="form-login" method="post" action="user/register.html" id="fs-form-create-user" enctype="multipart/form-data">    
-                                <ul class="form-list row">
-                                    <li class="col-md-12 col-sm-12">
-                                        <label><i class="fa fa-envelope"></i> Email <em>*</em></label>
-                                        <div class="fs-email-create">
-                                            <input name="email" id="fs-create-email" class="input-text" type="email" autofocus=""/>
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-email-create-user-error"></p>
-
-                                        </div>
-                                    </li>
-                                    <li class="col-md-6 col-sm-12">
-                                        <label><i class="fa fa-key"></i> Password <em>*</em></label>
-                                        <div class="fs-password-create">
-                                            <input type="password" id="password" name="password" class="input-text"  />
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-pass-create-user-error"></p>
-                                        </div>
-                                    </li> 
-                                    <li class="col-md-6 col-sm-12">
-                                        <label><i class="fa fa-key"></i> Retype Password <em>*</em></label>
-                                        <div class="fs-repassword-create">
-                                            <input type="password" id="Repassword" name="Repassword" class="input-text" />
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-repass-create-user-error"></p>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-12 col-sm-6">
-                                        <label>First Name <em>*</em></label>
-                                        <div class="fs-firstname-create">
-                                            <input name="firstName" id="fs-create-firstname" class="input-text" />
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-fname-create-user-error"></p>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-12 col-sm-6">
-                                        <label>LastName <em>*</em></label>
-                                        <div class="fs-lastname-create">
-                                            <input name="lastName" id="fs-create-lastname" class="input-text" />
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-lname-create-user-error"></p>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-6 col-sm-12">  
-                                        <label><i class="fa fa-venus-mars"></i> Gender</label>
-                                        <br>
-                                        <div class="text-center fs-login-gender">
-                                            <label>
-                                                <input type="radio" name="gender"  value="1" checked="checked" /><i class="fa fa-male"></i> Male 
-                                            </label>
-                                            &nbsp;&nbsp;&nbsp;
-                                            <label>
-                                                <input type="radio" name="gender" value="0" /><i class="fa fa-female"></i> Female 
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-6 col-sm-12">  
-                                        <label><i class="fa fa-birthday-cake"></i> Birthday</label>
-                                        <div class="fs-birthday-create" >
-                                            <span id="fs-birthday-create"><input name="birthday" id="txtBirthday" class="input-text" /></span>
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-bday-create-user-error"></p>
-                                        </div>
-                                    </li>
-
-                                    <li class="col-md-12 col-sm-12">
-                                        <label><i class="fa fa-phone"></i> Phone <em>*</em></label>
-                                        <div class="fs-phone-create">
-                                            <input type="text" id="fs-create-phone" name="phoneNumber" />
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-phone-create-user-error"></p>
-                                        </div>
-                                    </li>
-
-                                    <li class="col-md-12 col-sm-12">
-                                        <label>Address <em>*</em></label>
-                                        <div class="fs-address-create">
-                                            <input type="text" id="fs-create-address" name="address" />
-                                            <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-address-create-user-error"></p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="buttons-set text-center">
-                                    <button class="btn-black btn-custom fs-button-create-user" id="fs-button-create-user" type="submit"><span>Create Account</span></button>
-                                </div>
-                            </form>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label class="pull-left"><input type="checkbox" name="checkremember"> Remember me</label>
+                            <em class="asterisk pull-right">* : Required input</em>
                         </div>
                     </div>
-                </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="form-group center-block">
+                        <button class="btn-black fs-button-login-user" type="submit"><span>Login</span></button>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
 </div>
 
+
+<!--REGISTER MODAL-->
+<div id="registerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true" data-backdrop="true" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content login-modal">
+            <div class="modal-header login-modal-header">
+                <button type="button" class="close" style="color: black" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="registerModalLabel"><i class="fa fa-sign-in" style="font-size: 20px;"></i> USER REGISTER</h4>
+            </div>
+            <div class="modal-body">
+                <form name="fs-form-create-user" class="form-login" method="post" action="user/register.html" id="fs-form-create-user" enctype="multipart/form-data" autocomplete="off">   
+
+                    <div class="form-group">
+                        <p class="form-alert" id="register-error"></p>
+                    </div>
+
+                    <ul class="form-list row">
+
+                        <li class="col-md-12 col-sm-12">
+                            <label><i class="fa fa-envelope"></i> Email <em>*</em></label>
+                            <div class="fs-email-create has-feedback">
+                                <input name="email" id="register-email" class="input-text form-control" type="email" autofocus=""/>
+                            </div>
+                        </li>
+
+                        <li class="col-md-6 col-sm-12">
+                            <label><i class="fa fa-key"></i> Password <em>*</em></label>
+                            <div class="fs-password-create has-feedback">
+                                <input type="password" id="register-password" name="password" class="input-text form-control"  />
+                            </div>
+                        </li> 
+
+                        <li class="col-md-6 col-sm-12">
+                            <label><i class="fa fa-key"></i> Retype Password <em>*</em></label>
+                            <div class="fs-repassword-create has-feedback">
+                                <input type="password" id="register-repassword" name="repassword" class="input-text form-control" />
+                            </div>
+                        </li>
+
+                        <li class="col-md-12 col-sm-6">
+                            <label>First Name <em>*</em></label>
+                            <div class="fs-firstname-create has-feedback">
+                                <input name="firstName" id="register-firstname" class="input-text form-control" />
+                            </div>
+                        </li>
+
+                        <li class="col-md-12 col-sm-6">
+                            <label>LastName <em>*</em></label>
+                            <div class="fs-lastname-create has-feedback">
+                                <input name="lastName" id="register-lastname" class="input-text form-control" />
+                            </div>
+                        </li>
+
+                        <li class="col-md-6 col-sm-12">  
+                            <label><i class="fa fa-venus-mars"></i> Gender</label>
+                            <br>
+                            <div class="text-center fs-login-gender">
+                                <label>
+                                    <input type="radio" name="gender"  value="1" checked="checked" /><i class="fa fa-male"></i> Male 
+                                </label>
+                                &nbsp;&nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" name="gender" value="0" /><i class="fa fa-female"></i> Female 
+                                </label>
+                            </div>
+                        </li>
+
+                        <li class="col-md-6 col-sm-12">  
+                            <label><i class="fa fa-birthday-cake"></i> Birthday</label>
+                            <div class="fs-birthday-create has-feedback" >
+                                <span id="fs-birthday-create"><input name="birthday" id="register-birthday" class="input-text form-control" type="date" min="1960-01-01" max="2001-12-31"/></span>
+                            </div>
+                        </li>
+
+                        <li class="col-md-12 col-sm-12">
+                            <label><i class="fa fa-phone"></i> Phone <em>*</em></label>
+                            <div class="fs-phone-create has-feedback">
+                                <input class="form-control" type="text" id="fs-create-phone" name="phoneNumber" />
+                            </div>
+                        </li>
+
+                        <li class="col-md-12 col-sm-12">
+                            <label>Address <em>*</em></label>
+                            <div class="fs-address-create has-feedback">
+                                <input class="form-control" type="text" id="fs-create-address" name="address" />
+                            </div>
+                        </li>
+
+                    </ul>
+
+                    <div class="form-group">
+                        <em class="asterisk">* : Required input</em>
+                    </div>
+
+                    <div class="buttons-set text-center">
+                        <button class="btn-black btn-custom fs-button-create-user" id="fs-button-create-user" type="submit"><span>Create Account</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 

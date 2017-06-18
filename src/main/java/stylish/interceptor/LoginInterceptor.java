@@ -54,7 +54,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 return false; //Có cookie
             } else { //Không có cookie
                 response.sendRedirect(request.getContextPath() + "/admin/login.html");
-                //request.getContextPath(): get lấy đường link gốc (contextPath) của request. ở đây là http://localhost:8080/fashionshop
                 return false;
             }
         }

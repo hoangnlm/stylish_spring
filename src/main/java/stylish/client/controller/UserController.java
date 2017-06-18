@@ -123,17 +123,17 @@ public class UserController {
         int error = usersStateLessBean.addUsers(newUser, phoneNumber, address);
         String err = "";
         switch (error) {
-            case 1:
+            case 1: // success
                 session.setAttribute("emailUser", newUser.getEmail());
                 err = (String) session.getAttribute("emailUser");
                 Users userfindUserID = usersStateLessBean.findUserByEmail(newUser.getEmail());
                 session.setAttribute("findUsersID", userfindUserID.getUserID());
                 session.setAttribute("USfirstname", userfindUserID.getFirstName() + " " + userfindUserID.getLastName());
                 return err;
-            case 2:
+            case 2: // duplicate user
                 return "2";
             default:
-                return "0";
+                return "0"; // loi khac
         }
     }
 

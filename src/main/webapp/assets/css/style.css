@@ -201,7 +201,7 @@ header {
     visibility: hidden;
     position: absolute;
     right: 0;
-    margin-top: 30px;
+    top: 20px;
     transition: .4s;
 }
 
@@ -1441,8 +1441,6 @@ footer {
 .tb_right li .tbr-info span {
     color: #FFFFFF;
     padding: 0px 15px;
-    display: table;
-    border-right: 1px solid #FFFFFF;
     line-height: 19px;
 }
 
@@ -1464,7 +1462,7 @@ footer {
     color: #fff;
     padding: 0;
     width: 130px;
-    top: 48px;
+    top: 32px;
     right: 0;
     border-radius: 5px;
     opacity: 0;
@@ -1543,7 +1541,7 @@ footer {
     padding: 25px 25px 35px;
     position: absolute;
     right: 0;
-    margin-top: 30px;
+    top: 25px;
     opacity: 0;
     visibility: hidden;
     transition: .4s;
@@ -3289,18 +3287,16 @@ footer {
 }
 
 .btn-black {
-    height: 33px;
+    height: 40px;
     border: none;
-    line-height: 33px;
-    background: #333;
-    padding: 0 20px;
+    padding: 0 50px;
     display: inline-block;
-    font-family: Montserrat;
-    font-size: 11px;
+    font-size: 15px;
     border-radius: 3px;
     color: #fff;
     text-transform: uppercase;
     margin: 8px 0 0;
+    background: #000000;
 }
 
 .btn-black:hover {
