@@ -25,12 +25,12 @@
 
                     <div class="form-group has-feedback">
                         <label for="login-email"><i class="fa fa-envelope"></i> Email <em class="asterisk">*</em></label>
-                        <input type="email" class="form-control" id="login-email" name="email"/>
+                        <input type="email" class="form-control emailVal" id="login-email" name="email"/>
                     </div>
 
                     <div class="form-group has-feedback">
                         <label for="login-password"><i class="fa fa-key"></i> Password <em class="asterisk">*</em></label>
-                        <input type="password" class="form-control" id="login-password" name="password"/>
+                        <input type="password" class="form-control passwordVal" id="login-password" name="password"/>
                     </div>
 
                     <div class="form-group">
@@ -73,35 +73,35 @@
                         <li class="col-md-12 col-sm-12">
                             <label><i class="fa fa-envelope"></i> Email <em>*</em></label>
                             <div class="fs-email-create has-feedback">
-                                <input name="email" id="register-email" class="input-text form-control" type="email" autofocus=""/>
+                                <input name="email" id="register-email" class="input-text form-control emailVal" type="email" autofocus=""/>
                             </div>
                         </li>
 
                         <li class="col-md-6 col-sm-12">
                             <label><i class="fa fa-key"></i> Password <em>*</em></label>
                             <div class="fs-password-create has-feedback">
-                                <input type="password" id="register-password" name="password" class="input-text form-control"  />
+                                <input type="password" id="register-password" name="password" class="input-text form-control passwordVal"  />
                             </div>
                         </li> 
 
                         <li class="col-md-6 col-sm-12">
                             <label><i class="fa fa-key"></i> Retype Password <em>*</em></label>
                             <div class="fs-repassword-create has-feedback">
-                                <input type="password" id="register-repassword" name="repassword" class="input-text form-control" />
+                                <input type="password" id="register-password-re" name="repassword" class="input-text form-control repasswordVal" />
                             </div>
                         </li>
 
                         <li class="col-md-12 col-sm-6">
                             <label>First Name <em>*</em></label>
                             <div class="fs-firstname-create has-feedback">
-                                <input name="firstName" id="register-firstname" class="input-text form-control" />
+                                <input name="firstName" id="register-firstname" class="input-text form-control firstNameVal" />
                             </div>
                         </li>
 
                         <li class="col-md-12 col-sm-6">
                             <label>LastName <em>*</em></label>
                             <div class="fs-lastname-create has-feedback">
-                                <input name="lastName" id="register-lastname" class="input-text form-control" />
+                                <input name="lastName" id="register-lastname" class="input-text form-control lastNameVal" />
                             </div>
                         </li>
 
@@ -122,21 +122,21 @@
                         <li class="col-md-6 col-sm-12">  
                             <label><i class="fa fa-birthday-cake"></i> Birthday</label>
                             <div class="fs-birthday-create has-feedback" >
-                                <span id="fs-birthday-create"><input name="birthday" id="register-birthday" class="input-text form-control" type="date" min="1960-01-01" max="2001-12-31"/></span>
+                                <span id="fs-birthday-create"><input name="birthday" id="register-birthday" class="input-text form-control datepicker birthdayVal"/></span>
                             </div>
                         </li>
 
                         <li class="col-md-12 col-sm-12">
                             <label><i class="fa fa-phone"></i> Phone <em>*</em></label>
                             <div class="fs-phone-create has-feedback">
-                                <input class="form-control" type="text" id="fs-create-phone" name="phoneNumber" />
+                                <input class="form-control phoneVal" type="text" id="fs-create-phone" name="phoneNumber"/>
                             </div>
                         </li>
 
                         <li class="col-md-12 col-sm-12">
                             <label>Address <em>*</em></label>
                             <div class="fs-address-create has-feedback">
-                                <input class="form-control" type="text" id="fs-create-address" name="address" />
+                                <input class="form-control addressVal" type="text" id="fs-create-address" name="address" />
                             </div>
                         </li>
 

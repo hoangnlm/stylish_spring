@@ -28,7 +28,7 @@
                                         </li>
                                         <li class="col-md-12 col-sm-12" style="padding-bottom: 20px;">
                                             <div class="buttons-set">
-                                                <a href="user/address-list/${emailU.userID}.html" style="width: 250px;" class="btn btn-black">ADD ADDRESS</a>
+                                                <a href="user/address-list/${emailU.userID}.html"><button class="btn-black" type="button">ADD ADDRESS</button></a>
                                             </div>
                                         </li>
                                         <li class="col-md-12 col-sm-12" style="padding-bottom: 10px;">
@@ -87,62 +87,85 @@
                                     </ul>
                                 </c:when>
                                 <c:otherwise>
-                                    <ul class="form-list row">
+                                    <ul class="form-list">
                                         <input type="hidden" name="addressSize" value="1"/>
                                         <li class="col-md-12 col-sm-12" style="padding-bottom: 10px;">
                                             <span style="font-weight: 900; font-size: 16px;">Please choose your address method below</span>
                                         </li>
-                                        <c:forEach items="${userAddressList}" var="userAddress">
-                                            <li class="col-md-12 col-sm-12">
-                                                <input type="radio" id="diff-address" name="address-chose" value="${userAddress.addressID}"/>
-                                                <label style="font-weight: normal;"><span style="font-weight: 700;">Ship to:</span> &nbsp ${userAddress.getUser().firstName} &nbsp ${userAddress.getUser().lastName}<br/>
-                                                    <span style="font-weight: 700;">Address:</span> ${userAddress.address}<br/>
-                                                    <span style="font-weight: 700;">Phone:</span> &nbsp ${userAddress.phoneNumber}
+                                        <c:forEach items="${userAddressList}" var="userAddress" varStatus="count">
+                                            <li class="row">
+                                                <label class="control-label col-md-12" style="font-weight: normal;">
+                                                    <div class="col-md-1" style="line-height: 60px;">
+                                                        <c:if test="${count.index==0}">
+                                                            <input type="radio" id="diff-address" name="address-chose" value="${userAddress.addressID}"checked/>
+                                                        </c:if> 
+                                                        <c:if test="${count.index!=0}">
+                                                            <input type="radio" id="diff-address" name="address-chose" value="${userAddress.addressID}"/>
+                                                        </c:if> 
+                                                    </div>
+                                                    <div class="col-md-11">
+                                                        <span style="font-weight: 700;">Ship to:</span> &nbsp ${userAddress.getUser().firstName} &nbsp ${userAddress.getUser().lastName}<br/>
+                                                        <span style="font-weight: 700;">Address:</span> ${userAddress.address}<br/>
+                                                        <span style="font-weight: 700;">Phone:</span> &nbsp ${userAddress.phoneNumber}
+                                                    </div>
                                                 </label>
                                             </li>
                                         </c:forEach>
-                                        <li class="col-md-12 col-sm-12" style="padding-bottom: 20px;">
-                                            <div class="buttons-set">
-                                                <a href="user/address-list/${emailU.userID}.html" style="width: 250px;" class="btn btn-black">ADD MORE ADDRESS</a>
+                                        <li class="row" style="padding-bottom: 20px;">
+                                            <div class="col-md-6">
+                                                <a href="user/address-list/${emailU.userID}.html">
+                                                    <button class="btn-black" type="button" style="width: 100%;">ADD MORE ADDRESS</button>
+                                                </a>
                                             </div>
                                         </li>
-                                        <li class="col-md-12 col-sm-12">
-                                            <input id="diff-address" name="address-chose" value="difference" type="radio" class="input-chkbox"/>
-                                            <label style="font-weight: normal;"><span style="font-weight: 700;"> Ship to a different address?</span></label>
+                                        <li class="row">
+                                            <label class="control-label col-md-12" style="font-weight: normal;">
+                                                <div class="col-md-1">
+                                                    <input id="diff-address" name="address-chose" value="difference" type="radio" class="input-chkbox"/>
+                                                </div>
+                                                <div class="col-md-11">
+                                                    <span style="font-weight: 700;"> Ship to a different address?</span>
+                                                </div>
+                                            </label>
                                         </li>
-                                        <li class="col-md-12 col-sm-12 shipping-address">
+
+                                        <li class="row shipping-address">
                                             <ul class="form-list row">
                                                 <li class="col-md-8 col-sm-6">
-                                                    <label>First Name <em>*</em></label>
-                                                    <p id="error-checkout-firstname" style="color: red; font-weight: 700;"></p>
-                                                    <input type="text" class="input-text" name="diffFirstname" value=""/>
+                                                    <div class="form-group has-feedback">
+                                                        <label>First Name <em>*</em></label>
+                                                        <input type="text" class="input-text form-control firstNameVal" name="diffFirstname" value=""/>
+                                                    </div>
                                                 </li>
                                                 <li class="col-md-8 col-sm-6">
-                                                    <label>Last Name <em>*</em></label>
-                                                    <p id="error-checkout-lastname" style="color: red; font-weight: 700;"></p>
-                                                    <input type="text" class="input-text" name="diffLastname" value=""/>
+                                                    <div class="form-group has-feedback">
+                                                        <label>Last Name <em>*</em></label>
+                                                        <input type="text" class="input-text form-control lastNameVal" name="diffLastname" value=""/>
+                                                    </div>
                                                 </li>
                                                 <li class="col-md-8 col-sm-6">
-                                                    <label>Phone Number <em>*</em></label>
-                                                    <p id="error-checkout-phone" style="color: red; font-weight: 700;"></p>
-                                                    <input type="text" class="input-text" name="diffPhone" value=""/>
+                                                    <div class="form-group has-feedback">
+                                                        <label>Phone Number <em>*</em></label>
+                                                        <input type="text" class="input-text form-control phoneVal" name="diffPhone" value=""/>
+                                                    </div>
                                                 </li>
                                                 <li class="col-md-8 col-sm-12">
-                                                    <label >Address <em>*</em></label>
-                                                    <p id="error-checkout-address" style="color: red; font-weight: 700;"></p>
-                                                    <input type="text"  class="input-text" name="diffAddress" value=""/>
+                                                    <div class="form-group has-feedback">
+                                                        <label >Address <em>*</em></label>
+                                                        <input type="text"  class="input-text form-control addressVal" name="diffAddress" value=""/>
+                                                    </div>
                                                 </li>
                                                 <li class="clearfix"></li>
                                             </ul>
                                         </li>
-                                        <li class="col-md-12 col-sm-12 discount-code">
+                                        <li class="row discount-code">
                                             <p class="help-block" id="fs-checkout-discountvou-error" style="color: red;"></p>
                                             <ul class="form-list row discount-ul">
                                                 <li class="col-md-6 col-sm-6 discount-inputs">
                                                     <label><span style="font-weight: 900; font-size: 16px;">Your Discount Code</span></label>
-                                                    <div class="input-box">
+                                                    <div class="input-box form-group has-feedback">
                                                         <p class="help-block" id="fs-checkout-discountvou-error" style="color: red;"></p>
-                                                        <input class="input-text" id="coupon_code" name="coupon_code" value=""/>
+                                                        <input class="input-text form-control discountCodeVal" id="coupon_code" name="coupon_code" value=""/>
                                                     </div>
                                                 </li>
                                                 <li class="col-md-6 col-sm-6 discount-buttons" style="padding-top: 30px;">
@@ -155,15 +178,15 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li class="col-md-12 col-sm-12">
+                                        <li class="row">
                                             <span style="font-weight: 900; font-size: 16px;">Note (Eg: deliver during office hours)</span>
                                             <p id="error-checkout-note" style="color: red; font-weight: 700;"></p>
-                                            <input type="text" class="input-text" name="note"/>
+                                            <input type="text" class="input-text form-control orderNoteVal" name="note"/>
                                         </li>
                                     </ul>
                                 </c:otherwise>
                             </c:choose>
-                            <div class="buttons-set">
+                            <div class="form-group center-block">
                                 <input id="btnCheckoutPlaceOrder" class="btn-black" type="submit" value="Place Order"/>
                             </div>
                         </form>
@@ -230,5 +253,6 @@
         $.get("orders/ajax/nodiscount.html", function (responsenodiscount) {
             $(".foot").html(responsenodiscount);
         });
-    };
+    }
+    ;
 </script>

@@ -299,6 +299,14 @@ form p.form-alert {
     padding-top: 50px;
 }
 
+.panel .glyphicon {
+    top: -7px;
+}
+
+.shop-single{
+    background-color: rgba(255,255,255,0.6);
+}
+
 
 /* ----------------------------------------------------------------
         Flex Slider
@@ -812,7 +820,7 @@ input.fs-color-checkbox:checked + label:before, input.fs-size-checkbox:checked +
 }
 
 a {
-    color: #9dc997;
+    color: #ff6699;
     text-decoration: none;
 }
 

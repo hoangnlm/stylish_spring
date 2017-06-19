@@ -86,7 +86,7 @@
                         </tfoot>
                     </table>
                     <div class="table-btn">
-                        <a href="index.html" class="btn-black pull-left">Continue Shopping</a>
+                        <a href="index.html" class="pull-left"><button class="btn-black" type="button">Continue Shopping</button></a>
                         <button type="submit" class="btn-black pull-right">Update Shopping Cart</button>
                     </div>
                 </form>

@@ -116,7 +116,7 @@
                                             <div class="post-excerpt">
                                                 <p>${blogclient.blogSummary}</p>
                                             </div>
-                                            <a href="blog-detail/${blogclient.blogID}.html" class="btn-black">Read More&nbsp;&nbsp;<i class="fa fa-angle-right"></i></a>
+                                                <a href="blog-detail/${blogclient.blogID}.html"><button class="btn-black" type="button">Read More&nbsp;&nbsp;<i class="fa fa-angle-right"></i></button></a>
                                         </div>
                                     </article>
                                     <div class="blog-sep"></div>

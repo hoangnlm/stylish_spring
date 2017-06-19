@@ -1,6 +1,5 @@
 package stylish.client.controller;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import stylish.ejb.ProductStateLessBeanLocal;
 import stylish.ejb.RolesStateLessBeanLocal;
@@ -71,7 +69,7 @@ public class UserController {
             RedirectAttributes redirectAttributes,
             ModelMap model, HttpSession session) {
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date newBirthday = new Date();
         try {
             newBirthday = df.parse(birthday);
@@ -146,18 +144,21 @@ public class UserController {
     }
 
     @RequestMapping(value = "change-password/{userID}", method = RequestMethod.POST)
-    public String changePass(@PathVariable("userID") int userID, @RequestParam("password") String password,
-            @RequestParam("repassword") String repassword, @RequestParam("oldpassword") String oldpassword,
+    public String changePass(
+            @PathVariable("userID") int userID, 
+            @RequestParam("password") String password,
+            @RequestParam("repassword") String repassword, 
+            @RequestParam("oldpassword") String oldpassword,
             RedirectAttributes redirectAttributes) {
         Users findOldUserID = usersStateLessBean.getUserByID(userID);
 
         if (!findOldUserID.getPassword().equals(sharedFunc.encodePassword(oldpassword))) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-5  alert alert-danger\">FAILED!. Error Current Password wrong!</div>");
+            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error Current Password wrong!</div>");
         } else if (password.equals(repassword)) {
             usersStateLessBean.changePass(userID, sharedFunc.encodePassword(password));
             redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-success\">Update Password Successfully!</div>");
         } else if (!password.equals(repassword)) {
-            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-5  alert alert-danger\">FAILED!. Error was happened, Password and Repassword is wrong!</div>");
+            redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error was happened, Password and Repassword is wrong!</div>");
         }
 
         return "redirect:/user/change-password/" + userID + ".html";
@@ -243,11 +244,10 @@ public class UserController {
         model.addAttribute("cateList", cateList);
 
         //Change normal date to string
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = updateUser.getBirthday();
         String formattedDate = dateFormat.format(date);
         model.addAttribute("formattedDate", formattedDate);
-
         model.addAttribute("updateUser", updateUser);
         return "client/pages/account-information";
     }
@@ -257,7 +257,7 @@ public class UserController {
             @ModelAttribute("updateUser") Users updateUser,
             RedirectAttributes redirectAttributes) {
         Users oldUser = usersStateLessBean.getUserByID(userID); // thong tin user chua chinh sua
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
         try {
 //            if (!image.isEmpty()) {
 //                updateUser.setAvatar(simpleDateFormat.format(new Date()) + sharedFunc.changeText(image.getOriginalFilename()));
@@ -284,7 +284,7 @@ public class UserController {
             case 1:
                 Users afterUpdateUser = usersStateLessBean.getUserByID(userID);
                 //Change normal date to string
-                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
                 Date date = afterUpdateUser.getBirthday();
                 String formattedDate = dateFormat.format(date);
                 redirectAttributes.addFlashAttribute("formattedDate", formattedDate);
@@ -311,7 +311,7 @@ public class UserController {
         return "client/pages/my-account";
     }
 
-    @RequestMapping(value = "wishlist/{userID}")
+    @RequestMapping(value = "wishlist/{userID}", method = RequestMethod.GET)
     public String getWishList(ModelMap model, @PathVariable("userID") int userID) {
         List<Categories> cateList = productStateLessBean.categoryList();
         model.addAttribute("cateList", cateList);

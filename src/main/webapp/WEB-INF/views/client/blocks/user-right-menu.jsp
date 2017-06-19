@@ -11,6 +11,6 @@
         <!--<li><a href="return.html"> <i class="fa fa-edit"></i> Returns Requests</a></li>-->
         <!--<li><a href="newsletter.html"> <i class="fa fa-edit"></i> Newsletter</a></li>-->
         <!--<li><a href="myaccount-leftsidebar.html"> <i class="fa fa-edit"></i> Left Sidebar</a></li>-->
-        <li><a href="wishlist.html"> <i class="fa fa-edit"></i> WishList</a></li>
+        <li><a href="user/wishlist/${findUsersID}.html"> <i class="fa fa-edit"></i> WishList</a></li>
     </ul>                                
 </div>

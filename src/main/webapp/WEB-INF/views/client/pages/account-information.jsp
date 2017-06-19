@@ -19,28 +19,25 @@
                 <div id="account-id">
                     <h4 class="account-title"><span class="fa fa-chevron-right"></span>Change Your Personal Details</h4>                                                                  
                     <div class="account-form">
-                        <form:form id="fs-form-update-account" class="form-update-user" method="POST" action="user/account-information/${sessionScope.findUsersID}.html" modelAttribute="updateUser" enctype="multipart/form-data">      
+                        <form:form id="fs-form-update-account" class="form-update-user" method="POST" action="user/account-information/${sessionScope.findUsersID}.html" modelAttribute="updateUser" enctype="multipart/form-data" autocomplete="off">      
                             ${error}
                             <ul class="form-list row">
                                 <li class="col-md-12 col-sm-12">
                                     <label><i class="fa fa-envelope"></i> Email <em>*</em></label>
-                                    <div class="fs-email-update">
-                                        <form:input path="email" id="fs-update-email" cssClass="input-text"/>
-                                        <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-email-update-user-error"></p>
+                                    <div class="fs-email-update has-feedback">
+                                        <form:input path="email" id="fs-update-email" cssClass="input-text form-control emailVal"/>
                                     </div>
                                 </li>
                                 <li class="col-md-12 col-sm-6">
                                     <label>First Name <em>*</em></label>
-                                    <div class="fs-firstname-update">
-                                        <form:input path="firstName" id="fs-update-firstname" cssClass="input-text" />
-                                        <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-firstname-update-user-error"></p>
+                                    <div class="fs-firstname-update has-feedback">
+                                        <form:input path="firstName" id="fs-update-firstname" cssClass="input-text form-control firstNameVal" />
                                     </div>
                                 </li>
                                 <li class="col-md-12 col-sm-6">
                                     <label>LastName <em>*</em></label>
-                                    <div class="fs-lastname-update">
-                                        <form:input path="lastName" id="fs-update-lastname" cssClass="input-text" />
-                                        <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-lastname-update-user-error"></p>
+                                    <div class="fs-lastname-update has-feedback">
+                                        <form:input path="lastName" id="fs-update-lastname" cssClass="input-text form-control lastNameVal" />
                                     </div>
                                 </li>
                                 <li class="col-md-6 col-sm-12">  
@@ -58,20 +55,12 @@
                                 </li>
                                 <li class="col-md-6 col-sm-12">  
                                     <label><i class="fa fa-birthday-cake"></i> Birthday</label>
-                                    <div class="fs-birthday-update">
-                                        <form:input path="birthday" cssClass="input-text datepicker" />
-                                        <p class="help-block" style="color: red; text-align: center; margin-top: -10px;" id="fs-birthday-update-user-error"></p>
+                                    <div class="fs-birthday-update has-feedback">
+                                        <form:input path="birthday" cssClass="input-text form-control datepicker birthdayVal"/>
                                     </div>
                                 </li>
                             </ul>
-                            <script>
-                                $(function () {
-                                    $('.datepicker').datepicker({
-                                        format: 'mm/dd/yyyy'
-                                    });
-                                });
-                            </script>
-                            <div class="buttons-set">
+                            <div class="form-group center-block">
                                 <button class="btn-black fs-button-update-user" type="submit"><span>Update Account</span></button>
                             </div>
                         </form:form>

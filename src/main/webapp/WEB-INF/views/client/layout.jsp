@@ -34,6 +34,7 @@
         <script src="assets/js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
         <script src="assets/js/jquery.validate.min.js"></script>
         <script src="assets/js/jquery.form.min.js"></script>
+        <script src="assets/js/moment.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>        
         <script src="assets/plugin/owl-carousel/owl.carousel.min.js"></script>
         <script src="assets/plugin/prettyphoto/js/jquery.prettyPhoto.js"></script>
@@ -76,6 +77,6 @@
         </div>
 
         <div id="backtotop"><i class="fa fa-chevron-up"></i></div>
-        
+
     </body>
 </html>

@@ -467,7 +467,7 @@ public class OrdersController {
                                 Logger.getLogger(OrdersController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         } else if ((todayDate.before(beginDate) && endDate != null) || (todayDate.before(beginDate) && endDate == null)) { // chua toi han
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                             String date = sdf.format(beginDate);
                             CheckoutResponse checkoutResponse = new CheckoutResponse();
                             checkoutResponse.setStatus("2");
@@ -479,7 +479,7 @@ public class OrdersController {
                                 Logger.getLogger(OrdersController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         } else if ((todayDate.after(endDate) && beginDate != null) || (todayDate.after(endDate) && beginDate == null)) { // qua han
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                             String date = sdf.format(endDate);
                             CheckoutResponse checkoutResponse = new CheckoutResponse();
                             checkoutResponse.setStatus("3");

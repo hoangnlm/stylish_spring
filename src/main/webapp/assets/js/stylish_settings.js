@@ -1,66 +1,17 @@
-/* DEFINE CONSTANTS */
-var RE_PHONE_NUMBER_VN = /^(\+84|0)\d{9,11}$/;
-
-var FORM_RULE_CLIENT_LOGIN = {
-    email: {
-        required: true,
-        email: true
-    },
-    password: {
-        required: true
-    }
-};
-
-var FORM_RULE_CLIENT_REGISTER = {
-    email: {
-        required: true,
-        email: true
-    },
-    password: {
-        required: true,
-        minlength: 6,
-        maxlength: 100
-    },
-    repassword: {
-        required: true,
-        equalTo: "#register-password"
-    },
-    firstName: {
-        required: true,
-        minlength: 1,
-        maxlength: 50
-    },
-    lastName: {
-        required: true,
-        minlength: 1,
-        maxlength: 50
-    },
-    birthday: {
-        required: true,
-        minDate: "1960-01-01",
-        maxDate: "2001-12-31"
-    },
-    phoneNumber: {
-        required: true,
-        minlength: 10,
-        pattern: RE_PHONE_NUMBER_VN
-    },
-    address: {
-        required: true,
-        minlength: 1,
-        maxlength: 50
-    }
-};
-
-
 /* ON DOCUMENT READY */
 $(function () {
 
     // Validate Forms
-    proValidate("#fs-form-login-user", FORM_RULE_CLIENT_LOGIN);
-    proValidate("#fs-form-create-user", FORM_RULE_CLIENT_REGISTER);
+    proValidate([
+        "#fs-form-login-user", // login
+        "#fs-form-create-user", // register
+        "#fs-form-update-account", // account info
+        "#shipping-zip-form",  // change password
+        "#address-update",  // update address
+        "#checkout-form" // checkout
+    ]);
 
-    // Form Ajax
+    // Ajax Login Client
     $('#fs-form-login-user').ajaxForm({
         success: function (response) {
             switch (response) {
@@ -82,6 +33,8 @@ $(function () {
             }
         }
     });
+
+    // Ajax Register Client
     $('#fs-form-create-user').ajaxForm({
         success: function (response) {
             switch (response) {
@@ -99,54 +52,138 @@ $(function () {
         }
     });
 
+    // jquery ui datepicker
+    var DATEPICKER_BIRTHDAY = {
+        dateFormat: "mm/dd/yy",
+        showAnim: "drop",
+        changeMonth: true,
+        changeYear: true,
+        defaultDate: "01/01/1960",
+        yearRange: "1960:1999"
+    };
+    $(".datepicker").datepicker(DATEPICKER_BIRTHDAY);
 
-    /* CUSTOM METHOD FOR JQUERY VALIDATOR */
-    // Regex
-    $.validator.addMethod("pattern", function (value, element, param) { // param: regex object
-        return this.optional(element) || param.test(value);
-    }, "Please input the right format for this field.");
-    
-    // Min date
-    $.validator.addMethod("minDate", function (value, element, param) {
-        var minDate = new Date(param);
-        var inputDate = new Date(value);
-        return inputDate >= minDate;
-    }, "Date must be from {0}.");
-    
-    // Max date
-    $.validator.addMethod("maxDate", function (value, element, param) {
-        var maxDate = new Date(param);
-        var inputDate = new Date(value);
-        return inputDate <= maxDate;
-    }, "Date must be below {0}.");
-
+    // Turn off form autocomplete
+    $("form").attr("autocomplete", "off");
 });
+
+/* DEFINE CONSTANTS */
+var RE_HUMAN_NAME = /^[A-Za-z ]+$/;
+var RE_PHONE_NUMBER_VN = /^(\+84|0)\d{9,11}$/;
+var RE_DATE_MMDDYYYY = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/; // from 1900-2099
+var RE_DISCOUNT_COUNT = /^VOU\d+$/; // VOU01
+
+/* CUSTOM FOR JQUERY VALIDATOR */
+// Define some common Validation Rule Classes
+jQuery.validator.addClassRules({
+    emailVal: {
+        required: true,
+        email: true
+    },
+    passwordVal: {
+        required: true,
+        minlength: 6,
+        maxlength: 20
+    },
+    repasswordVal: {
+        repassword: true
+    },
+    firstNameVal: {
+        required: true,
+        minlength: 1,
+        maxlength: 50,
+        pattern: RE_HUMAN_NAME
+    },
+    lastNameVal: {
+        required: true,
+        minlength: 1,
+        maxlength: 50,
+        pattern: RE_HUMAN_NAME
+    },
+    birthdayVal: {
+        required: true,
+        minDate: "01-01-1960", // dd-MM-yyyy
+        maxDate: "12-31-2001", // dd-MM-yyyy
+        pattern: RE_DATE_MMDDYYYY
+    },
+    phoneVal: {
+        required: true,
+        minlength: 10,
+        maxlength: 13,
+        pattern: RE_PHONE_NUMBER_VN
+    },
+    addressVal: {
+        required: true,
+        minlength: 3
+    },
+    orderNoteVal: {
+        maxlength: 100
+    },
+    discountCodeVal: {
+        pattern: RE_DISCOUNT_COUNT
+    }
+});
+
+// Pattern method
+jQuery.validator.addMethod("pattern", function (value, element, param) { // param: regex object
+    return this.optional(element) || param.test(value);
+}, "Invalid format.");
+
+// Min date method
+jQuery.validator.addMethod("minDate", function (value, element, param) {
+    var minDate = new Date(param);
+    var inputDate = new Date(value);
+    return inputDate >= minDate;
+}, "Date must be from {0}.");
+
+// Max date method
+jQuery.validator.addMethod("maxDate", function (value, element, param) {
+    var maxDate = new Date(param);
+    var inputDate = new Date(value);
+    return inputDate <= maxDate;
+}, "Date must be below {0}.");
+
+// Repassword method
+jQuery.validator.addMethod("repassword", function (value, element) {
+    // eg: register-password-re => register-password
+    var repasswordId = $(element).attr("id").split("-").slice(0, -1).join("-");
+    var targetPassword = $("#" + repasswordId);
+
+    // Bind to the blur event of the target in order to revalidate whenever the target field is updated
+    if (this.settings.onfocusout && targetPassword.not(".validate-equalTo-blur").length) {
+        targetPassword.addClass("validate-equalTo-blur").on("blur.validate-equalTo", function () {
+            $(element).valid();
+        });
+    }
+    return value === targetPassword.val();
+}, "Retyped password not correct.");
 
 
 /* COMMON FUNCTIONS */
-// Validation Function (Hàng độc nha !!!)
+// Validation Function (Hàng độc nha, không hiểu thì kiếm tác giả mà hỏi ^_^ !!!)
 // Author: HoangNLM
-function proValidate(formId, formRule) {
-    $(formId).validate({
-        rules: formRule,
-        errorElement: "em",
-        errorClass: "help-block",
-        errorPlacement: function (error, element) { // error: jQuery object, element: DOM object
-            // If element is a checkbox, insert after label
-            if (element.prop("type") === "checkbox") {
-                error.insertAfter(element.parent("label"));
-            } else {
-                error.insertAfter(element);
+function proValidate(forms) {
+    forms.forEach(function (form) {
+        $(form).validate({
+            errorElement: "em",
+            errorClass: "help-block",
+            errorPlacement: function (error, element) { // error: jQuery object, element: DOM object
+                // If element is a checkbox, insert after label
+                if (element.prop("type") === "checkbox") {
+                    error.insertAfter(element.parent("label"));
+                } else {
+                    error.insertAfter(element);
+                }
+                // Insert bootstrap feedback icon in the input
+                $("<span class='glyphicon glyphicon-remove form-control-feedback'></span>").insertAfter(element);
+            },
+            success: function (label, element) {    // valid
+                highlightValid($(element));
+            },
+            highlight: function (element) {     // invalid
+                highlightInvalid($(element));
             }
-            // Insert bootstrap feedback icon in the input
-            $("<span class='glyphicon glyphicon-remove form-control-feedback'></span>").insertAfter(element);
-        },
-        success: function (label, element) {    // valid
-            highlightValid($(element));
-        },
-        highlight: function (element) {     // invalid
-            highlightInvalid($(element));
-        }
+        });
     });
 }
 
@@ -3349,7 +3386,7 @@ $(document).ready(function () {
             }
         });
     }
-    ;
+    
     //checkout.jsp
     //Discount in checkout.jsp
     //Load form discount in checkout
@@ -3361,168 +3398,168 @@ $(document).ready(function () {
             $('.shipping-address').prop("style", false);
         }
     });
-    $('#btnCheckoutPlaceOrder').on("click", function (e) {
-        e.preventDefault();
-        var errorHead = "<div class=\"alert alert-danger\"><strong>";
-        var errorFoot = "</strong></div>";
-        var addressSize = $("input[name=addressSize]").val();
-        var addressChoose = $("input[name=address-chose]:checked").val();
-        if (addressSize == "0") {
-            var firstname = $('input[name=diffFirstname]').val().trim();
-            var lastname = $('input[name=diffLastname]').val().trim();
-            var phone = $('input[name=diffPhone]').val().trim();
-            var address = $('input[name=diffAddress]').val().trim();
-            var note = $('input[name=note]').val().trim();
-            if (firstname == "") {
-                $('#error-checkout-firstname').text("FIRSTNAME REQUIRED");
-                $('body,html').animate({
-                    scrollTop: $('#diff-address').offset().top
-                }, 500);
-            } else if (firstname.length < 4 || firstname.length > 30) {
-                $('#error-checkout-firstname').text("FIRSTNAME LENGTH 4 - 30 CHARACTERS");
-                $('body,html').animate({
-                    scrollTop: $('#diff-address').offset().top
-                }, 500);
-            } else if (lastname == "") {
-                $('#error-checkout-lastname').text("LASTNAME REQUIRED");
-                $('body,html').animate({
-                    scrollTop: $('.shipping-address').offset().top
-                }, 500);
-            } else if (lastname.length < 4 || lastname.length > 30) {
-                $('#error-checkout-lastname').text("LASTNAME LENGTH 4 - 30 CHARACTERS");
-                $('body,html').animate({
-                    scrollTop: $('.shipping-address').offset().top
-                }, 500);
-            } else if (phone == "") {
-                $('#error-checkout-phone').text("PHONE REQUIRED");
-                $('body,html').animate({
-                    scrollTop: $('.shipping-address').offset().top
-                }, 500);
-            } else if (!phone.match("^(01[2689]|09)[0-9]{8}$")) { // Regex phone /^(01[2689]|09)[0-9]{8}$/
-                $('#error-checkout-phone').text("ENTER VALID PHONE");
-                $('body,html').animate({
-                    scrollTop: $('.shipping-address').offset().top
-                }, 500);
-            } else if (address == "") {
-                $('#error-checkout-address').text("ADDRESS REQUIRED");
-                $('body,html').animate({
-                    scrollTop: $('.shipping-address').offset().top
-                }, 500);
-            } else if (address.length < 4 || address.length > 100) {
-                $('#error-checkout-address').text("ADDRESS LENGTH 4 - 100 CHARACTERS");
-                $('body,html').animate({
-                    scrollTop: $('.shipping-address').offset().top
-                }, 500);
-            } else if (note.length > 500) {
-                $('#error-checkout-note').text("NOTE LENGTH MAXIMUM 500 CHARACTERS");
-                $('body,html').animate({
-                    scrollTop: $('.shipping-address').offset().top
-                }, 500);
-            } else {
-                $('#checkout-form').submit();
-            }
-        } else {
-            if (addressChoose == null) {
-                $('#error-checkout').html(errorHead + "ADDRESS METHOD must be CHOOSEN!" + errorFoot);
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 500);
-            } else {
-                var note = $('input[name=note]').val().trim();
-                if (addressChoose == "difference") {
-                    var firstname = $('input[name=diffFirstname]').val().trim();
-                    var lastname = $('input[name=diffLastname]').val().trim();
-                    var phone = $('input[name=diffPhone]').val().trim();
-                    var address = $('input[name=diffAddress]').val().trim();
-                    if (firstname == "") {
-                        $('#error-checkout-firstname').text("FIRSTNAME REQUIRED");
-                        $('body,html').animate({
-                            scrollTop: $('#diff-address').offset().top
-                        }, 500);
-                    } else if (firstname.length < 4 || firstname.length > 30) {
-                        $('#error-checkout-firstname').text("FIRSTNAME LENGTH 4 - 30 CHARACTERS");
-                        $('body,html').animate({
-                            scrollTop: $('#diff-address').offset().top
-                        }, 500);
-                    } else if (lastname == "") {
-                        $('#error-checkout-lastname').text("LASTNAME REQUIRED");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else if (lastname.length < 4 || lastname.length > 30) {
-                        $('#error-checkout-lastname').text("LASTNAME LENGTH 4 - 30 CHARACTERS");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else if (phone == "") {
-                        $('#error-checkout-phone').text("PHONE REQUIRED");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else if (!phone.match("^(01[2689]|09)[0-9]{8}$")) { // Regex phone /^(01[2689]|09)[0-9]{8}$/
-                        $('#error-checkout-phone').text("ENTER VALID PHONE");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else if (address == "") {
-                        $('#error-checkout-address').text("ADDRESS REQUIRED");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else if (address.length < 4 || address.length > 100) {
-                        $('#error-checkout-address').text("ADDRESS LENGTH 4 - 100 CHARACTERS");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else if (note.length > 500) {
-                        $('#error-checkout-note').text("NOTE LENGTH MAXIMUM 500 CHARACTERS");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else {
-                        $('#checkout-form').submit();
-                    }
-                } else {
-                    if (note.length > 500) {
-                        $('#error-checkout-note').text("NOTE LENGTH MAXIMUM 500 CHARACTERS");
-                        $('body,html').animate({
-                            scrollTop: $('.shipping-address').offset().top
-                        }, 500);
-                    } else {
-                        $('#checkout-form').submit();
-                    }
-                }
-            }
-        }
-    });
-    $('#checkout-form').on('keyup keypress', function (e) {
-        var keyCode = e.keyCode || e.which;
-        if (keyCode === 13) {
-            e.preventDefault();
-            return false;
-        }
-    });
-    $("#coupon_code").keydown(function () {
-        $("#fs-checkout-discountvou-error").text("");
-    });
-    $("input[name=address-chose]").on("click", function () {
-        $('#error-checkout').html("");
-    });
-    $('input[name=diffFirstname]').keydown(function () {
-        $('#error-checkout-firstname').text("");
-    });
-    $('input[name=diffLastname]').keydown(function () {
-        $('#error-checkout-lastname').text("");
-    });
-    $('input[name=diffPhone]').keydown(function () {
-        $('#error-checkout-phone').text("");
-    });
-    $('input[name=diffAddress]').keydown(function () {
-        $('#error-checkout-address').text("");
-    });
-    $('input[name=note]').keydown(function () {
-        $('#error-checkout-note').text("");
-    });
+//    $('#btnCheckoutPlaceOrder').on("click", function (e) {
+//        e.preventDefault();
+//        var errorHead = "<div class=\"alert alert-danger\"><strong>";
+//        var errorFoot = "</strong></div>";
+//        var addressSize = $("input[name=addressSize]").val();
+//        var addressChoose = $("input[name=address-chose]:checked").val();
+//        if (addressSize == "0") {
+//            var firstname = $('input[name=diffFirstname]').val().trim();
+//            var lastname = $('input[name=diffLastname]').val().trim();
+//            var phone = $('input[name=diffPhone]').val().trim();
+//            var address = $('input[name=diffAddress]').val().trim();
+//            var note = $('input[name=note]').val().trim();
+//            if (firstname == "") {
+//                $('#error-checkout-firstname').text("FIRSTNAME REQUIRED");
+//                $('body,html').animate({
+//                    scrollTop: $('#diff-address').offset().top
+//                }, 500);
+//            } else if (firstname.length < 4 || firstname.length > 30) {
+//                $('#error-checkout-firstname').text("FIRSTNAME LENGTH 4 - 30 CHARACTERS");
+//                $('body,html').animate({
+//                    scrollTop: $('#diff-address').offset().top
+//                }, 500);
+//            } else if (lastname == "") {
+//                $('#error-checkout-lastname').text("LASTNAME REQUIRED");
+//                $('body,html').animate({
+//                    scrollTop: $('.shipping-address').offset().top
+//                }, 500);
+//            } else if (lastname.length < 4 || lastname.length > 30) {
+//                $('#error-checkout-lastname').text("LASTNAME LENGTH 4 - 30 CHARACTERS");
+//                $('body,html').animate({
+//                    scrollTop: $('.shipping-address').offset().top
+//                }, 500);
+//            } else if (phone == "") {
+//                $('#error-checkout-phone').text("PHONE REQUIRED");
+//                $('body,html').animate({
+//                    scrollTop: $('.shipping-address').offset().top
+//                }, 500);
+//            } else if (!phone.match("^(01[2689]|09)[0-9]{8}$")) { // Regex phone /^(01[2689]|09)[0-9]{8}$/
+//                $('#error-checkout-phone').text("ENTER VALID PHONE");
+//                $('body,html').animate({
+//                    scrollTop: $('.shipping-address').offset().top
+//                }, 500);
+//            } else if (address == "") {
+//                $('#error-checkout-address').text("ADDRESS REQUIRED");
+//                $('body,html').animate({
+//                    scrollTop: $('.shipping-address').offset().top
+//                }, 500);
+//            } else if (address.length < 4 || address.length > 100) {
+//                $('#error-checkout-address').text("ADDRESS LENGTH 4 - 100 CHARACTERS");
+//                $('body,html').animate({
+//                    scrollTop: $('.shipping-address').offset().top
+//                }, 500);
+//            } else if (note.length > 500) {
+//                $('#error-checkout-note').text("NOTE LENGTH MAXIMUM 500 CHARACTERS");
+//                $('body,html').animate({
+//                    scrollTop: $('.shipping-address').offset().top
+//                }, 500);
+//            } else {
+//                $('#checkout-form').submit();
+//            }
+//        } else {
+//            if (addressChoose == null) {
+//                $('#error-checkout').html(errorHead + "ADDRESS METHOD must be CHOOSEN!" + errorFoot);
+//                $('body,html').animate({
+//                    scrollTop: 0
+//                }, 500);
+//            } else {
+//                var note = $('input[name=note]').val().trim();
+//                if (addressChoose == "difference") {
+//                    var firstname = $('input[name=diffFirstname]').val().trim();
+//                    var lastname = $('input[name=diffLastname]').val().trim();
+//                    var phone = $('input[name=diffPhone]').val().trim();
+//                    var address = $('input[name=diffAddress]').val().trim();
+//                    if (firstname == "") {
+//                        $('#error-checkout-firstname').text("FIRSTNAME REQUIRED");
+//                        $('body,html').animate({
+//                            scrollTop: $('#diff-address').offset().top
+//                        }, 500);
+//                    } else if (firstname.length < 4 || firstname.length > 30) {
+//                        $('#error-checkout-firstname').text("FIRSTNAME LENGTH 4 - 30 CHARACTERS");
+//                        $('body,html').animate({
+//                            scrollTop: $('#diff-address').offset().top
+//                        }, 500);
+//                    } else if (lastname == "") {
+//                        $('#error-checkout-lastname').text("LASTNAME REQUIRED");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else if (lastname.length < 4 || lastname.length > 30) {
+//                        $('#error-checkout-lastname').text("LASTNAME LENGTH 4 - 30 CHARACTERS");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else if (phone == "") {
+//                        $('#error-checkout-phone').text("PHONE REQUIRED");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else if (!phone.match("^(01[2689]|09)[0-9]{8}$")) { // Regex phone /^(01[2689]|09)[0-9]{8}$/
+//                        $('#error-checkout-phone').text("ENTER VALID PHONE");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else if (address == "") {
+//                        $('#error-checkout-address').text("ADDRESS REQUIRED");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else if (address.length < 4 || address.length > 100) {
+//                        $('#error-checkout-address').text("ADDRESS LENGTH 4 - 100 CHARACTERS");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else if (note.length > 500) {
+//                        $('#error-checkout-note').text("NOTE LENGTH MAXIMUM 500 CHARACTERS");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else {
+//                        $('#checkout-form').submit();
+//                    }
+//                } else {
+//                    if (note.length > 500) {
+//                        $('#error-checkout-note').text("NOTE LENGTH MAXIMUM 500 CHARACTERS");
+//                        $('body,html').animate({
+//                            scrollTop: $('.shipping-address').offset().top
+//                        }, 500);
+//                    } else {
+//                        $('#checkout-form').submit();
+//                    }
+//                }
+//            }
+//        }
+//    });
+//    $('#checkout-form').on('keyup keypress', function (e) {
+//        var keyCode = e.keyCode || e.which;
+//        if (keyCode === 13) {
+//            e.preventDefault();
+//            return false;
+//        }
+//    });
+//    $("#coupon_code").keydown(function () {
+//        $("#fs-checkout-discountvou-error").text("");
+//    });
+//    $("input[name=address-chose]").on("click", function () {
+//        $('#error-checkout').html("");
+//    });
+//    $('input[name=diffFirstname]').keydown(function () {
+//        $('#error-checkout-firstname').text("");
+//    });
+//    $('input[name=diffLastname]').keydown(function () {
+//        $('#error-checkout-lastname').text("");
+//    });
+//    $('input[name=diffPhone]').keydown(function () {
+//        $('#error-checkout-phone').text("");
+//    });
+//    $('input[name=diffAddress]').keydown(function () {
+//        $('#error-checkout-address').text("");
+//    });
+//    $('input[name=note]').keydown(function () {
+//        $('#error-checkout-note').text("");
+//    });
     $('.discount-code #discount-order').on("click", function () {
         $("#fs-checkout-discountvou-error").text("");
         $(".cart-table").remove(".foot");
@@ -3579,65 +3616,67 @@ $(document).ready(function () {
             $("#fs-checkout-discountvou-error").text("You already have input discount code");
         }
     });
-    $("input[name=coupon_code]").keypress(function (e) {
-        if (e.which == 13) {
-            $("#fs-checkout-discountvou-error").text("");
-            $(".cart-table").remove(".foot");
-            $(".cart-table").add("<tfoot class=\"foot\"></tfoot>");
-            var discountCode = $("input[name=coupon_code]").val().trim();
-            var emailUser = $('input[name=emailUser]').val().trim();
-            var hiddenDiscountCode = $('input[name=discount-code-input]').val();
-            if (hiddenDiscountCode == null) {
-                if (discountCode == "") {
-                    $("#fs-checkout-discountvou-error").text("ENTER YOUR DISCOUNT CODE!");
-                } else {
-                    $.ajax({
-                        url: "orders/ajax/discount.html",
-                        method: "POST",
-                        data: {
-                            discountCode: discountCode,
-                            emailUser: emailUser
-                        },
-                        dataType: 'JSON',
-                        success: function (response) {
-                            if (response != null) {
-                                var xResponse = response.status;
-                                if (xResponse != "1" && xResponse != "0" && xResponse != "2" && xResponse != "3" && xResponse != "4" && xResponse != "5" && xResponse != "6") {
-                                    $(".discount-show").html(response.showDiscountPercent);
-                                    $(".foot").html(response.showDiscount);
-                                } else {
-                                    $.get("orders/ajax/nodiscount.html", function (responsenodiscount) {
-                                        if (xResponse == "1" || xResponse == "6") {
-                                            $("#fs-checkout-discountvou-error").text("Wrong Discount Code or Discount Code not existed");
-                                            $(".foot").html(responsenodiscount);
-                                        } else if (xResponse == "0") {
-                                            $("#fs-checkout-discountvou-error").text("Your Discount Code is out of quantity");
-                                            $(".foot").html(responsenodiscount);
-                                        } else if (xResponse == "2") {
-                                            $("#fs-checkout-discountvou-error").text("Your Discount Code Begin Date: " + response.showDiscount);
-                                            $(".foot").html(responsenodiscount);
-                                        } else if (xResponse == "3") {
-                                            $("#fs-checkout-discountvou-error").text("Your Discount Code End Date: " + response.showDiscount);
-                                            $(".foot").html(responsenodiscount);
-                                        } else if (xResponse == "4") {
-                                            $("#fs-checkout-discountvou-error").text("Your Discount Code Already Used");
-                                            $(".foot").html(responsenodiscount);
-                                        } else if (xResponse == "5") {
-                                            $("#fs-checkout-discountvou-error").text("Error Happened!");
-                                            $(".foot").html(responsenodiscount);
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    });
-                }
-            } else {
-                $("#fs-checkout-discountvou-error").text("You already have input discount code");
-            }
-        }
-        ;
-    });
+//    $("input[name=coupon_code]").keypress(function (e) {
+//        if (e.which == 13) {
+//            $("#fs-checkout-discountvou-error").text("");
+//            $(".cart-table").remove(".foot");
+//            $(".cart-table").add("<tfoot class=\"foot\"></tfoot>");
+//            var discountCode = $("input[name=coupon_code]").val().trim();
+//            var emailUser = $('input[name=emailUser]').val().trim();
+//            var hiddenDiscountCode = $('input[name=discount-code-input]').val();
+//            if (hiddenDiscountCode == null) {
+//                if (discountCode == "") {
+//                    $("#fs-checkout-discountvou-error").text("ENTER YOUR DISCOUNT CODE!");
+//                } else {
+//                    $.ajax({
+//                        url: "orders/ajax/discount.html",
+//                        method: "POST",
+//                        data: {
+//                            discountCode: discountCode,
+//                            emailUser: emailUser
+//                        },
+//                        dataType: 'JSON',
+//                        success: function (response) {
+//                            if (response != null) {
+//                                var xResponse = response.status;
+//                                if (xResponse != "1" && xResponse != "0" && xResponse != "2" && xResponse != "3" && xResponse != "4" && xResponse != "5" && xResponse != "6") {
+//                                    $(".discount-show").html(response.showDiscountPercent);
+//                                    $(".foot").html(response.showDiscount);
+//                                } else {
+//                                    $.get("orders/ajax/nodiscount.html", function (responsenodiscount) {
+//                                        if (xResponse == "1" || xResponse == "6") {
+//                                            $("#fs-checkout-discountvou-error").text("Wrong Discount Code or Discount Code not existed");
+//                                            $(".foot").html(responsenodiscount);
+//                                        } else if (xResponse == "0") {
+//                                            $("#fs-checkout-discountvou-error").text("Your Discount Code is out of quantity");
+//                                            $(".foot").html(responsenodiscount);
+//                                        } else if (xResponse == "2") {
+//                                            $("#fs-checkout-discountvou-error").text("Your Discount Code Begin Date: " + response.showDiscount);
+//                                            $(".foot").html(responsenodiscount);
+//                                        } else if (xResponse == "3") {
+//                                            $("#fs-checkout-discountvou-error").text("Your Discount Code End Date: " + response.showDiscount);
+//                                            $(".foot").html(responsenodiscount);
+//                                        } else if (xResponse == "4") {
+//                                            $("#fs-checkout-discountvou-error").text("Your Discount Code Already Used");
+//                                            $(".foot").html(responsenodiscount);
+//                                        } else if (xResponse == "5") {
+//                                            $("#fs-checkout-discountvou-error").text("Error Happened!");
+//                                            $(".foot").html(responsenodiscount);
+//                                        }
+//                                    });
+//                                }
+//                            }
+//                        }
+//                    });
+//                }
+//            } else {
+//                $("#fs-checkout-discountvou-error").text("You already have input discount code");
+//            }
+//        }
+//        ;
+//    });
+
+    
     //Cancel Order side client in order-history-detail.jsp
     $('#confirm-cancel-order').on('show.bs.modal', function (e) {
         $(this).find('.btn-cancel-order-ok').attr('href', $(e.relatedTarget).data('href'));

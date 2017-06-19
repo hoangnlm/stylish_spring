@@ -107,8 +107,8 @@
                             </tbody>
                         </table>
 
-                        <div class="table-btn">
-                            <a href="user/myaccount.html" class="btn-black">Back To Account</a>
+                        <div class="table-btn" style="text-align: center;">
+                            <a href="user/myaccount.html"><button class="btn-black">Back To Account</button></a>
                         </div>
                     </div>                          
                 </div>

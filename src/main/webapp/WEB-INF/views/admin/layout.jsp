@@ -70,6 +70,7 @@
         <script src="assets/js/jquery.validate.min.js"></script>
         <script src="assets/js/jquery.form.min.js"></script>
         <script src="assets/js/jquery-ui-1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="assets/js/moment.min.js"></script>
 
         <!-- For morris.js chart -->
         <script src="assets/admin/vendor/morrisjs/morris.min.js" type="text/javascript"></script>

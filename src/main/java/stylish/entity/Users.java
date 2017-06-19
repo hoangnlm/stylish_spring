@@ -32,9 +32,9 @@ public class Users implements Serializable {
     private String avatar;
     private Short gender;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
     private Date birthday;
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "MM/dd/yyyy")
     @Temporal(TemporalType.DATE)
     private Date registrationDate;
     private Short status;
