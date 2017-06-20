@@ -24,7 +24,7 @@ public class Blogs implements Serializable {
     private String blogSummary;
     private String blogImg;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd-MM-YYYY")
+    @DateTimeFormat(pattern = "MM-dd-YYYY")
     private Date postedDate;
     private String content;
     private Integer blogViews;

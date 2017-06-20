@@ -19,6 +19,8 @@ import javax.persistence.TemporalType;
 @Entity
 public class Orders implements Serializable {
 
+    private static final long serialVersionUID = -5838708364257396361L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ordersID;

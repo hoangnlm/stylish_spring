@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import stylish.ejb.FunctionsSBLocal;
 import stylish.ejb.RolesStateLessBeanLocal;
 import stylish.ejb.UsersStateLessBeanLocal;
 import stylish.entity.Roles;
@@ -28,8 +29,9 @@ import stylish.entity.Users;
 @RequestMapping(value = "/admin/user/")
 public class User_Controller {
 
-    RolesStateLessBeanLocal rolesStateLessBean = lookupRolesStateLessBeanLocal();
-    UsersStateLessBeanLocal usersStateLessBean = lookupUsersStateLessBeanLocal();
+    private RolesStateLessBeanLocal rolesStateLessBean = lookupRolesStateLessBeanLocal();
+    private UsersStateLessBeanLocal usersStateLessBean = lookupUsersStateLessBeanLocal();
+    private FunctionsSBLocal functionsSB = lookupFunctionsSBLocal();
 
     @RequestMapping(value = "list")
     public String userList(Model model) {
@@ -113,13 +115,26 @@ public class User_Controller {
 
     @RequestMapping(value = "role/edit/{roleID}", method = RequestMethod.GET)
     public String userRoleUpdate(ModelMap model, @PathVariable("roleID") int roleID) {
+        Roles roleupdate = rolesStateLessBean.findRoles(roleID);
+//        System.out.println("isEmpty: " + roleupdate.getFunctionsList().isEmpty());
+//        System.out.println("GET roleupdate: " + roleupdate.toString());
         model.addAttribute("roleupdate", rolesStateLessBean.findRoles(roleID));
+        model.addAttribute("fList", functionsSB.getList());
         return "admin/pages/user-role-update";
     }
 
     @RequestMapping(value = "role/edit/{roleID}", method = RequestMethod.POST)
-    public String userRoleUpdate(ModelMap model, @PathVariable("roleID") int roleID,
-            RedirectAttributes redirectAttributes, @ModelAttribute("roleupdate") Roles roleupdate) {
+    public String userRoleUpdate(
+            @PathVariable("roleID") int roleID,
+            RedirectAttributes redirectAttributes,
+            @RequestParam("_functionsList") Integer[] _functionsList,
+            @ModelAttribute("roleupdate") Roles roleupdate) {
+
+//        System.out.println("roleupdate: " + roleupdate.toString());
+//        System.out.println("_functionsList: " + Arrays.toString(_functionsList));
+//        System.out.println("functionsSB: " + functionsSB.getListById(_functionsList));
+
+        roleupdate.setFunctionsList(functionsSB.getListById(_functionsList));
         int error = rolesStateLessBean.editRoles(roleupdate);
         switch (error) {
             case 1:
@@ -136,6 +151,7 @@ public class User_Controller {
         }
         redirectAttributes.addFlashAttribute("roleupdate", roleupdate);
         return "redirect:/admin/user/role/edit/" + roleID + ".html";
+//            return "redirect:/admin/user/role.html";
     }
 
     @ResponseBody //Annotation này: dùng để trả về string nguyên thủy, ko trả về view.
@@ -208,6 +224,16 @@ public class User_Controller {
         try {
             Context c = new InitialContext();
             return (RolesStateLessBeanLocal) c.lookup("java:global/stylishstore/RolesStateLessBean!stylish.ejb.RolesStateLessBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private FunctionsSBLocal lookupFunctionsSBLocal() {
+        try {
+            Context c = new InitialContext();
+            return (FunctionsSBLocal) c.lookup("java:global/stylishstore/FunctionsSB!stylish.ejb.FunctionsSBLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

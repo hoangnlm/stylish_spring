@@ -1,3 +1,153 @@
+/* ON DOCUMENT READY */
+$(function () {
+
+    // Validate Forms
+//    proValidate([
+//        "#fs-form-login-admin", // login
+//    ]);
+
+    // Turn off form autocomplete
+    $("form").attr("autocomplete", "off");
+});
+
+
+
+/* DEFINE CONSTANTS */
+var RE_HUMAN_NAME = /^[A-Za-z ]+$/;
+var RE_PHONE_NUMBER_VN = /^(\+84|0)\d{9,11}$/;
+var RE_DATE_MMDDYYYY = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/; // from 1900-2099
+var RE_DISCOUNT_COUNT = /^VOU\d+$/; // VOU01
+
+/* CUSTOM FOR JQUERY VALIDATOR */
+// Define some common Validation Rule Classes
+jQuery.validator.addClassRules({
+    emailVal: {
+        required: true,
+        email: true
+    },
+    passwordVal: {
+        required: true,
+        minlength: 6,
+        maxlength: 20
+    },
+    repasswordVal: {
+        repassword: true
+    },
+    firstNameVal: {
+        required: true,
+        minlength: 1,
+        maxlength: 50,
+        pattern: RE_HUMAN_NAME
+    },
+    lastNameVal: {
+        required: true,
+        minlength: 1,
+        maxlength: 50,
+        pattern: RE_HUMAN_NAME
+    },
+    birthdayVal: {
+        required: true,
+        minDate: "01-01-1960", // dd-MM-yyyy
+        maxDate: "12-31-2001", // dd-MM-yyyy
+        pattern: RE_DATE_MMDDYYYY
+    },
+    phoneVal: {
+        required: true,
+        minlength: 10,
+        maxlength: 13,
+        pattern: RE_PHONE_NUMBER_VN
+    },
+    addressVal: {
+        required: true,
+        minlength: 3
+    },
+    orderNoteVal: {
+        maxlength: 100
+    },
+    discountCodeVal: {
+        pattern: RE_DISCOUNT_COUNT
+    }
+});
+
+// Pattern method
+jQuery.validator.addMethod("pattern", function (value, element, param) { // param: regex object
+    return this.optional(element) || param.test(value);
+}, "Invalid format.");
+
+// Min date method
+jQuery.validator.addMethod("minDate", function (value, element, param) {
+    var minDate = new Date(param);
+    var inputDate = new Date(value);
+    return inputDate >= minDate;
+}, "Date must be from {0}.");
+
+// Max date method
+jQuery.validator.addMethod("maxDate", function (value, element, param) {
+    var maxDate = new Date(param);
+    var inputDate = new Date(value);
+    return inputDate <= maxDate;
+}, "Date must be below {0}.");
+
+// Repassword method
+jQuery.validator.addMethod("repassword", function (value, element) {
+    // eg: register-password-re => register-password
+    var repasswordId = $(element).attr("id").split("-").slice(0, -1).join("-");
+    var targetPassword = $("#" + repasswordId);
+
+    // Bind to the blur event of the target in order to revalidate whenever the target field is updated
+    if (this.settings.onfocusout && targetPassword.not(".validate-equalTo-blur").length) {
+        targetPassword.addClass("validate-equalTo-blur").on("blur.validate-equalTo", function () {
+            $(element).valid();
+        });
+    }
+    return value === targetPassword.val();
+}, "Retyped password not correct.");
+
+
+/* COMMON FUNCTIONS */
+// Validation Function (Hàng độc nha, không hiểu thì kiếm tác giả mà hỏi ^_^ !!!)
+// Author: HoangNLM
+function proValidate(forms) {
+    forms.forEach(function (form) {
+        $(form).validate({
+            errorElement: "em",
+            errorClass: "help-block",
+            errorPlacement: function (error, element) { // error: jQuery object, element: DOM object
+                // If element is a checkbox, insert after label
+                if (element.prop("type") === "checkbox") {
+                    error.insertAfter(element.parent("label"));
+                } else {
+                    error.insertAfter(element);
+                }
+                // Insert bootstrap feedback icon in the input
+                $("<span class='glyphicon glyphicon-remove form-control-feedback'></span>").insertAfter(element);
+            },
+            success: function (label, element) {    // valid
+                highlightValid($(element));
+            },
+            highlight: function (element) {     // invalid
+                highlightInvalid($(element));
+            }
+        });
+    });
+}
+
+// Highlight input on valid
+function highlightValid(element) { // element: jquery object
+    element.parents(".has-feedback").addClass("has-success").removeClass("has-error");
+    element.next("span").addClass("glyphicon-ok").removeClass("glyphicon-remove");
+}
+
+// Highlight input on invalid
+function highlightInvalid(element) { // element: jquery object
+    element.parents(".has-feedback").addClass("has-error").removeClass("has-success");
+    element.next("span").addClass("glyphicon-remove").removeClass("glyphicon-ok");
+}
+
+
+
+
+
 
 /* AJAX COMMENT ADMIN */
 $(document).ready(function () {
@@ -4010,37 +4160,37 @@ $(document).ready(function () {
 
     // BẮT VALIDATION FORM UPDATE ROLE
 
-    $("#fs-button-update-role").click(function (e) {
-        e.preventDefault();
-        var roleName = $("#fs-roleName-update").val().trim();
-        if (roleName == "") {
-            $("#fs-update-roleName-error").text("Role Name cannot be empty!");
-            var div = $("#fs-roleName-update").closest("div.fa-ccc");
-            div.removeClass("has-success");
-            $("#glypcn-fs-roleName-update").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (roleName.length < 2 || roleName.length > 25) {
-            $("#fs-update-roleName-error").text("Role Name has 2 - 25 characters!");
-            var div = $("#fs-roleName-update").closest("div.fa-ccc");
-            div.removeClass("has-success");
-            $("#glypcn-fs-roleName-update").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-form-update-role").submit();
-            var div = $("#fs-roleName-update").closest("div.fa-ccc");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-roleName-update").remove();
-            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-
-        }
-
-    });
+//    $("#fs-button-update-role").click(function (e) {
+//        e.preventDefault();
+//        var roleName = $("#fs-roleName-update").val().trim();
+//        if (roleName == "") {
+//            $("#fs-update-roleName-error").text("Role Name cannot be empty!");
+//            var div = $("#fs-roleName-update").closest("div.fa-ccc");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-roleName-update").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (roleName.length < 2 || roleName.length > 25) {
+//            $("#fs-update-roleName-error").text("Role Name has 2 - 25 characters!");
+//            var div = $("#fs-roleName-update").closest("div.fa-ccc");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-roleName-update").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-form-update-role").submit();
+//            var div = $("#fs-roleName-update").closest("div.fa-ccc");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-roleName-update").remove();
+//            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//
+//        }
+//
+//    });
 
     $("#fs-roleName-update").keyup(function () {
         var roleName = $("#fs-roleName-update").val().trim();

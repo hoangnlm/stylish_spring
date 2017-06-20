@@ -30,7 +30,13 @@ public class LoginController {
     SharedFunctions sharedFunc;
 
     @RequestMapping(value = "/admin/login", method = RequestMethod.GET)
-    public String login() {
+    public String login(HttpSession session) {
+        String email = (String) session.getAttribute("email");
+        if (email != null) {
+            session.setAttribute("fList", sharedFunc.getFunctionListFromEmail(email));
+            System.out.println("fList Login: " + sharedFunc.getFunctionListFromEmail(email));
+            return "redirect:/admin/index.html";
+        }
         return "admin/login";
     }
 
@@ -45,9 +51,13 @@ public class LoginController {
             HttpServletResponse response,
             RedirectAttributes redirectAttributes) {
         int error = usersStateLessBean.login(email, sharedFunc.encodePassword(password));
+//        System.out.println("remember: " + remember);
         switch (error) {
             case 1:
                 session.setAttribute("email", email);
+                session.setAttribute("fList", sharedFunc.getFunctionListFromEmail(email));
+                System.out.println("fList Login: " + sharedFunc.getFunctionListFromEmail(email));
+                
                 if (remember != null && remember == 1) {
                     Cookie ckEmail = new Cookie("emailA", email);
                     ckEmail.setMaxAge(24 * 60 * 60);

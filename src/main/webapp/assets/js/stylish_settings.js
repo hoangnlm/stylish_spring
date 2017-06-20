@@ -26,7 +26,7 @@ $(function () {
                     highlightInvalid($("#login-password"));
                     break;
                 case "4":
-                    $("#login-error").text("Login failed! Please try again later!");
+                    $("#login-error").text("Login failed! Please contact web admin!");
                     break;
                 default:
                     location.reload();
@@ -44,7 +44,7 @@ $(function () {
                     highlightInvalid($("#register-email"));
                     break;
                 case "0":   // Loi register khac
-                    $("#register-error").text("Register failed! Please try again later!");
+                    $("#register-error").text("Register failed! Please contact web admin!");
                     break;
                 default:
                     location.reload();
@@ -498,7 +498,7 @@ $(document).ready(function () {
                     $.notify({
                         icon: 'glyphicon glyphicon-warning-sign',
                         title: '<strong>Error!</strong>',
-                        message: 'Something was wrong! Please try again later!.'
+                        message: 'Something was wrong! Please contact web admin!.'
                     }, {
                         type: 'danger',
                         placement: {
@@ -3891,48 +3891,48 @@ $(document).ready(function () {
     });
     // CHINH TRANG THAI CHO MODAL(BAM RA NGOAI KHONG TAT MODAL)
 
-    $("#loginModal").on("hidden.bs.modal", function (e) {
-        $(this).find("input").val("").end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
-        $(this).find("p").html("");
-        $(this).find("span#glypcn-fs-login-user").remove("span");
-        $(this).find("span#glypcn-fs-create-user").remove("span");
-        $(this).find("#fs-error-show").text("");
-        $(this).find("#fs-error-show-register").text("");
-    });
+//    $("#loginModal").on("hidden.bs.modal", function (e) {
+//        $(this).find("input").val("").end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
+//        $(this).find("p").html("");
+//        $(this).find("span#glypcn-fs-login-user").remove("span");
+//        $(this).find("span#glypcn-fs-create-user").remove("span");
+//        $(this).find("#fs-error-show").text("");
+//        $(this).find("#fs-error-show-register").text("");
+//    });
     // BẮT LỖI FORM LOGIN USER MODAL
 
-    function checkEmail(email) {
-        email = $("#fs-email-login-user").val().trim();
-        var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
-        if (email == "") {
-            $("#fs-email-login-user-error").text("Email cannot be empty!");
-            $("#fs-email-login-user").focus();
-            var div = $("#fs-email-login-user").closest("div.fs-email-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (!pattern.test(email)) {
-            $("#fs-email-login-user-error").text("Please enter valid Email!");
-            $("#fs-email-login-user").focus();
-            var div = $("#fs-email-login-user").closest("div.fs-email-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-email-login-user-error").text("");
-            var div = $("#fs-email-login-user").closest("div.fs-email-user");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-login-user").remove();
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
+//    function checkEmail(email) {
+//        email = $("#fs-email-login-user").val().trim();
+//        var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+//        if (email == "") {
+//            $("#fs-email-login-user-error").text("Email cannot be empty!");
+//            $("#fs-email-login-user").focus();
+//            var div = $("#fs-email-login-user").closest("div.fs-email-user");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-login-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (!pattern.test(email)) {
+//            $("#fs-email-login-user-error").text("Please enter valid Email!");
+//            $("#fs-email-login-user").focus();
+//            var div = $("#fs-email-login-user").closest("div.fs-email-user");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-login-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-email-login-user-error").text("");
+//            var div = $("#fs-email-login-user").closest("div.fs-email-user");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-login-user").remove();
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
     // VALIDATION CLICK BUTTON LOGIN
 //    $(".fs-button-login-user").click(function (e) {
 //        e.preventDefault();
@@ -3996,34 +3996,34 @@ $(document).ready(function () {
 //    });
 //
 
-    function EmailWrong(email) {
-        email = $("#fs-email-login-user").val().trim();
-        if ($("#loginModal").modal('show')) {
-            $("#fs-error-show").text("Email is wrong!");
-            $("#fs-email-login-user").focus();
-            var div = $("#fs-email-login-user").closest("div.fs-email-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        }
-    }
-    ;
-    function PassWrong(password) {
-        password = $("#fs-pass-login-user").val().trim();
-        if ($("#loginModal").modal('show')) {
-            $("#fs-error-show").text("Password is wrong!");
-            $("#fs-pass-login-user").focus();
-            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
-            div.removeClass("has-success");
-            $("#glypcn-fs-login-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        }
-    }
-    ;
+//    function EmailWrong(email) {
+//        email = $("#fs-email-login-user").val().trim();
+//        if ($("#loginModal").modal('show')) {
+//            $("#fs-error-show").text("Email is wrong!");
+//            $("#fs-email-login-user").focus();
+//            var div = $("#fs-email-login-user").closest("div.fs-email-user");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-login-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        }
+//    }
+//    ;
+//    function PassWrong(password) {
+//        password = $("#fs-pass-login-user").val().trim();
+//        if ($("#loginModal").modal('show')) {
+//            $("#fs-error-show").text("Password is wrong!");
+//            $("#fs-pass-login-user").focus();
+//            var div = $("#fs-pass-login-user").closest("div.fs-pass-user");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-login-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-login-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        }
+//    }
+//    ;
     // VALIDATION KEYUP 
     /*
      $("#fs-email-login-user").keyup(function () {
@@ -4069,259 +4069,259 @@ $(document).ready(function () {
 
     // BẮT VALIDATION TRÊN FORM CREATE
 
-    function checkemail(email) {
-        email = $("#fs-create-email").val().trim();
-        var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
-        if (email == "") {
-            $("#fs-email-create-user-error").text("Email cannot be empty!");
-            $("#fs-create-email").focus();
-            var div = $("#fs-create-email").closest("div.fs-email-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (!pattern.test(email)) {
-            $("#fs-email-create-user-error").text("Please enter valid Email!");
-            $("#fs-create-email").focus();
-            var div = $("#fs-create-email").closest("div.fs-email-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-email-create-user-error").text("");
-            var div = $("#fs-create-email").closest("div.fs-email-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkPass(password) {
-        password = $("#password").val().trim();
-        if (password == "") {
-            $("#fs-pass-create-user-error").text("Password cannot be empty!");
-            $("#password").focus();
-            var div = $("#password").closest("div.fs-password-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (password.length < 6 || password.length > 100) {
-            $("#fs-pass-create-user-error").text("Password 6 to 100 characters!");
-            //            $("#password").focus();
-            var div = $("#password").closest("div.fs-password-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-pass-create-user-error").text("");
-            var div = $("#password").closest("div.fs-password-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkRePass(repassword, password) {
-        repassword = $("#Repassword").val().trim();
-        password = $("#password").val().trim();
-        if (repassword == "") {
-            $("#fs-repass-create-user-error").text("Repassword cannot be empty!");
-            $("#Repassword").focus();
-            var div = $("#Repassword").closest("div.fs-repassword-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (repassword.length < 6 || repassword.length > 100) {
-            $("#fs-repass-create-user-error").text("Password 6 to 100 characters!");
-            //            $("#Repassword").focus();
-            var div = $("#Repassword").closest("div.fs-repassword-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (repassword != password) {
-            $("#fs-repass-create-user-error").text("Repassword is not the same as password!");
-            //            $("#Repassword").focus();
-            var div = $("#Repassword").closest("div.fs-repassword-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-repass-create-user-error").text("");
-            var div = $("#Repassword").closest("div.fs-repassword-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkFirstName(firstname) {
-        firstname = $("#fs-create-firstname").val().trim();
-        if (firstname == "") {
-            $("#fs-fname-create-user-error").text("First Name cannot be empty!");
-            $("#fs-create-firstname").focus();
-            var div = $("#fs-create-firstname").closest("div.fs-firstname-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (firstname.length < 2 || firstname.length > 50) {
-            $("#fs-fname-create-user-error").text("First Name 2 to 50 characters!");
-            //            $("#fs-create-firstname").focus();
-            var div = $("#fs-create-firstname").closest("div.fs-firstname-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-fname-create-user-error").text("");
-            var div = $("#fs-create-firstname").closest("div.fs-firstname-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkLastName(lastname) {
-        lastname = $("#fs-create-lastname").val().trim();
-        if (lastname == "") {
-            $("#fs-lname-create-user-error").text("Last Name cannot be empty!");
-            $("#fs-create-lastname").focus();
-            var div = $("#fs-create-lastname").closest("div.fs-lastname-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (lastname.length < 2 || lastname.length > 50) {
-            $("#fs-lname-create-user-error").text("Last Name 2 to 50 characters!");
-            //            $("#fs-create-lastname").focus();
-            var div = $("#fs-create-lastname").closest("div.fs-lastname-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-lname-create-user-error").text("");
-            var div = $("#fs-create-lastname").closest("div.fs-lastname-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkBirthDay(birthday) {
-        birthday = $("#txtBirthday").val().trim();
-        if (birthday == "") {
-            $("#fs-bday-create-user-error").text("BirthDay cannot be empty!");
-            $("#txtBirthday").focus();
-            var div = $("#txtBirthday").closest("div.fs-birthday-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-bday-create-user-error").text("");
-            var div = $("#txtBirthday").closest("div.fs-birthday-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkPhone(phone) {
-        //        var regex = new RegExp(/^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/);
-        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
-        phone = $("#fs-create-phone").val().trim();
-        if (phone == "") {
-            $("#fs-phone-create-user-error").text("Phone cannot be empty!");
-            $("#fs-create-phone").focus();
-            var div = $("#fs-create-phone").closest("div.fs-phone-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (!regex.test(phone)) {
-            $("#fs-phone-create-user-error").text("Please enter valid phone - Phone begin 01 or 09 and 10 to 11 number!");
-            $("#fs-create-phone").focus();
-            var div = $("#fs-create-phone").closest("div.fs-phone-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-phone-create-user-error").text("");
-            var div = $("#fs-create-phone").closest("div.fs-phone-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-
-    }
-    ;
-    function checkAddress(address) {
-        address = $("#fs-create-address").val().trim();
-        if (address == "") {
-            $("#fs-address-create-user-error").text("Address cannot be empty!");
-            $("#fs-create-address").focus();
-            var div = $("#fs-create-address").closest("div.fs-address-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (address.length < 10 || address.length > 255) {
-            $("#fs-address-create-user-error").text("Address has 10 - 255 characters!");
-            $("#fs-create-address").focus();
-            var div = $("#fs-create-address").closest("div.fs-address-create");
-            div.removeClass("has-success");
-            $("#glypcn-fs-create-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-address-create-user-error").text("");
-            var div = $("#fs-create-address").closest("div.fs-address-create");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-create-user").remove();
-            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
+//    function checkemail(email) {
+//        email = $("#fs-create-email").val().trim();
+//        var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+//        if (email == "") {
+//            $("#fs-email-create-user-error").text("Email cannot be empty!");
+//            $("#fs-create-email").focus();
+//            var div = $("#fs-create-email").closest("div.fs-email-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (!pattern.test(email)) {
+//            $("#fs-email-create-user-error").text("Please enter valid Email!");
+//            $("#fs-create-email").focus();
+//            var div = $("#fs-create-email").closest("div.fs-email-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-email-create-user-error").text("");
+//            var div = $("#fs-create-email").closest("div.fs-email-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkPass(password) {
+//        password = $("#password").val().trim();
+//        if (password == "") {
+//            $("#fs-pass-create-user-error").text("Password cannot be empty!");
+//            $("#password").focus();
+//            var div = $("#password").closest("div.fs-password-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (password.length < 6 || password.length > 100) {
+//            $("#fs-pass-create-user-error").text("Password 6 to 100 characters!");
+//            //            $("#password").focus();
+//            var div = $("#password").closest("div.fs-password-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-pass-create-user-error").text("");
+//            var div = $("#password").closest("div.fs-password-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkRePass(repassword, password) {
+//        repassword = $("#Repassword").val().trim();
+//        password = $("#password").val().trim();
+//        if (repassword == "") {
+//            $("#fs-repass-create-user-error").text("Repassword cannot be empty!");
+//            $("#Repassword").focus();
+//            var div = $("#Repassword").closest("div.fs-repassword-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (repassword.length < 6 || repassword.length > 100) {
+//            $("#fs-repass-create-user-error").text("Password 6 to 100 characters!");
+//            //            $("#Repassword").focus();
+//            var div = $("#Repassword").closest("div.fs-repassword-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (repassword != password) {
+//            $("#fs-repass-create-user-error").text("Repassword is not the same as password!");
+//            //            $("#Repassword").focus();
+//            var div = $("#Repassword").closest("div.fs-repassword-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-repass-create-user-error").text("");
+//            var div = $("#Repassword").closest("div.fs-repassword-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkFirstName(firstname) {
+//        firstname = $("#fs-create-firstname").val().trim();
+//        if (firstname == "") {
+//            $("#fs-fname-create-user-error").text("First Name cannot be empty!");
+//            $("#fs-create-firstname").focus();
+//            var div = $("#fs-create-firstname").closest("div.fs-firstname-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (firstname.length < 2 || firstname.length > 50) {
+//            $("#fs-fname-create-user-error").text("First Name 2 to 50 characters!");
+//            //            $("#fs-create-firstname").focus();
+//            var div = $("#fs-create-firstname").closest("div.fs-firstname-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-fname-create-user-error").text("");
+//            var div = $("#fs-create-firstname").closest("div.fs-firstname-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkLastName(lastname) {
+//        lastname = $("#fs-create-lastname").val().trim();
+//        if (lastname == "") {
+//            $("#fs-lname-create-user-error").text("Last Name cannot be empty!");
+//            $("#fs-create-lastname").focus();
+//            var div = $("#fs-create-lastname").closest("div.fs-lastname-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (lastname.length < 2 || lastname.length > 50) {
+//            $("#fs-lname-create-user-error").text("Last Name 2 to 50 characters!");
+//            //            $("#fs-create-lastname").focus();
+//            var div = $("#fs-create-lastname").closest("div.fs-lastname-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-lname-create-user-error").text("");
+//            var div = $("#fs-create-lastname").closest("div.fs-lastname-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkBirthDay(birthday) {
+//        birthday = $("#txtBirthday").val().trim();
+//        if (birthday == "") {
+//            $("#fs-bday-create-user-error").text("BirthDay cannot be empty!");
+//            $("#txtBirthday").focus();
+//            var div = $("#txtBirthday").closest("div.fs-birthday-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-bday-create-user-error").text("");
+//            var div = $("#txtBirthday").closest("div.fs-birthday-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkPhone(phone) {
+//        //        var regex = new RegExp(/^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/);
+//        var regex = new RegExp(/^(01[2689]|09)[0-9]{8}$/);
+//        phone = $("#fs-create-phone").val().trim();
+//        if (phone == "") {
+//            $("#fs-phone-create-user-error").text("Phone cannot be empty!");
+//            $("#fs-create-phone").focus();
+//            var div = $("#fs-create-phone").closest("div.fs-phone-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (!regex.test(phone)) {
+//            $("#fs-phone-create-user-error").text("Please enter valid phone - Phone begin 01 or 09 and 10 to 11 number!");
+//            $("#fs-create-phone").focus();
+//            var div = $("#fs-create-phone").closest("div.fs-phone-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-phone-create-user-error").text("");
+//            var div = $("#fs-create-phone").closest("div.fs-phone-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//
+//    }
+//    ;
+//    function checkAddress(address) {
+//        address = $("#fs-create-address").val().trim();
+//        if (address == "") {
+//            $("#fs-address-create-user-error").text("Address cannot be empty!");
+//            $("#fs-create-address").focus();
+//            var div = $("#fs-create-address").closest("div.fs-address-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (address.length < 10 || address.length > 255) {
+//            $("#fs-address-create-user-error").text("Address has 10 - 255 characters!");
+//            $("#fs-create-address").focus();
+//            var div = $("#fs-create-address").closest("div.fs-address-create");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-create-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-address-create-user-error").text("");
+//            var div = $("#fs-create-address").closest("div.fs-address-create");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-create-user").remove();
+//            div.append('<span id="glypcn-fs-create-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
 
     /*
      $("body").on("click", "#fs-button-create-user", function (e) {
@@ -4465,122 +4465,122 @@ $(document).ready(function () {
 
 
 
-    function emailcheck(email) {
-        email = $("#fs-update-email").val().trim();
-        var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
-        if (email == "") {
-            $("#fs-email-update-user-error").text("Email cannot be empty!");
-            $("#fs-update-email").focus();
-            var div = $("#fs-update-email").closest("div.fs-email-update");
-            div.removeClass("has-success");
-            $("#glypcn-fs-update-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (!pattern.test(email)) {
-            $("#fs-email-update-user-error").text("Please enter valid Email!");
-            //            $("#fs-create-email").focus();
-            var div = $("#fs-update-email").closest("div.fs-email-update");
-            div.removeClass("has-success");
-            $("#glypcn-fs-update-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-email-update-user-error").text("");
-            var div = $("#fs-update-email").closest("div.fs-email-update");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-update-user").remove();
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkfirstName(firstname) {
-        firstname = $("#fs-update-firstname").val().trim();
-        if (firstname == "") {
-            $("#fs-firstname-update-user-error").text("First Name cannot be empty!");
-            $("#fs-update-firstname").focus();
-            var div = $("#fs-update-firstname").closest("div.fs-firstname-update");
-            div.removeClass("has-success");
-            $("#glypcn-fs-update-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (firstname.length < 2 || firstname.length > 50) {
-            $("#fs-firstname-update-user-error").text("First Name 2 to 50 characters!");
-            //            $("#fs-create-firstname").focus();
-            var div = $("#fs-update-firstname").closest("div.fs-firstname-update");
-            div.removeClass("has-success");
-            $("#glypcn-fs-update-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-firstname-update-user-error").text("");
-            var div = $("#fs-update-firstname").closest("div.fs-firstname-update");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-update-user").remove();
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checklastName(lastname) {
-        lastname = $("#fs-update-lastname").val().trim();
-        if (lastname == "") {
-            $("#fs-lastname-update-user-error").text("Last Name cannot be empty!");
-            $("#fs-update-lastname").focus();
-            var div = $("#fs-update-lastname").closest("div.fs-lastname-update");
-            div.removeClass("has-success");
-            $("#glypcn-fs-update-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else if (lastname.length < 2 || lastname.length > 50) {
-            $("#fs-lastname-update-user-error").text("Last Name 2 to 50 characters!");
-            //            $("#fs-create-lastname").focus();
-            var div = $("#fs-update-lastname").closest("div.fs-lastname-update");
-            div.removeClass("has-success");
-            $("#glypcn-fs-update-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-lastname-update-user-error").text("");
-            var div = $("#fs-update-lastname").closest("div.fs-lastname-update");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-update-user").remove();
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
-    function checkbirthDay(birthday) {
-        birthday = $("#txtbirthday").val().trim();
-        if (birthday == "") {
-            $("#fs-birthday-update-user-error").text("BirthDay cannot be empty!");
-            $("#txtbirthday").focus();
-            var div = $("#txtbirthday").closest("div.fs-birthday-update");
-            div.removeClass("has-success");
-            $("#glypcn-fs-update-user").remove();
-            div.addClass("has-error has-feedback");
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-            return false;
-        } else {
-            $("#fs-birthday-update-user-error").text("");
-            var div = $("#txtbirthday").closest("div.fs-birthday-update");
-            div.removeClass("has-error");
-            div.addClass("has-success has-feedback");
-            $("#glypcn-fs-update-user").remove();
-            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return true;
-        }
-    }
-    ;
+//    function emailcheck(email) {
+//        email = $("#fs-update-email").val().trim();
+//        var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+//        if (email == "") {
+//            $("#fs-email-update-user-error").text("Email cannot be empty!");
+//            $("#fs-update-email").focus();
+//            var div = $("#fs-update-email").closest("div.fs-email-update");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-update-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (!pattern.test(email)) {
+//            $("#fs-email-update-user-error").text("Please enter valid Email!");
+//            //            $("#fs-create-email").focus();
+//            var div = $("#fs-update-email").closest("div.fs-email-update");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-update-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-email-update-user-error").text("");
+//            var div = $("#fs-update-email").closest("div.fs-email-update");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-update-user").remove();
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkfirstName(firstname) {
+//        firstname = $("#fs-update-firstname").val().trim();
+//        if (firstname == "") {
+//            $("#fs-firstname-update-user-error").text("First Name cannot be empty!");
+//            $("#fs-update-firstname").focus();
+//            var div = $("#fs-update-firstname").closest("div.fs-firstname-update");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-update-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (firstname.length < 2 || firstname.length > 50) {
+//            $("#fs-firstname-update-user-error").text("First Name 2 to 50 characters!");
+//            //            $("#fs-create-firstname").focus();
+//            var div = $("#fs-update-firstname").closest("div.fs-firstname-update");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-update-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-firstname-update-user-error").text("");
+//            var div = $("#fs-update-firstname").closest("div.fs-firstname-update");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-update-user").remove();
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checklastName(lastname) {
+//        lastname = $("#fs-update-lastname").val().trim();
+//        if (lastname == "") {
+//            $("#fs-lastname-update-user-error").text("Last Name cannot be empty!");
+//            $("#fs-update-lastname").focus();
+//            var div = $("#fs-update-lastname").closest("div.fs-lastname-update");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-update-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else if (lastname.length < 2 || lastname.length > 50) {
+//            $("#fs-lastname-update-user-error").text("Last Name 2 to 50 characters!");
+//            //            $("#fs-create-lastname").focus();
+//            var div = $("#fs-update-lastname").closest("div.fs-lastname-update");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-update-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-lastname-update-user-error").text("");
+//            var div = $("#fs-update-lastname").closest("div.fs-lastname-update");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-update-user").remove();
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
+//    function checkbirthDay(birthday) {
+//        birthday = $("#txtbirthday").val().trim();
+//        if (birthday == "") {
+//            $("#fs-birthday-update-user-error").text("BirthDay cannot be empty!");
+//            $("#txtbirthday").focus();
+//            var div = $("#txtbirthday").closest("div.fs-birthday-update");
+//            div.removeClass("has-success");
+//            $("#glypcn-fs-update-user").remove();
+//            div.addClass("has-error has-feedback");
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+//            return false;
+//        } else {
+//            $("#fs-birthday-update-user-error").text("");
+//            var div = $("#txtbirthday").closest("div.fs-birthday-update");
+//            div.removeClass("has-error");
+//            div.addClass("has-success has-feedback");
+//            $("#glypcn-fs-update-user").remove();
+//            div.append('<span id="glypcn-fs-update-user" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+//            return true;
+//        }
+//    }
+//    ;
 
 
 //    $(".fs-button-update-user").click(function (e) {

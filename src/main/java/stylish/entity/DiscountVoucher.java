@@ -20,10 +20,10 @@ public class DiscountVoucher implements Serializable {
     private Short discount;
     private Integer quantity;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd-MM-YYYY")
+    @DateTimeFormat(pattern = "MM-dd-YYYY")
     private Date beginDate;
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "dd-MM-YYYY")
+    @DateTimeFormat(pattern = "MM-dd-YYYY")
     private Date endDate;
     private String description;
 

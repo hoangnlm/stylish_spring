@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class OrdersDetail implements Serializable {
 
+    private static final long serialVersionUID = -5572751212220363590L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ordersDetailID;

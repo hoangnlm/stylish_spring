@@ -25,7 +25,7 @@
 
                     <div class="form-group has-feedback">
                         <label for="login-email"><i class="fa fa-envelope"></i> Email <em class="asterisk">*</em></label>
-                        <input type="email" class="form-control emailVal" id="login-email" name="email"/>
+                        <input type="email" class="form-control emailVal" id="login-email" name="email" autofocus="on"/>
                     </div>
 
                     <div class="form-group has-feedback">
