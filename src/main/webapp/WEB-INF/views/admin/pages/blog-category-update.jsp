@@ -24,10 +24,11 @@
                             <p class="help-block" id="fs-blog-category-error"></p>                      
                             <form:input id="fs-blog-category-update" class="form-control" path="blogCateName"/>
                         </div>
-                             ${status}
+                        ${status}
 
-                                    <form:button type="submit" id="fs-button-update-blog-category" class="btn btn-warning">Update  <i class="fa fa-edit"></i></form:button>
-                                    <form:button type="reset" class="btn btn-default">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Reset&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </form:button>
+                        <form:button type="submit" id="fs-button-update-blog-category" class="btn btn-warning">Update  <i class="fa fa-edit"></i></form:button>
+                        <form:button type="reset" class="btn btn-default">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Reset&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </form:button>
+                            <button type="button" onclick="window.location = 'admin/blog/category.html';" class="btn btn-default">BACK TO LIST</button>
                     </form:form>
                 </div>
             </div>

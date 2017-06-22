@@ -6,8 +6,8 @@ $(function () {
         "#fs-form-login-user", // login
         "#fs-form-create-user", // register
         "#fs-form-update-account", // account info
-        "#shipping-zip-form",  // change password
-        "#address-update",  // update address
+        "#shipping-zip-form", // change password
+        "#address-update", // update address
         "#checkout-form" // checkout
     ]);
 
@@ -86,6 +86,7 @@ jQuery.validator.addClassRules({
         maxlength: 20
     },
     repasswordVal: {
+        required: true,
         repassword: true
     },
     firstNameVal: {
@@ -267,46 +268,72 @@ $(document).ready(function () {
     // DELETE COMPARE-LIST ITEM 
     $(".fs-compare-del").click(function () {
         var compareID = $(this).attr("fs-compare-del-id");
-//        console.log("delete compare list item");
-//        console.log(compareID);
-        //        alert(compareID);
-        if (!window.confirm('Are you sure to delete this?')) {
-            return;
-        }
-        if (compareID) {
-            $("#fs-compare-del-" + compareID).remove();
-            $.ajax({
-                url: "compare/ajax/delete/" + compareID + ".html",
-                method: "GET",
-                data: {
-                    compareID: compareID
-                },
-                success: function (response) {
-                    if (response === "0") {
-                        swal({
-                            title: "<h1 style='color: #ff0000;'>Delete</h1>",
-                            text: "Deleted successfully!",
-                            timer: 2000,
-                            showConfirmButton: false,
-                            html: true
-                        });
-                        // LOAD MENU COMPARE TREN HEADER
-                        $.ajax({
-                            url: "compare/ajax/getCompare.html",
-                            method: "GET",
-                            dataType: 'html',
-                            success: function (response) {
-                                $("#compare").html(response).fadeIn(1000);
-                                console.log("compare/ajax/getCompare.html");
-                            }
-                        });
-                    } else if (response === "2") {
-                        location.assign("compare/view.html");
+        swal({
+            title: "Are you sure to delete this?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function (isConfirm) {
+            if (!isConfirm) {
+                return
+            }
+
+            if (compareID) {
+                $("#fs-compare-del-" + compareID).remove();
+                $.ajax({
+                    url: "compare/ajax/delete/" + compareID + ".html",
+                    method: "GET",
+                    data: {
+                        compareID: compareID
+                    },
+                    success: function (response) {
+                        if (response === "0") {
+                            swal({
+                                title: "<h1 style='color: #ff0000;'>Delete</h1>",
+                                text: "Deleted successfully!",
+                                timer: 2000,
+                                showConfirmButton: false,
+                                html: true
+                            });
+                            // LOAD MENU COMPARE TREN HEADER
+                            $.ajax({
+                                url: "compare/ajax/getCompare.html",
+                                method: "GET",
+                                dataType: 'html',
+                                success: function (response) {
+                                    $("#compare").html(response).fadeIn(1000);
+                                    console.log("compare/ajax/getCompare.html");
+                                }
+                            });
+                        } else if (response === "2") {
+                            location.assign("compare/view.html");
+                        }
                     }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
+    })
+    // DELETE ALL COMPARE-LIST ITEM 
+    $("#compare-clear-all").on("submit", function () {
+        var form = this;
+        swal({
+            title: "Are you sure to delete this?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }, function (isConfirm) {
+            if (!isConfirm) {
+                return
+            }
+            form.submit()
+        })
+    })
+
+
     // LOAD MENU COMPARE TREN HEADER
     $.ajax({
         url: "compare/ajax/getCompare.html",
@@ -3386,7 +3413,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
     //checkout.jsp
     //Discount in checkout.jsp
     //Load form discount in checkout
@@ -3676,7 +3703,7 @@ $(document).ready(function () {
 //        ;
 //    });
 
-    
+
     //Cancel Order side client in order-history-detail.jsp
     $('#confirm-cancel-order').on('show.bs.modal', function (e) {
         $(this).find('.btn-cancel-order-ok').attr('href', $(e.relatedTarget).data('href'));

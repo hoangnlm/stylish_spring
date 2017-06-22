@@ -34,7 +34,7 @@ public class LoginController {
         String email = (String) session.getAttribute("email");
         if (email != null) {
             session.setAttribute("fList", sharedFunc.getFunctionListFromEmail(email));
-            System.out.println("fList Login: " + sharedFunc.getFunctionListFromEmail(email));
+//            System.out.println("fList Login: " + sharedFunc.getFunctionListFromEmail(email));
             return "redirect:/admin/index.html";
         }
         return "admin/login";
@@ -56,7 +56,7 @@ public class LoginController {
             case 1:
                 session.setAttribute("email", email);
                 session.setAttribute("fList", sharedFunc.getFunctionListFromEmail(email));
-                System.out.println("fList Login: " + sharedFunc.getFunctionListFromEmail(email));
+//                System.out.println("fList Login: " + sharedFunc.getFunctionListFromEmail(email));
                 
                 if (remember != null && remember == 1) {
                     Cookie ckEmail = new Cookie("emailA", email);

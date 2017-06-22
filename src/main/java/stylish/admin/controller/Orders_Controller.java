@@ -410,22 +410,23 @@ public class Orders_Controller {
     public String discountadd(ModelMap model, @ModelAttribute("discountVoucher") DiscountVoucher newDiscountVoucher,
             RedirectAttributes flashAttr) {
         int checkSta = orderStateLessBean.createDiscountVoucher(newDiscountVoucher);
-        if (checkSta == 2) {
-            model.addAttribute("error", "<div class=\"alert alert-danger\">\n"
-                    + "<strong>DISCOUNT CODE HAS BEEN EXISTED</strong>\n"
-                    + "</div>");
-            model.addAttribute("discountVoucher", newDiscountVoucher);
-            return "admin/pages/discount-add";
-        } else if (checkSta == 0) {
-            flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
-                    + "<strong>ERROR HAPPENED</strong>\n"
-                    + "</div>");
-            return "redirect:/admin/orders/discountadd.html";
-        } else {
-            flashAttr.addFlashAttribute("error", "<div class=\"alert alert-success\">\n"
-                    + "<strong>CREATE DISCOUNT CODE SUCCESSFULLY</strong>\n"
-                    + "</div>");
-            return "redirect:/admin/orders/discountadd.html";
+        switch (checkSta) {
+            case 2:
+                model.addAttribute("error", "<div class=\"alert alert-danger\">\n"
+                        + "<strong>DISCOUNT CODE HAS BEEN EXISTED</strong>\n"
+                        + "</div>");
+                model.addAttribute("discountVoucher", newDiscountVoucher);
+                return "admin/pages/discount-add";
+            case 0:
+                flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
+                        + "<strong>ERROR HAPPENED</strong>\n"
+                        + "</div>");
+                return "redirect:/admin/orders/discountadd.html";
+            default:
+                flashAttr.addFlashAttribute("error", "<div class=\"alert alert-success\">\n"
+                        + "<strong>CREATE DISCOUNT CODE SUCCESSFULLY</strong>\n"
+                        + "</div>");
+                return "redirect:/admin/orders/discountadd.html";
         }
     }
 
@@ -446,23 +447,27 @@ public class Orders_Controller {
     @RequestMapping(value = "discountupdate/{voucherID}", method = RequestMethod.POST)
     public String discountupdate(@PathVariable("voucherID") String voucherID, ModelMap model,
             @ModelAttribute("targetDiscountVoucher") DiscountVoucher targetDiscountVoucher, RedirectAttributes flashAttr) {
+        DiscountVoucher search = orderStateLessBean.getDiscountVoucherByID(targetDiscountVoucher.getVoucherID());
+        targetDiscountVoucher.setBeginDate(search.getBeginDate());
+        targetDiscountVoucher.setEndDate(search.getEndDate());
         int checkSta = orderStateLessBean.updateDiscountVoucher(targetDiscountVoucher);
-        if (checkSta == 2) {
-            model.addAttribute("error", "<div class=\"alert alert-danger\">\n"
-                    + "<strong>VOUCHER NOT FOUND</strong>\n"
-                    + "</div>");
-            model.addAttribute("targetDiscountVoucher", targetDiscountVoucher);
-            return "admin/pages/discount-update";
-        } else if (checkSta == 0) {
-            flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
-                    + "<strong>ERROR WAS HAPPENED</strong>\n"
-                    + "</div>");
-            return "redirect:/admin/orders/discountupdate/" + voucherID + ".html";
-        } else {
-            flashAttr.addFlashAttribute("error", "<div class=\"alert alert-success\">\n"
-                    + "<strong>DISCOUNT VOUCHER " + voucherID + " UPDATE SUCCESSFULLY</strong>\n"
-                    + "</div>");
-            return "redirect:/admin/orders/discountupdate/" + voucherID + ".html";
+        switch (checkSta) {
+            case 2:
+                model.addAttribute("error", "<div class=\"alert alert-danger\">\n"
+                        + "<strong>VOUCHER NOT FOUND</strong>\n"
+                        + "</div>");
+                model.addAttribute("targetDiscountVoucher", targetDiscountVoucher);
+                return "admin/pages/discount-update";
+            case 0:
+                flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
+                        + "<strong>ERROR WAS HAPPENED</strong>\n"
+                        + "</div>");
+                return "redirect:/admin/orders/discountupdate/" + voucherID + ".html";
+            default:
+                flashAttr.addFlashAttribute("error", "<div class=\"alert alert-success\">\n"
+                        + "<strong>DISCOUNT VOUCHER " + voucherID + " UPDATE SUCCESSFULLY</strong>\n"
+                        + "</div>");
+                return "redirect:/admin/orders/discountupdate/" + voucherID + ".html";
         }
     }
 
@@ -471,21 +476,22 @@ public class Orders_Controller {
         DiscountVoucher discountVoucher = orderStateLessBean.getDiscountVoucherByID(voucherID);
         if (discountVoucher != null) {
             int checkSta = orderStateLessBean.deleteDiscountVoucher(discountVoucher);
-            if (checkSta == 2) {
-                flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
-                        + "<strong>VOUCHER CANNOT DELETE! VOUCHER CONNECT TO ORDERS.</strong>\n"
-                        + "</div>");
-                return "redirect:/admin/orders/discountlist.html";
-            } else if (checkSta == 0) {
-                flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
-                        + "<strong>DISCOUNT DELETE PROCESS ERROR!!!</strong>\n"
-                        + "</div>");
-                return "redirect:/admin/orders/discountlist.html";
-            } else {
-                flashAttr.addFlashAttribute("error", "<div class=\"alert alert-success\">\n"
-                        + "<strong>DISCOUNT VOUCHER " + voucherID + " DELETE SUCCESSFULLY</strong>\n"
-                        + "</div>");
-                return "redirect:/admin/orders/discountlist.html";
+            switch (checkSta) {
+                case 2:
+                    flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
+                            + "<strong>VOUCHER CANNOT DELETE! VOUCHER CONNECT TO ORDERS.</strong>\n"
+                            + "</div>");
+                    return "redirect:/admin/orders/discountlist.html";
+                case 0:
+                    flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"
+                            + "<strong>DISCOUNT DELETE PROCESS ERROR!!!</strong>\n"
+                            + "</div>");
+                    return "redirect:/admin/orders/discountlist.html";
+                default:
+                    flashAttr.addFlashAttribute("error", "<div class=\"alert alert-success\">\n"
+                            + "<strong>DISCOUNT VOUCHER " + voucherID + " DELETE SUCCESSFULLY</strong>\n"
+                            + "</div>");
+                    return "redirect:/admin/orders/discountlist.html";
             }
         }
         flashAttr.addFlashAttribute("error", "<div class=\"alert alert-danger\">\n"

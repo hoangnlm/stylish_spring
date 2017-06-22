@@ -131,7 +131,7 @@
                                                  fs-product-modal-color="${product.productColorListWorking[0].colorID}">
                                             </div>
                                             <div class="product-overlay">
-                                                <a href="#" class="compare fa fa-signal"></a>
+                                                <a class="compare fa fa-signal fs-compare-add" fs-productID="${product.productID}"></a>
                                                 <a href="#" class="likeitem fa fa-heart-o"></a>
                                             </div>
                                         </div>

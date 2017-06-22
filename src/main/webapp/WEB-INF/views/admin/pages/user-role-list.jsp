@@ -17,7 +17,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="role-dataTables-example">
                     <thead>
                         <tr>
                             <td class="text-center fs-valign-middle">No</td>
@@ -33,7 +33,7 @@
                                 <td class="text-center fs-valign-middle">
                                     <a href="admin/user/role/edit/${roles.roleID}.html" class="btn btn-warning"><i class="fa fa-edit"></i> Update</a>
                                     <c:if test="${empty roles.userList}">
-                                        <a class="btn fs-button-detele-role btn-danger" id="fs-delete-button-role" fs-roleID="${roles.roleID}"><i class="fa fa-remove"></i> Delete</a>
+                                        <a class="btn fs-button-delete-role btn-danger" fs-roleID="${roles.roleID}"><i class="fa fa-remove"></i> Delete</a>
                                     </c:if>
                                     <c:if test="${not empty roles.userList}">
                                         <a class="btn btn-danger disabled" fs-roleID="${roles.roleID}"><i class="fa fa-remove"></i> Delete</a>

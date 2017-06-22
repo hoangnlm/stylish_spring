@@ -229,7 +229,7 @@
                     <article class="home-post text-center equal-height">
                         <div class="post-thumb">
                             <a href="./blog-detail/${blog.blogID}.html">
-                                <img src="assets/images/blog/1/${blog.blogImg}" class="img-responsive" alt=""/>
+                                <img src="assets/images/blog/${blog.blogImg}" class="img-responsive" alt=""/>
                                 <div class="overlay-rmore fa fa-link"></div>
                             </a>
                         </div>

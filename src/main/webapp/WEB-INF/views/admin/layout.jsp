@@ -114,6 +114,9 @@
 
         <!-- Page-Level Demo Scripts - Tables - Use for reference -->
         <script src="assets/admin/dist/js/stylish_settings.js" type="text/javascript"></script>
+
+        <!-- CKEditor -->
+        <script src="assets/js/ckeditor.js" type="text/javascript"></script>
     </head>
 
     <body id="admin">        

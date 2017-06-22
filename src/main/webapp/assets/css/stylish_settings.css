@@ -627,7 +627,7 @@ h1.fs-site-title{
     height:     100%;
     width:      100%;
     background: rgba( 255, 255, 255, 0.8 ) 
-        url('../images/loading.gif') 
+        url('../images/loading7.gif') 
         50% 50% 
         no-repeat;
 }
@@ -1313,7 +1313,7 @@ Main Compare Layout Components
     color: transparent;
     height: 60px;
     width: 40px;
-    background: rgba(64, 64, 66, 0.8) url("assets/images/cd-arrow.svg") no-repeat center center;
+    background: rgba(64, 64, 66, 0.8) url("../images/cd-arrow.svg") no-repeat center center;
     border-radius: 3px;
     -webkit-transition: background-color 0.3s, opacity 0.3s, visibility 0.3s, -webkit-transform 0.3s;
     -moz-transition: background-color 0.3s, opacity 0.3s, visibility 0.3s, -moz-transform 0.3s;

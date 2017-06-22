@@ -50,7 +50,7 @@
                         </div>
                         <button type="submit" id="btn-update-discount" class="btn btn-success">UPDATE</button>
                         <button type="button" onclick="window.location = 'admin/orders/discountupdate/${targetDiscountVoucher.voucherID}.html';" class="btn btn-default">RESET</button>
-                        <button type="button" onclick="window.location = 'admin/orders/discountlist.html';" class="btn btn-default">CANCEL - BACK TO DISCOUNT LIST</button>
+                        <button type="button" onclick="window.location = 'admin/orders/discountlist.html';" class="btn btn-default">BACK TO LIST</button>
                     </form:form>
                 </div>
             </div>

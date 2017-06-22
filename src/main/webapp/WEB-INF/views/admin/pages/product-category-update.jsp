@@ -31,6 +31,7 @@
 
                         <button type="submit" class="btn btn-warning" id="fs-btn-update-category">Update</button>
                         <button type="reset" class="btn btn-default">Reset</button>
+                        <button type="button" onclick="window.location = 'admin/product-category.html';" class="btn btn-default">BACK TO LIST</button>
                     </form:form>
                 </div>
             </div>

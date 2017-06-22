@@ -241,13 +241,14 @@ public class Blog_Controller {
         model.addAttribute("targetBlogs", targetBlogs);
         // Hien thi img trong update
 //        model.addAttribute("upImage", targetBlogs.getBlogImg());
-        model.addAttribute("editor1", targetBlogs.getContent());
+//        model.addAttribute("editor1", targetBlogs.getContent());
 
         return "admin/pages/blog-update";
     }
 
     @RequestMapping(value = "edit/{blogID}", method = RequestMethod.POST)
-    public String blogUpdate(@ModelAttribute("targetBlogs") Blogs updatedTargetBlogs,
+    public String blogUpdate(
+            @ModelAttribute("targetBlogs") Blogs updatedTargetBlogs,
             @PathVariable("blogID") Integer blogID,
             @RequestParam("upImageBlog") MultipartFile image,
             RedirectAttributes redirectAttr, HttpServletRequest Request) {
@@ -267,11 +268,13 @@ public class Blog_Controller {
         }
         updatedTargetBlogs.setBlogTitleNA(shareFunc.changeText(updatedTargetBlogs.getBlogTitle()));
         updatedTargetBlogs.setPostedDate(new Date());
-        updatedTargetBlogs.setContent(Request.getParameter("editor1"));
+//        updatedTargetBlogs.setContent(Request.getParameter("editor1"));
+
         try {
             if (!image.isEmpty()) {
                 updatedTargetBlogs.setBlogImg(image.getOriginalFilename());
-                String path = app.getRealPath("/assets/images/") + "/" + updatedTargetBlogs.getBlogImg();
+                String path = app.getRealPath("/assets/images/blog/") + "/" + updatedTargetBlogs.getBlogImg();
+//                System.out.println("path: ========" + path);
                 image.transferTo(new File(path));
             } else {
                 updatedTargetBlogs.setBlogImg(normalTargetBlog.getBlogImg());
@@ -283,10 +286,10 @@ public class Blog_Controller {
         if (blogsSB.editBlogs(updatedTargetBlogs)) {
             Blogs afterUpdateBlogs = blogsSB.findBlogsByID(blogID);
             //Change normal date to string
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            Date date = afterUpdateBlogs.getPostedDate();
-            String formattedDate = dateFormat.format(date);
-            redirectAttr.addFlashAttribute("formattedDate", formattedDate);
+//            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//            Date date = afterUpdateBlogs.getPostedDate();
+//            String formattedDate = dateFormat.format(date);
+//            redirectAttr.addFlashAttribute("formattedDate", formattedDate);
 
             redirectAttr.addFlashAttribute("targetBlogs", afterUpdateBlogs);
             redirectAttr.addFlashAttribute("status", "<div class=\"col-md-12  alert alert-success\">Update Blogs Info Successfully!</div>");

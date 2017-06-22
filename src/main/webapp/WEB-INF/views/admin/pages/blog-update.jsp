@@ -1,6 +1,4 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@taglib uri="http://ckeditor.com" prefix="ckeditor" %>
-<%@taglib uri="http://cksource.com/ckfinder" prefix="ckfinder" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!-- Page Content -->
 <div id="page-wrapper">
@@ -52,7 +50,7 @@
                         <label>Image <span class="fs-color-red">*</span></label>
                         <p id="fs-error-mess-blog-img" class="help-block"></p>
                         <input type="file" id="upImageBlog" name="upImageBlog">
-                        <img class="responsive" style="width: 280px" src="assets/images/blog/1/${targetBlogs.blogImg}" alt=""/>
+                        <img class="responsive" style="width: 280px" src="assets/images/blog/${targetBlogs.blogImg}" alt=""/>
                     </div>
                 </div>
                 <!--                        <div class="form-group">
@@ -69,11 +67,10 @@
                             <label>Content <span class="fs-color-red">*</span></label>
                             <br/>
                             <!--CKEditor-->
-                            <form action="getContent" method="get">
-                                <textarea cols="80" id="editor1" name="editor1" value="${editor1}"></textarea>				
-                            </form>
-                            <ckfinder:setupCKEditor basePath="assets/ckfinder/" editor="editor1" />
-                            <ckeditor:replace replace="editor1" basePath="assets/ckeditor/" />
+                            <form:textarea path="content" id="content"/>
+                            <script>
+                                CKEDITOR.replace("content")
+                            </script>
                             <!--Error Message-->
                             <div style="color:red; margin-top: 10px;">
                                 <form:errors path="content"/>
@@ -92,6 +89,7 @@
                         </div>
                         <form:button id="fs-button-update-blog" type="submit" class="btn btn-warning" style="width: 20%" >Update<i class="fa fa-edit"></i></form:button>
                         <form:button type="reset" class="btn btn-default" style="width: 20%"> Reset </form:button>
+                            <button type="button" onclick="window.location = 'admin/blog/list.html';" class="btn btn-default">BACK TO LIST</button>
                         </div>
                 </form:form>
                 <!-- /.col-lg-12 -->

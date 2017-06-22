@@ -36,7 +36,7 @@
         #cboxTitle{position:absolute; bottom:4px; right:30px; text-align:right; width:100%; color:#949494;line-height:1.2em;height: 1.2em; overflow:hidden;}
         #cboxCurrent{position:absolute; bottom:4px; left:50px; color:#949494; background:#fff; padding-right: 2px; padding-left: 6px; line-height:1.2em;height: 1.2em; }
         #cboxLoadingOverlay{background:url(images/loading_background.png) no-repeat center center;}
-        #cboxLoadingGraphic{background:url(images/loading.gif) no-repeat center center;}
+        #cboxLoadingGraphic{background:url(images/loading7.gif) no-repeat center center;}
 
         /* these elements are buttons, and may need to have additional styles reset to avoid unwanted base styles */
         #cboxPrevious, #cboxNext, #cboxSlideshow, #cboxClose {border:0; padding:0; margin:0; overflow:visible; width:auto; background:none; }

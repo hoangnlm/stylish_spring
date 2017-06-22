@@ -44,7 +44,7 @@
                         <c:forEach items="${PopularPosts}" var="blogpopularclient" begin="0" end="2" varStatus="no">
                             <li>
                                 <div class="popular-img">
-                                    <a href="blog-detail/${blogpopularclient.blogID}.html"> <img src="assets/images/blog/1/${blogpopularclient.blogImg}" class="img-responsive" alt=""></a>
+                                    <a href="blog-detail/${blogpopularclient.blogID}.html"> <img src="assets/images/blog/${blogpopularclient.blogImg}" class="img-responsive" alt=""></a>
                                 </div>
                                 <div class="popular-desc">
                                     <h5> <a href="blog-detail/${blogpopularclient.blogID}.html">${blogpopularclient.blogTitle}</a></h5>
@@ -67,14 +67,14 @@
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     <div class="item active">
-                                        <img src="assets/images/blog/1/1097x600.jpeg" class="img-responsive" alt=""/>
+                                        <img src="assets/images/blog/1097x600.jpeg" class="img-responsive" alt=""/>
                                     </div>
                                     <div class="item">
-                                        <img src="assets/images/blog/1/1097x600a.jpeg" class="img-responsive" alt=""/>
+                                        <img src="assets/images/blog/1097x600a.jpeg" class="img-responsive" alt=""/>
                                     </div>
 
                                     <div class="item">
-                                        <img src="assets/images/blog/1/1097x600c.jpeg" class="img-responsive" alt=""/>
+                                        <img src="assets/images/blog/1097x600c.jpeg" class="img-responsive" alt=""/>
                                     </div>
                                 </div>
                             </div>
@@ -111,12 +111,12 @@
                                             </div>
                                             <div class="space20"></div>
                                             <div class="post-media">
-                                                <img src="assets/images/blog/1/${blogclient.blogImg}" class="lazy img-responsive" alt="">
+                                                <img src="assets/images/blog/${blogclient.blogImg}" class="lazy img-responsive" alt="">
                                             </div>
                                             <div class="post-excerpt">
                                                 <p>${blogclient.blogSummary}</p>
                                             </div>
-                                                <a href="blog-detail/${blogclient.blogID}.html"><button class="btn-black" type="button">Read More&nbsp;&nbsp;<i class="fa fa-angle-right"></i></button></a>
+                                                <a href="blog-detail/${blogclient.blogID}.html"><button class="btn-black" type="button">Read More&nbsp;<i class="fa fa-angle-right"></i></button></a>
                                         </div>
                                     </article>
                                     <div class="blog-sep"></div>

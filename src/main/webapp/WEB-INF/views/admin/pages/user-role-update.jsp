@@ -50,6 +50,7 @@
 
                         <button type="submit" id="fs-button-update-role" class="btn btn-warning"><i class="fa fa-edit"></i> Update</button>
                         <button type="button" class="btn btn-default" onclick="location.reload()"><i class="fa fa-repeat"></i> Reset</button>
+                        <button type="button" onclick="window.location = 'admin/user/role.html';" class="btn btn-default">BACK TO LIST</button>
                     </form:form>
                 </div>
             </div>

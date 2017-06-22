@@ -50,7 +50,7 @@
                                 <td class="center" align="center">${ratingItem.product.productName}</td>
                                 <td class="center" align="center">${ratingItem.user.fullName}</td>
                                 <td class="center" align="center">
-                                    <fmt:formatDate pattern="dd/MM/yyyy" value="${ratingItem.ratingDate}"/>
+                                    <fmt:formatDate pattern="MM/dd/yyyy" value="${ratingItem.ratingDate}"/>
                                 </td>
                                 <td class="center" align="center">${ratingItem.review}</td>
                             </tr>

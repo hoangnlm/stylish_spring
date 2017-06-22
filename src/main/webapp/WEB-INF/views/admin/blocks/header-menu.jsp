@@ -119,7 +119,7 @@
                                         <a href="admin/orders/discountadd.html"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
                                     </li>
                                     <li>
-                                        <a href="admin/orders/discountlist.html"><i class="fa fa-wpforms" aria-hidden="true"></i> List</a>
+                                        <a href="admin/orders/discountlist.html"><i class="fa fa-list" aria-hidden="true"></i> List</a>
                                     </li>
                                 </ul>
                                 <!-- /.nav-second-level -->

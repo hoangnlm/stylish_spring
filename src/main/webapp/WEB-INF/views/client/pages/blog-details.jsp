@@ -25,7 +25,7 @@
                         <c:forEach items="${PopularPosts}" var="blogpopularclient" begin="0" end="2" varStatus="no">
                             <li>
                                 <div class="popular-img">
-                                    <a href="blog-detail/${blogpopularclient.blogID}.html"> <img src="assets/images/blog/1/${blogpopularclient.blogImg}" class="img-responsive" alt=""></a>
+                                    <a href="blog-detail/${blogpopularclient.blogID}.html"> <img src="assets/images/blog/${blogpopularclient.blogImg}" class="img-responsive" alt=""></a>
                                 </div>
                                 <div class="popular-desc">
                                     <h5> <a href="blog-detail/${blogpopularclient.blogID}.html">${blogpopularclient.blogTitle}</a></h5>
@@ -100,7 +100,7 @@
                                                         </div>
                                                     </div>-->
                         <div class="item">						
-                            <img src="assets/images/blog/1/${getShowAllBlogsDetail.blogImg}"  class="img-responsive" alt="">
+                            <img src="assets/images/blog/${getShowAllBlogsDetail.blogImg}"  class="img-responsive" alt="">
                         </div>
                         <div class="space30"></div>
                         <p>

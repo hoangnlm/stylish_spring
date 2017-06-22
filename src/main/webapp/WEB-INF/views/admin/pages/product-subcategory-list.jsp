@@ -16,7 +16,7 @@
         <!-- /.row -->
         <div class="row">
             <div class="col-lg-12">
-                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="subcategory-dataTables-example">
                     <thead>
                         <tr>
                             <th class="text-center">No</th>

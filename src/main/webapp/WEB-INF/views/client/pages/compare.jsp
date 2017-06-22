@@ -16,9 +16,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <form method="GET" action="compare/deleteAll.html">
-                        <button type="submit" style="margin-left: 20px;" class="btn-black pull-right" onclick="return confirm('Are you sure to clear all?');">Clear all</button>
-                        <a href="index.html" class="btn-black pull-right">Back to shopping</a>
+                    <form method="GET" action="compare/deleteAll.html" id="compare-clear-all">
+                        <button type="submit" style="margin-left: 20px;" class="btn-black pull-right">Clear all</button>
+                        <a href="index.html" class="pull-right"><button class="btn-black">Back to shopping</button></a>
                     </form
                 </div>
             </div>
@@ -51,7 +51,7 @@
                                 <ul class="cd-features-list">
                                     <li>${item.price}</li>
                                     <li>${item.productDiscount}</li>
-                                    <li><fmt:formatDate pattern="dd/MM/yyyy" value="${item.postedDate}"/></li>
+                                    <li><fmt:formatDate pattern="MM/dd/yyyy" value="${item.postedDate}"/></li>
                                     <li>${item.productViews}</li>
                                 </ul>
                             </li> <!-- .product -->

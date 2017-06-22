@@ -49,11 +49,11 @@
                                 <td class="fs-valign-middle">${blogs.blogTitle}</td>
                                 <td class="fs-valign-middle">${blogs.blogSummary}</td>
                                 <td>
-                                    <img class="responsive" style="width: 100px" src="assets/images/blog/1/${blogs.blogImg}" alt=""/>
+                                    <img class="responsive" style="width: 100px" src="assets/images/blog/${blogs.blogImg}" alt=""/>
                                 </td>
                                 <td class="text-center fs-valign-middle">${blogs.content}</td>
                                 <td>  
-                                    <fmt:formatDate value="${blogs.postedDate}" pattern="dd-MM-YYYY" />
+                                    <fmt:formatDate value="${blogs.postedDate}" pattern="MM-dd-YYYY" />
                                 </td>
                                 <td >${blogs.blogViews}</td>
                                 <td >

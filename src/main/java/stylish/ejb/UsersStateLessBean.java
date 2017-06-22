@@ -154,8 +154,8 @@ public class UsersStateLessBean implements UsersStateLessBeanLocal {
     public int updateUser(Users user) {
         int error;
         Users findID = getUserByID(user.getUserID());
-        System.out.println("user: " + user);
-        System.out.println("findID: " + findID);
+//        System.out.println("user: " + user);
+//        System.out.println("findID: " + findID);
 //        if(findEmail == null){
         if (findID.getEmail().equals(user.getEmail())) { // không thay đổi email
             try {
@@ -165,7 +165,7 @@ public class UsersStateLessBean implements UsersStateLessBeanLocal {
                 error = 0;
             }
         } else {
-            System.out.println("findUserByEmail: " + findUserByEmail(user.getEmail()));
+//            System.out.println("findUserByEmail: " + findUserByEmail(user.getEmail()));
             if (findUserByEmail(user.getEmail()) != null) { // Check duplicate email
                 error = 2;// email đã có
             } else {
