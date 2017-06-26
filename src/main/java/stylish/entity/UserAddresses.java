@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class UserAddresses implements Serializable {
 
+    private static final long serialVersionUID = 4693612957201744375L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressID;

@@ -62,27 +62,51 @@ public class OrdersController {
             @RequestParam("sizeID") Integer sizeID,
             @RequestParam("colorID") Integer colorID,
             @RequestParam("quantity") Integer quantity) {
+
+        String result = "";
         Products pro = orderStateLessBean.getProductByID(productID);
         SizesByColor sizesByColor = orderStateLessBean.getSizesByColorBySizeIDandColorID(sizeID, colorID);
+
         if (pro != null) {
             if (sizesByColor != null) {
                 if (sizesByColor.getQuantity() < quantity) {
-                    return "1"; //Not enough stock! Please enter different quantity.
+                    result = "1-"; //Not enough stock
+
+                } else {
+                    CartLineInfo cartLineInfoSearch = orderStateFulBean.getProductInListByID(productID, sizeID, colorID);
+
+                    if (cartLineInfoSearch != null) {
+                        if (cartLineInfoSearch.getQuantity() + quantity > sizesByColor.getQuantity()) {
+                            result = "4-" + cartLineInfoSearch.getQuantity(); // Cart quantity exceeds stock quantity
+
+                        } else {
+                            cartLineInfoSearch.setQuantity(quantity);
+                            orderStateFulBean.addProduct(cartLineInfoSearch);
+                            result = "0-"; //Add Product to Cart Successfully
+                        }
+
+                    } else {    // if cartLineInfoSearch == null
+                        cartLineInfoSearch = new CartLineInfo(pro, sizesByColor, quantity);
+                        orderStateFulBean.addProduct(cartLineInfoSearch);
+                        result = "0-"; //Add Product to Cart Successfully!
+                    }
                 }
-                CartLineInfo cartLineInfo = new CartLineInfo();
-                cartLineInfo.setProduct(pro);
-                cartLineInfo.setSizesByColor(sizesByColor);
-                cartLineInfo.setQuantity(quantity);
-                orderStateFulBean.addProduct(cartLineInfo);
-                return "0"; //Add Product to Cart Successfully!
+
+            } else {    // if sizesByColor == null
+                result = "2-"; //Color and Size error!
             }
-            return "2"; //Color and Size error!
+
+        } else {    // if pro == null
+            result = "3-";
         }
-        return "3";
+
+//        System.out.println("result: " + result);
+        return result;
     }
 
     @RequestMapping(value = "checkout", method = RequestMethod.GET)
-    public String checkout(ModelMap model, HttpServletRequest request) {
+    public String checkout(ModelMap model, HttpServletRequest request
+    ) {
         String email = (String) request.getSession().getAttribute("emailUser");
         if (email == null || orderStateFulBean.showCart().isEmpty()) {
             return "redirect:/index.html";
@@ -104,7 +128,9 @@ public class OrdersController {
     }
 
     @RequestMapping(value = "checkout", method = RequestMethod.POST)
-    public String checkoutPost(ModelMap model, HttpServletRequest request, RedirectAttributes flashAttr) {
+    public String checkoutPost(ModelMap model, HttpServletRequest request,
+            RedirectAttributes flashAttr
+    ) {
         String addressChoice = request.getParameter("address-chose");
         String success_orderID = "";
         String email = (String) request.getSession().getAttribute("emailUser");
@@ -195,7 +221,9 @@ public class OrdersController {
     }
 
     @RequestMapping(value = "checkout-success/{success_orderID}")
-    public String checkout_success(ModelMap model, @PathVariable("success_orderID") Integer success_orderID) {
+    public String checkout_success(ModelMap model,
+            @PathVariable("success_orderID") Integer success_orderID
+    ) {
         //2 dòng này thêm để render ra menu chính
         List<Categories> cateList = productStateLessBean.categoryList();
         model.addAttribute("cateList", cateList);
@@ -204,7 +232,8 @@ public class OrdersController {
     }
 
     @RequestMapping(value = "shoppingcart")
-    public String shoppingcart(ModelMap model, HttpServletRequest request) {
+    public String shoppingcart(ModelMap model, HttpServletRequest request
+    ) {
         if (orderStateFulBean.showCart().isEmpty() || orderStateFulBean.showCart() == null) {
             return "redirect:/index.html";
         }
@@ -217,7 +246,9 @@ public class OrdersController {
     }
 
     @RequestMapping(value = "updatecart", method = RequestMethod.POST)
-    public String updatecart(ModelMap model, HttpServletRequest request, RedirectAttributes flashAttr) {
+    public String updatecart(ModelMap model, HttpServletRequest request,
+            RedirectAttributes flashAttr
+    ) {
         String error = "";
         for (CartLineInfo cartLineInfo : orderStateFulBean.showCart()) {
             String codeIdentify = cartLineInfo.getProduct().getProductID() + "-"
@@ -253,7 +284,8 @@ public class OrdersController {
     public String deleteitemCart(@PathVariable("productid") int productid,
             @PathVariable("sizeID") int sizeid,
             @PathVariable("colorID") int colorid,
-            RedirectAttributes flashAttr) {
+            RedirectAttributes flashAttr
+    ) {
         CartLineInfo cartLineInfo = orderStateFulBean.getProductInListByID(productid, sizeid, colorid);
         if (cartLineInfo != null) {
             orderStateFulBean.deleteProduct(cartLineInfo);
@@ -271,16 +303,18 @@ public class OrdersController {
     @RequestMapping(value = "deleteitemCartInHeader", method = RequestMethod.POST)
     public String deleteitemCartInHeader(@RequestParam("productID") Integer productid,
             @RequestParam("sizeID") Integer sizeid,
-            @RequestParam("colorID") Integer colorid) {
+            @RequestParam("colorID") Integer colorid
+    ) {
         CartLineInfo cartLineInfo = orderStateFulBean.getProductInListByID(productid, sizeid, colorid);
         if (cartLineInfo != null) {
             orderStateFulBean.deleteProduct(cartLineInfo);
         }
-        return getCart();
+        return ajaxGetCart();
     }
 
     @RequestMapping(value = "order-history")
-    public String orderhistory(ModelMap model, HttpServletRequest request) {
+    public String orderhistory(ModelMap model, HttpServletRequest request
+    ) {
         String email = (String) request.getSession().getAttribute("emailUser");
         if (email == null) {
             return "redirect:/index.html";
@@ -294,7 +328,9 @@ public class OrdersController {
     }
 
     @RequestMapping(value = "order-history/{status}")
-    public String orderhistoryByStatus(ModelMap model, HttpServletRequest request, @PathVariable("status") Integer status) {
+    public String orderhistoryByStatus(ModelMap model, HttpServletRequest request,
+            @PathVariable("status") Integer status
+    ) {
         String email = (String) request.getSession().getAttribute("emailUser");
         if (email == null) {
             return "redirect:/index.html";
@@ -308,7 +344,9 @@ public class OrdersController {
     }
 
     @RequestMapping(value = "order-history-detail/{orderID}")
-    public String orderhistorydetail(ModelMap model, @PathVariable("orderID") Integer orderID, HttpServletRequest request) {
+    public String orderhistorydetail(ModelMap model,
+            @PathVariable("orderID") Integer orderID, HttpServletRequest request
+    ) {
         String email = (String) request.getSession().getAttribute("emailUser");
         if (email == null) {
             return "redirect:/index.html";
@@ -322,7 +360,8 @@ public class OrdersController {
     }
 
     @RequestMapping(value = "cancelorder/{orderID}", method = RequestMethod.GET)
-    public String cancelorder(@PathVariable("orderID") Integer orderID) {
+    public String cancelorder(@PathVariable("orderID") Integer orderID
+    ) {
         Orders order = orderStateLessBean.getOrderByID(orderID);
         if (order != null) {
             if (orderStateLessBean.confirmStatusOrder(order, Short.parseShort("0"))) {
@@ -331,10 +370,30 @@ public class OrdersController {
         }
         return "redirect:/orders/order-history.html";
     }
+    
+    @RequestMapping(value = "cart/clear", method = RequestMethod.GET)
+    public String cartClear() {
+        List<CartLineInfo> cartList = orderStateFulBean.showCart();
+        if (!cartList.isEmpty()) {
+            cartList.clear();
+        }
+        return "redirect:/index.html";
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "ajax/cart/clear", method = RequestMethod.GET)
+    public String ajaxCartClear() {
+//        System.out.println("orders/ajax/cart/clear");
+        List<CartLineInfo> cartList = orderStateFulBean.showCart();
+        if (!cartList.isEmpty()) {
+            cartList.clear();
+        }
+        return "0"; // Success
+    }
 
     @ResponseBody
     @RequestMapping(value = "ajax/cart", method = RequestMethod.GET)
-    public String getCart() {
+    public String ajaxGetCart() {
         String str_cart_detail = "";
         String str_cart_big = "";
         String str_cart_button = "";
@@ -348,15 +407,22 @@ public class OrdersController {
             subTotal = orderStateFulBean.subTotal();
             cartSize = orderStateFulBean.showCart().size();
             str_cart_button = "<div class=\"cart-btn\">\n"
-                    + "                                <a href=\"orders/shoppingcart.html\">VIEW CART</a>\n"
+                    + "                                <a style=\"font-size: 9px;\" href=\"orders/shoppingcart.html\">VIEW CART</a>\n"
                     + "                                <button onclick=\"checkoutClick();\" style=\"background: #FF6699;\n"
-                    + "                                font-size: 11px;\n"
+                    + "                                font-size: 9px;\n"
                     + "                                color: #fff;\n"
                     + "                                text-transform: none;\n"
                     + "                                height: 33px;\n"
                     + "                                padding: 0 17px;\n"
                     + "                                line-height: 33px;\n"
                     + "                                font-weight: 700;\" class=\"btn\">CHECKOUT</button> \n"
+                    + "                                <button type=\"button\" onclick=\"cartClearClick();\" style=\""
+                    + "                                font-size: 9px;\n"
+                    + "                                text-transform: none;\n"
+                    + "                                height: 33px;\n"
+                    + "                                padding: 0 17px;\n"
+                    + "                                line-height: 33px;\n"
+                    + "                                font-weight: 700;\" class=\"btn btn-warning\">CLEAR</button> \n"
                     + "                            </div>";
             str_subtotal = "<div class=\"ci-total\">Subtotal: $" + subTotal + "</div>";
             for (CartLineInfo cartLineInfo : orderStateFulBean.showCart()) {
@@ -396,7 +462,9 @@ public class OrdersController {
 
     @ResponseBody
     @RequestMapping(value = "ajax/discount", method = RequestMethod.POST)
-    public String getDiscount(@RequestParam("discountCode") String discountCode, @RequestParam("emailUser") String emailUser) {
+    public String getDiscount(@RequestParam("discountCode") String discountCode,
+            @RequestParam("emailUser") String emailUser
+    ) {
         DiscountVoucher discountVoucher = orderStateLessBean.getDiscountVoucherByID(discountCode);
         Users users = usersStateLessBean.findUserByEmail(emailUser);
         ObjectMapper mapper = new ObjectMapper();

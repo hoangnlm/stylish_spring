@@ -1,9 +1,5 @@
 package stylish.interceptor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -15,9 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import stylish.ejb.UsersStateLessBeanLocal;
-import stylish.entity.Roles;
-import stylish.entity.Users;
-import stylish.entity.Functions;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 

@@ -21,4 +21,5 @@ public interface OrderStateFulBeanLocal {
     String completePurchase(Orders orders);
 
     float subTotal();
+
 }

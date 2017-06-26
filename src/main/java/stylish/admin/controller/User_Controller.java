@@ -36,6 +36,9 @@ public class User_Controller {
     @RequestMapping(value = "list")
     public String userList(Model model) {
         List<Users> ulist = usersStateLessBean.getAllUsers();
+        for (Users user : ulist) {
+            user.getUserAddressList().isEmpty(); // Kich hoat eager loading
+        }
         model.addAttribute("ulist", ulist);
         return "admin/pages/user-list";
     }
@@ -133,7 +136,6 @@ public class User_Controller {
 //        System.out.println("roleupdate: " + roleupdate.toString());
 //        System.out.println("_functionsList: " + Arrays.toString(_functionsList));
 //        System.out.println("functionsSB: " + functionsSB.getListById(_functionsList));
-
         roleupdate.setFunctionsList(functionsSB.getListById(_functionsList));
         int error = rolesStateLessBean.editRoles(roleupdate);
         switch (error) {
@@ -158,11 +160,11 @@ public class User_Controller {
     @RequestMapping(value = "ajax/getUserAddress", method = RequestMethod.POST)
     public String getUserAddress(@RequestParam("userID") Integer userID) {
         List<UserAddresses> userAddressList = usersStateLessBean.getUserByID(userID).getUserAddressList();
-
         ObjectMapper om = new ObjectMapper();
         String json = "";
         try {
-            json = om.writeValueAsString(userAddressList); //Chuyển list sang chuỗi JSON (com.fasterxml.jackson.databind.ObjectMapper;)
+//            System.out.println("user: " + userAddressList.get(0).getUser());
+            json = om.writeValueAsString(userAddressList.get(0).getUser()); //Chuyển list sang chuỗi JSON (com.fasterxml.jackson.databind.ObjectMapper;)
         } catch (JsonProcessingException ex) {
             Logger.getLogger(User_Controller.class.getName()).log(Level.SEVERE, null, ex);
         }

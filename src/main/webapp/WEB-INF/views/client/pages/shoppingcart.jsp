@@ -50,7 +50,7 @@
                                         <select id="select-quantity-shoppingcart" name="${item.getProduct().productID}-${item.getSizesByColor().getSizeID()}-${item.getSizesByColor().getColor().getColorID()}">
                                             <%
                                                 CartLineInfo cartLineInfo = (CartLineInfo) pageContext.getAttribute("item");
-                                                for (int i = 1; i < 11; i++) {
+                                                for (int i = 1; i <= cartLineInfo.getSizesByColor().getQuantity(); i++) {
                                                     if (cartLineInfo.getQuantity() == i) {
                                             %>
                                             <option value="<%= i%>" selected="selected"><%= i%></option>

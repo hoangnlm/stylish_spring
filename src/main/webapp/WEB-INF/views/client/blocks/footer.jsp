@@ -105,7 +105,6 @@
                 <ul class="flinks">
                     <li><a href="admin/login.html" target="_blank">Admin</a></li>
                     <li><a href="sitemap.html">Sitemap</a></li>
-                    <li><a href="#">Advanced Search</a></li>
                     <li><a href="#">Order Policy</a></li>
                     <li><a href="#">Customer Service</a></li>
                 </ul>

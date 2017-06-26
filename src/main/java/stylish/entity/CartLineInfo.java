@@ -18,6 +18,12 @@ public class CartLineInfo {
         this.quantity = 0;
     }
 
+    public CartLineInfo(Products product, SizesByColor sizesByColor, int quantity) {
+        this.product = product;
+        this.sizesByColor = sizesByColor;
+        this.quantity = quantity;
+    }
+
     public Products getProduct() {
         return product;
     }
@@ -41,4 +47,5 @@ public class CartLineInfo {
     public float getProductDiscount() {
         return this.product.getProductDiscountPrice() * this.quantity;
     }
+    
 }

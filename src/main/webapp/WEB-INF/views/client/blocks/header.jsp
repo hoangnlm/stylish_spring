@@ -109,7 +109,7 @@
                         <span><i class="fa fa-signal"></i></span>
                         <div id="compare">
                             <div class="compare-info">
-                                <h3>asdfasdfasd asdf</h3>
+                                <h3></h3>
                             </div>
                         </div>
                     </div>
@@ -162,9 +162,6 @@
                                     </c:forEach>
                             </ul>
                         </li>
-                        <li>
-                            <a href="about.html">About Us</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -188,7 +185,6 @@
             }
         });
     }
-    ;
 
     function checkoutClick() {
         var email = $('input[name=order-emailUser]').val();
@@ -198,5 +194,48 @@
             window.location = "orders/checkout.html";
         }
     }
-    ;
+
+    function cartClearClick() {
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, clear ALL!",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.get("orders/ajax/cart/clear.html", function () {
+                    $.get("orders/ajax/cart.html", function (data) {
+                        $("#cart").html(data)
+                        swal("Deleted!", "Your cart has been clear.", "success")
+                    })
+                })
+            }
+        })
+    }
+
+    function compareClearClick() {
+        swal({
+            title: "Are you sure?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, clear ALL!",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        }, function (isConfirm) {
+            if (isConfirm) {
+                $.get("compare/ajax/clear.html", function () {
+                    $.get("compare/ajax/getCompare.html", function (data) {
+                        $("#compare").html(data)
+                        swal("Deleted!", "Your compare list has been clear.", "success")
+                    })
+                })
+            }
+        })
+    }
 </script>

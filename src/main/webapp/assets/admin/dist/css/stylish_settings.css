@@ -1,5 +1,9 @@
 
 /*Chinh lai mau cho Admin*/
+.colorWhite {
+    color: #FFFFFF !important;
+}
+
 #admin{
     font-family: 'Lato', sans-serif;
 }

@@ -22,24 +22,23 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="fs-user-dataTables">
                     <thead>
                         <tr>
-                            <th align="center"></th>
-                            <td align="center">No</td>
+                            <td align="center">ID</td>
                             <td align="center">Status</td>
                             <td align="center">Role</td>
                             <td align="center">Email</td>
-                            <!--                            <td align="center">First Name</td>
-                                                        <td align="center">Last Name</td>-->
                             <td align="center">Gender</td>
-                            <!--                            <td align="center">Birth Day</td>
-                                                        <td align="center">Registration Date</td>-->
+                            <td align="center">First Name</td>
+                            <td align="center">Last Name</td>
+                            <td align="center">Birth Day</td>
+                            <td align="center">Registration Date</td>
+                            <td align="center">Phone - Address</td>
 
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach items="${ulist}" var="users" varStatus="no">
                             <tr class="odd gradeX" >
-                                <td align="center" class="details-control fs-user-dataTable-control-button" fs-userID="${users.userID}"></td>
-                                <td class="center fs-detail-user text-center" fs-userID="${users.userID}" data-toggle="modal">${no.index + 1}</td>
+                                <td class="center text-center" fs-userID="${users.userID}">${users.userID}</td>
                                 <c:if test="${users.userID != 1}">
                                     <td align="center">
                                         <select name="status" fs-user="${users.userID}" class="fs-select-user-status form-control input-sm" id="fs-status-select">
@@ -70,21 +69,28 @@
                                     </td>
                                 </c:if>
                                 <td class="center" align="center">${users.email}</td>
-                                <!--                                <td class="center" align="center"></${users.firstName}</td>
-                                                                <td class="center" align="center"></${users.lastName}</td>-->
                                 <c:if test="${users.gender == 1}">
                                     <td class="center" align="center">MALE</td>
                                 </c:if>
                                 <c:if test="${users.gender == 0}">
                                     <td class="center" align="center">FEMALE</td>
                                 </c:if>
-                                <!--                                <td class="center" align="center">
-                                <%--<fmt:formatDate pattern="dd/MM/yyyy" value="${users.birthday}"/>--%>
-                            </td>
-                            <td class="center" align="center">
-                                <%--<fmt:formatDate pattern="dd/MM/yyyy" value="${users.registrationDate}"/>--%>
-                            </td>-->
-
+                                <td class="center" align="center">${users.firstName}</td>
+                                <td class="center" align="center">${users.lastName}</td>
+                                <td class="center" align="center">
+                                    <fmt:formatDate pattern="MM/dd/yyyy" value="${users.birthday}"/>
+                                </td>
+                                <td class="center" align="center">
+                                    <fmt:formatDate pattern="MM/dd/yyyy" value="${users.registrationDate}"/>
+                                </td>
+                                <td class="center" align="center">
+                                    <c:if test="${empty users.userAddressList}">
+                                        <i>(Empty)</i>
+                                    </c:if>
+                                    <c:forEach items="${users.userAddressList}" var="userAddress" varStatus="status">
+                                        <br/>${status.index + 1}. ${userAddress.phoneNumber} - ${userAddress.address}
+                                    </c:forEach>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -116,7 +122,7 @@
                         <th class="text-center" id="fs-th" style="background: steelblue;height: 54px;width: 25%;font-weight: lighter;text-shadow: 0 1px 0 #38678f;color: white;border: 1px solid #38678f;box-shadow: inset 0px 1px 2px #568ebd;transition: all 0.2s;">Resgistraion Date</th>
                     </tr>
                     <tbody id="fs-tbody-table-in-user-detail-info">
-                    
+
                     </tbody>
                 </table>
             </div>

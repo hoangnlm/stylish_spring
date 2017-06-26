@@ -99,7 +99,7 @@
                         </li>
 
                         <li class="col-md-12 col-sm-6">
-                            <label>LastName <em>*</em></label>
+                            <label>Last Name <em>*</em></label>
                             <div class="fs-lastname-create has-feedback">
                                 <input name="lastName" id="register-lastname" class="input-text form-control lastNameVal" />
                             </div>
@@ -120,7 +120,7 @@
                         </li>
 
                         <li class="col-md-6 col-sm-12">  
-                            <label><i class="fa fa-birthday-cake"></i> Birthday</label>
+                            <label><i class="fa fa-birthday-cake"></i> Birthday <em>*</em></label>
                             <div class="fs-birthday-create has-feedback" >
                                 <span id="fs-birthday-create"><input name="birthday" id="register-birthday" class="input-text form-control datepicker birthdayVal"/></span>
                             </div>

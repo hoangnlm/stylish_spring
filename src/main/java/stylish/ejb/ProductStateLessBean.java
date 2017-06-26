@@ -257,7 +257,7 @@ public class ProductStateLessBean implements ProductStateLessBeanLocal {
                 + "GROUP BY p.productID, p.productName, p.productNameNA, p.price, p.urlImg, c.colorID "
                 + "ORDER BY tongsoluong DESC";
         Query q = getEntityManager().createQuery(sql).setMaxResults(3);
-
+//        System.out.println("List<Object>: " + q.getResultList());
         return q.getResultList();
     }
 
@@ -265,7 +265,7 @@ public class ProductStateLessBean implements ProductStateLessBeanLocal {
     public List<Products> getTop3ProductMostViewed() {
         String sql = "SELECT p FROM Products p WHERE p.status = 1 ORDER BY p.productViews DESC";
         Query q = getEntityManager().createQuery(sql, Products.class).setMaxResults(3);
-
+//        System.out.println("List<Products>: " + q.getResultList());
         return q.getResultList();
     }
 
@@ -281,6 +281,7 @@ public class ProductStateLessBean implements ProductStateLessBeanLocal {
         Query q = getEntityManager().createNativeQuery(sql);
         q.setFirstResult(0);
         q.setMaxResults(3);
+//        System.out.println("List<Object[]>: " + q.getResultList());
         return q.getResultList();
     }
 

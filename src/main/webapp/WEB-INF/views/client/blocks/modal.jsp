@@ -58,6 +58,7 @@
                             Available: <span style="color: #FF6699" class="fs-quantity-in-stock">---</span>
                             <div class="fs-display-none" id="fs-show-quantity"></div>
                         </div>
+
                         <div class="sep"></div>
                         <div class="ps-color fs-product-modal-color">
                             <p>Color<span>*</span></p>                         
@@ -84,7 +85,7 @@
                                         </button>
                                     </span>
 
-                                    <input type="text" name="" class="form-control fs-modal-input-number text-center" value="1" min="1" max="10" disabled>
+                                    <input style="padding: 12px;" type="text" name="" class="form-control fs-modal-input-number text-center" value="1" min="1" max="10" disabled>
 
                                     <span class="input-group-btn">
                                         <button type="button" disabled class="btn btn-success fs-modal-btn-number fs-modal-btn-quantity-plus" data-type="plus">

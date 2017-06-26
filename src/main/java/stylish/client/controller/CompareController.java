@@ -28,6 +28,18 @@ public class CompareController {
     private ProductStateLessBeanLocal productStateLessBean = lookupProductStateLessBeanLocal();
     private OrderStateLessBeanLocal orderStateLessBean = lookupOrderStateLessBeanLocal();
 
+    // AJAX CLEAR COMPARE LIST
+    @ResponseBody
+    @RequestMapping(value = "ajax/clear", method = RequestMethod.GET)
+    public String ajaxCompareClear() {
+//        System.out.println("compare/ajax/clear");
+        List<Products> list = compareStateFullBean.showCompare();
+        if (!list.isEmpty()) {
+            list.clear();
+        }
+        return "0"; // Success
+    }
+
     // AJAX GET COMPARE LIST
     @ResponseBody
     @RequestMapping(value = "ajax/getCompare", method = RequestMethod.GET)
@@ -36,7 +48,14 @@ public class CompareController {
         String result = "";
         String itemDetails = "";
         String compareButton = "<div class=\"cart-btn\">"
-                + "<a href=\"compare/view.html\">COMPARE</a>"
+                + "<a style=\"font-size: 9px; margin-right: 3px;\" href=\"compare/view.html\">COMPARE</a>"
+                + "<button type=\"button\" onclick=\"compareClearClick();\" style=\""
+                + "font-size: 9px;\n"
+                + "text-transform: none;\n"
+                + "height: 33px;\n"
+                + "padding: 0 17px;\n"
+                + "line-height: 33px;\n"
+                + "font-weight: 700;\" class=\"btn btn-warning\">CLEAR</button> \n"
                 + "</div>";
         List<Products> list = compareStateFullBean.showCompare();
 

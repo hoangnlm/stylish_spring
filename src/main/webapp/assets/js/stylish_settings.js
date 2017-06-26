@@ -1,35 +1,29 @@
+/* CLIENT SIDE */
 /* ON DOCUMENT READY */
 $(function () {
 
     // Validate Forms
-    proValidate([
-        "#fs-form-login-user", // login
-        "#fs-form-create-user", // register
-        "#fs-form-update-account", // account info
-        "#shipping-zip-form", // change password
-        "#address-update", // update address
-        "#checkout-form" // checkout
-    ]);
+    proValidate($("form"))
 
     // Ajax Login Client
     $('#fs-form-login-user').ajaxForm({
         success: function (response) {
             switch (response) {
                 case "2":
-                    $("#login-error").text("Email is wrong!");
-                    $("#login-email").select();
-                    highlightInvalid($("#login-email"));
-                    break;
+                    $("#login-error").text("Email is wrong!")
+                    $("#login-email").select()
+                    highlightInvalid($("#login-email"))
+                    break
                 case "3":
-                    $("#login-error").text("Password is wrong!");
-                    $("#login-password").select();
-                    highlightInvalid($("#login-password"));
-                    break;
+                    $("#login-error").text("Password is wrong!")
+                    $("#login-password").select()
+                    highlightInvalid($("#login-password"))
+                    break
                 case "4":
-                    $("#login-error").text("Login failed! Please contact web admin!");
-                    break;
+                    $("#login-error").text("Login failed! Please contact web admin!")
+                    break
                 default:
-                    location.reload();
+                    location.reload()
             }
         }
     });
@@ -70,6 +64,7 @@ $(function () {
 /* DEFINE CONSTANTS */
 var RE_HUMAN_NAME = /^[A-Za-z ]+$/;
 var RE_PHONE_NUMBER_VN = /^(\+84|0)\d{9,11}$/;
+var RE_ADDRESS = /^[A-Za-z \.\/\-\d]+$/;
 var RE_DATE_MMDDYYYY = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/; // from 1900-2099
 var RE_DISCOUNT_COUNT = /^VOU\d+$/; // VOU01
 
@@ -78,7 +73,8 @@ var RE_DISCOUNT_COUNT = /^VOU\d+$/; // VOU01
 jQuery.validator.addClassRules({
     emailVal: {
         required: true,
-        email: true
+        email: true,
+        maxlength: 50
     },
     passwordVal: {
         required: true,
@@ -115,7 +111,9 @@ jQuery.validator.addClassRules({
     },
     addressVal: {
         required: true,
-        minlength: 3
+        minlength: 3,
+        maxlength: 255,
+        pattern: RE_ADDRESS
     },
     orderNoteVal: {
         maxlength: 100
@@ -161,11 +159,15 @@ jQuery.validator.addMethod("repassword", function (value, element) {
 
 
 /* COMMON FUNCTIONS */
-// Validation Function (Hàng độc nha, không hiểu thì kiếm tác giả mà hỏi ^_^ !!!)
-// Author: HoangNLM
+/*
+ * Validation Function (Hàng độc nha, không hiểu thì kiếm tác giả mà hỏi ^_^ !!!)
+ * Author: HoangNLM
+ * @param {jquery object} forms
+ * @returns {undefined}
+ */
 function proValidate(forms) {
-    forms.forEach(function (form) {
-        $(form).validate({
+    forms.each(function (i, e) {    // e: js object
+        $(e).validate({
             errorElement: "em",
             errorClass: "help-block",
             errorPlacement: function (error, element) { // error: jQuery object, element: DOM object
@@ -1008,28 +1010,30 @@ $(document).ready(function () {
             sync1.trigger("owl.goTo", number);
         });
         function center(number) {
-            var sync2visible = sync2.data("owlCarousel").owl.visibleItems;
-            var num = number;
-            var found = false;
-            for (var i in sync2visible) {
-                if (num == sync2visible[i]) {
-                    found = true;
-                }
-            }
-
-            if (found == false) {
-                if (num > sync2visible[sync2visible.length - 1]) {
-                    sync2.trigger("owl.goTo", num - sync2visible.length + 2)
-                } else {
-                    if (num - 1 == -1) {
-                        num = 0;
+            if (sync2.data("owlCarousel")) {
+                var sync2visible = sync2.data("owlCarousel").owl.visibleItems;
+                var num = number;
+                var found = false;
+                for (var i in sync2visible) {
+                    if (num == sync2visible[i]) {
+                        found = true;
                     }
-                    sync2.trigger("owl.goTo", num);
                 }
-            } else if (num == sync2visible[sync2visible.length - 1]) {
-                sync2.trigger("owl.goTo", sync2visible[1])
-            } else if (num == sync2visible[0]) {
-                sync2.trigger("owl.goTo", num - 1)
+
+                if (found == false) {
+                    if (num > sync2visible[sync2visible.length - 1]) {
+                        sync2.trigger("owl.goTo", num - sync2visible.length + 2)
+                    } else {
+                        if (num - 1 == -1) {
+                            num = 0;
+                        }
+                        sync2.trigger("owl.goTo", num);
+                    }
+                } else if (num == sync2visible[sync2visible.length - 1]) {
+                    sync2.trigger("owl.goTo", sync2visible[1])
+                } else if (num == sync2visible[0]) {
+                    sync2.trigger("owl.goTo", num - 1)
+                }
             }
         }
 
@@ -3772,6 +3776,7 @@ $(document).ready(function () {
             }
         }
     });
+
     //Add to cart in modal.jsp
     $(".fs-modal-btn-addtobag").on("click", function () {
         var errorHead = "<div class=\"alert alert-danger\"><strong>";
@@ -3800,11 +3805,17 @@ $(document).ready(function () {
                     },
                     dataType: 'html',
                     success: function (response) {
-                        if (response == "3") {
+                        response = response.split("-")
+                        var status = response[0]
+                        var quantity = response[1]
+
+                        if (status === "4") {
+                            $('#error-cart-product-modal').html(errorHead + "STOCK NOT ENOUGH! YOU ALREADY HAVE " + quantity + " IN CART!" + errorFoot);
+                        } else if (status === "3") {
                             $('#error-cart-product-modal').html(errorHead + "PRODUCT ERROR!" + errorFoot);
-                        } else if (response == "2") {
+                        } else if (status === "2") {
                             $('#error-cart-product-modal').html(errorHead + "COLOR AND SIZE ERROR!" + errorFoot);
-                        } else if (response == "1") {
+                        } else if (status === "1") {
                             $('#error-cart-product-modal').html(errorHead + "NOT ENOUGH STOCK! PLEASE ENTER DIFFERENT QUANTITY" + errorFoot);
                         } else {
                             $('#error-cart-product-modal').html(errorHeadSuccess + "ADD PRODUCT TO CART SUCCESSFULLY!" + errorFoot);

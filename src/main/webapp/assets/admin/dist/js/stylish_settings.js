@@ -1,3 +1,4 @@
+/* ADMIN SIDE */
 /* ON DOCUMENT READY */
 $(function () {
 
@@ -51,7 +52,8 @@ var RE_DISCOUNT_COUNT = /^VOU\d+$/; // VOU01
 jQuery.validator.addClassRules({
     emailVal: {
         required: true,
-        email: true
+        email: true,
+        maxlength: 50
     },
     passwordVal: {
         required: true,
@@ -59,6 +61,7 @@ jQuery.validator.addClassRules({
         maxlength: 20
     },
     repasswordVal: {
+        required: true,
         repassword: true
     },
     firstNameVal: {
@@ -794,7 +797,9 @@ $(document).ready(function () {
         var productName = $("#fs-product-name").val();
         var price = $("#fs-product-price").val();
         var mainImg = $("#fs-product-main-img").val();
-        var discount = $("#fs-product-discount").val();
+//        var discount = $("#fs-product-discount").val();
+//        var discount = 0;
+
         var count = 0;
         if (cateID == 0) {
             $("p#fs-select-cate-error").text("Please choose a Category!");
@@ -842,25 +847,25 @@ $(document).ready(function () {
             $("#fs-product-price-error").text("");
         }
 
-        if (discount == "") {
-            $("#fs-product-discount-error").text("Discount cannot be empty!");
-            $("#fs-product-discount").focus();
-            count++;
-        } else if (isNaN(discount)) {
-            $("#fs-product-discount-error").text("Discount must be a number!");
-            $("#fs-product-discount").focus();
-            count++;
-        } else if (!(discount % 1 === 0)) {
-            $("#fs-product-discount-error").text("Discount must be Integer!");
-            $("#fs-product-discount").focus();
-            count++;
-        } else if (discount < 0 || discount > 100) {
-            $("#fs-product-discount-error").text("Discount must be from 0-100!.");
-            $("#fs-product-discount").focus();
-            count++;
-        } else {
-            $("#fs-product-discount-error").text("");
-        }
+//        if (discount == "") {
+//            $("#fs-product-discount-error").text("Discount cannot be empty!");
+//            $("#fs-product-discount").focus();
+//            count++;
+//        } else if (isNaN(discount)) {
+//            $("#fs-product-discount-error").text("Discount must be a number!");
+//            $("#fs-product-discount").focus();
+//            count++;
+//        } else if (!(discount % 1 === 0)) {
+//            $("#fs-product-discount-error").text("Discount must be Integer!");
+//            $("#fs-product-discount").focus();
+//            count++;
+//        } else if (discount < 0 || discount > 100) {
+//            $("#fs-product-discount-error").text("Discount must be from 0-100!.");
+//            $("#fs-product-discount").focus();
+//            count++;
+//        } else {
+//            $("#fs-product-discount-error").text("");
+//        }
 
         if (mainImg == "") {
             $("#fs-error-mess-product-main-img").text("Image cannot be empty!");
@@ -3700,7 +3705,8 @@ $(document).ready(function () {
     var fs_user_table = $("#fs-user-dataTables").DataTable({//cấu hình datatable
         responsive: true,
         columnDefs: [
-            {searchable: false, targets: [0, 1, 2, 3, 5]}
+            {searchable: false, targets: [0, 1, 2, 3, 5]},
+            {className: "none", targets: -1}
         ]
     });
 
@@ -3779,33 +3785,34 @@ $(document).ready(function () {
         return beginStr + dataStr + endStr;
     }
     ;
-    $("#fs-user-dataTables").on("click", ".fs-user-dataTable-control-button", function () {
-        var userID = $(this).attr("fs-userID");
-        var tr = $(this).closest('tr');
-        var row = fs_user_table.row(tr);
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        } else {
-            //Gọi Ajax
-            $.ajax({
-                url: "admin/user/ajax/getUserAddress.html",
-                method: "POST",
-                data: {userID: userID},
-                dataType: "JSON",
-                success: function (response) {
-                    for (var i = 0; i < response.length; i++) {
-                        var item = response[i];
-                        if (item != null) {
-                            row.child(renderTableFromJson(response)).show();
-                        }
-                    }
-                }
-            });
-            tr.addClass('shown');
-        }
-    });
+//    $("#fs-user-dataTables").on("click", ".fs-user-dataTable-control-button", function () {
+//        var userID = $(this).attr("fs-userID");
+//        var tr = $(this).closest('tr');
+//        var row = fs_user_table.row(tr);
+//        if (row.child.isShown()) {
+//            // This row is already open - close it
+//            row.child.hide();
+//            tr.removeClass('shown');
+//        } else {
+//            //Gọi Ajax
+//            $.ajax({
+//                url: "admin/user/ajax/getUserAddress.html",
+//                method: "POST",
+//                data: {userID: userID},
+//                dataType: "JSON",
+//                success: function (response) {
+//                    console.log(response);
+//                    for (var i = 0; i < response.length; i++) {
+//                        var item = response[i];
+//                        if (item != null) {
+//                            row.child(renderTableFromJson(response)).show();
+//                        }
+//                    }
+//                }
+//            });
+//            tr.addClass('shown');
+//        }
+//    });
     // HIỂN THỊ BẢNG THÔNG TIN CỦA USER
     $("#fs-user-dataTables tbody").on("click", ".fs-detail-user", function () {
         var userID = $(this).attr("fs-userID");

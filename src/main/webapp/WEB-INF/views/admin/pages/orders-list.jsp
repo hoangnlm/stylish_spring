@@ -45,11 +45,11 @@
                                 classOrder5 = btnWarning;
                             }
                         %>
-                        <td class="text-center fs-valign-middle"><a href="admin/orders/list.html" <%= classOrder1%>>ALL ORDER</a></td>
-                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/2.html" <%= classOrder2%>>PENDING</a></td>
-                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/3.html" <%= classOrder3%>>CONFIRMED</a></td>
-                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/1.html" <%= classOrder4%>>COMPLETED</a></td>
-                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/0.html" <%= classOrder5%>>CANCELED</a></td>
+                        <td class="text-center fs-valign-middle"><a href="admin/orders/list.html" <%= classOrder1%>><span class="colorWhite">ALL ORDER</span></a></td>
+                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/2.html" <%= classOrder2%>><span class="colorWhite">PENDING</span></a></td>
+                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/3.html" <%= classOrder3%>><span class="colorWhite">CONFIRMED</span></a></td>
+                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/1.html" <%= classOrder4%>><span class="colorWhite">COMPLETED</span></a></td>
+                        <td class="text-center fs-valign-middle"><a href="admin/orders/list/0.html" <%= classOrder5%>><span class="colorWhite">CANCELED</span></a></td>
                     </tr>
                 </table>
             </div>
