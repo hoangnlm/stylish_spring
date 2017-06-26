@@ -1108,7 +1108,7 @@ $(document).ready(function () {
                 /* Init Name and Price */
                 $("h3.fs-product-name").text(response.productName);
                 $("h3.fs-product-name").attr("fs-product-modal-id", productID);
-                $("div.fs-product-price").text("$ " + response.price + ".00");
+                $("div.fs-product-price").text("$ " + response.price);
                 /* Init color img  */
                 var colorImgStr = "<p>Color<span>*</span></p>";
                 var sizeStr = "";
@@ -1551,7 +1551,7 @@ $(document).ready(function () {
                                             "                 " + prod.productName + "\n" +
                                             "              </a>\n" +
                                             "          </h4>\n" +
-                                            "          <span class=\"product-price\">$" + prod.price + ".00</span>\n" +
+                                            "          <span class=\"product-price\">$" + prod.price + "</span>\n" +
                                             "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                             renderColor +
                                             "          </div>\n" +
@@ -1584,7 +1584,7 @@ $(document).ready(function () {
                                             "              </a>\n" +
                                             "          </h4>\n" +
                                             "          <span class=\"product-price\">\n" +
-                                            "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                            "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                             "          </span>\n" +
                                             "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                             renderColor +
@@ -1680,7 +1680,7 @@ $(document).ready(function () {
                                         "                 " + prod.productName + "\n" +
                                         "              </a>\n" +
                                         "          </h4>\n" +
-                                        "          <span class=\"product-price\">$" + prod.price + ".00</span>\n" +
+                                        "          <span class=\"product-price\">$" + prod.price + "</span>\n" +
                                         "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                         renderColor +
                                         "          </div>\n" +
@@ -1713,7 +1713,7 @@ $(document).ready(function () {
                                         "              </a>\n" +
                                         "          </h4>\n" +
                                         "          <span class=\"product-price\">\n" +
-                                        "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                        "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                         "          </span>\n" +
                                         "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                         renderColor +
@@ -1819,7 +1819,7 @@ $(document).ready(function () {
                                         "                 " + prod.productName + "\n" +
                                         "              </a>\n" +
                                         "          </h4>\n" +
-                                        "          <span class=\"product-price\">$" + prod.price + ".00</span>\n" +
+                                        "          <span class=\"product-price\">$" + prod.price + "</span>\n" +
                                         "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                         renderColor +
                                         "          </div>\n" +
@@ -1852,7 +1852,7 @@ $(document).ready(function () {
                                         "              </a>\n" +
                                         "          </h4>\n" +
                                         "          <span class=\"product-price\">\n" +
-                                        "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                        "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                         "          </span>\n" +
                                         "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                         renderColor +
@@ -1999,7 +1999,7 @@ $(document).ready(function () {
                                                     "                 " + prod.productName + "\n" +
                                                     "              </a>\n" +
                                                     "          </h4>\n" +
-                                                    "          <span class=\"product-price\">$" + prod.price + ".00</span>\n" +
+                                                    "          <span class=\"product-price\">$" + prod.price + "</span>\n" +
                                                     "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                     renderColor +
                                                     "          </div>\n" +
@@ -2032,7 +2032,7 @@ $(document).ready(function () {
                                                     "              </a>\n" +
                                                     "          </h4>\n" +
                                                     "          <span class=\"product-price\">\n" +
-                                                    "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                                    "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                                     "          </span>\n" +
                                                     "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                     renderColor +
@@ -2171,7 +2171,7 @@ $(document).ready(function () {
                                                 "                 " + prod.productName + "\n" +
                                                 "              </a>\n" +
                                                 "          </h4>\n" +
-                                                "          <span class=\"product-price\">$" + prod.price + ".00</span>\n" +
+                                                "          <span class=\"product-price\">$" + prod.price + "</span>\n" +
                                                 "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                 renderColor +
                                                 "          </div>\n" +
@@ -2204,7 +2204,7 @@ $(document).ready(function () {
                                                 "              </a>\n" +
                                                 "          </h4>\n" +
                                                 "          <span class=\"product-price\">\n" +
-                                                "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                                "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                                 "          </span>\n" +
                                                 "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                 renderColor +
@@ -2371,7 +2371,7 @@ $(document).ready(function () {
                                                 "              </a>\n" +
                                                 "          </h4>\n" +
                                                 "          <span class=\"product-price\">\n" +
-                                                "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                                "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                                 "          </span>\n" +
                                                 "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                 renderColor +
@@ -2513,7 +2513,7 @@ $(document).ready(function () {
                                             "              </a>\n" +
                                             "          </h4>\n" +
                                             "          <span class=\"product-price\">\n" +
-                                            "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                            "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                             "          </span>\n" +
                                             "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                             renderColor +
@@ -2714,7 +2714,7 @@ $(document).ready(function () {
                                         "              </a>\n" +
                                         "          </h4>\n" +
                                         "          <span class=\"product-price\">\n" +
-                                        "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                        "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                         "          </span>\n" +
                                         "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                         renderColor +
@@ -2853,7 +2853,7 @@ $(document).ready(function () {
                                         "              </a>\n" +
                                         "          </h4>\n" +
                                         "          <span class=\"product-price\">\n" +
-                                        "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                        "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                         "          </span>\n" +
                                         "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                         renderColor +
@@ -3033,7 +3033,7 @@ $(document).ready(function () {
                                                     "              </a>\n" +
                                                     "          </h4>\n" +
                                                     "          <span class=\"product-price\">\n" +
-                                                    "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                                    "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                                     "          </span>\n" +
                                                     "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                     renderColor +
@@ -3205,7 +3205,7 @@ $(document).ready(function () {
                                                 "              </a>\n" +
                                                 "          </h4>\n" +
                                                 "          <span class=\"product-price\">\n" +
-                                                "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                                "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                                 "          </span>\n" +
                                                 "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                 renderColor +
@@ -3372,7 +3372,7 @@ $(document).ready(function () {
                                                 "              </a>\n" +
                                                 "          </h4>\n" +
                                                 "          <span class=\"product-price\">\n" +
-                                                "               <small class=\"cutprice\">$ " + prod.price + ".00 </small>  $ " + (prod.price - prod.price * prod.productDiscount / 100) +
+                                                "               <small class=\"cutprice\">$ " + prod.price + "</small> $ " + (prod.price - prod.price * prod.productDiscount / 100) +
                                                 "          </span>\n" +
                                                 "          <div class=\"item-colors\" style=\"height: 25px;\">\n" +
                                                 renderColor +
