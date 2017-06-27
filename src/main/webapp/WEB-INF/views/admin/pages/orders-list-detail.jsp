@@ -79,7 +79,6 @@
                             <th class="text-center fs-valign-middle">Price for one</th>
                             <th class="text-center fs-valign-middle">Product discount</th>
                             <th class="text-center fs-valign-middle">Total</th>
-                            <th class="text-center fs-valign-middle">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,49 +92,10 @@
                                 <td class="text-center fs-valign-middle">$${orderdetail.price}</td>
                                 <td class="text-center fs-valign-middle">-$${orderdetail.product.getProductDiscountPrice()}</td>
                                 <td class="text-center fs-valign-middle">$${orderdetail.getTotalPrice()}</td>
-                                <td class="text-center fs-valign-middle">
-                                    <c:choose>
-                                        <c:when test="${orderdetail.status == 1}">
-                                            <select name="status-orderDetail" style="color: red;"
-                                                    id="id-status-orderdetail" 
-                                                    class="form-control input-sm" 
-                                                    onchange="window.location = 'admin/orders/confirmstatusOrderDetail/${orderdetail.ordersDetailID}/' + this.value + '.html';">
-                                                <option value="0">Not Change</option>
-                                                <option value="1" <c:out value="selected"/>>Canceled</option>
-                                                <option value="2">New</option>
-                                            </select>
-                                        </c:when>
-                                        <c:when test="${orderdetail.status == 2}">
-                                            <select name="status-orderDetail" style="color: #00cc66;"
-                                                    id="id-status-orderdetail"
-                                                    class="form-control input-sm" 
-                                                    onchange="window.location = 'admin/orders/confirmstatusOrderDetail/${orderdetail.ordersDetailID}/' + this.value + '.html';">
-                                                <option value="0">Not Change</option>
-                                                <option value="1">Canceled</option>
-                                                <option value="2" <c:out value="selected"/>>New</option>
-                                            </select>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <select name="status-orderDetail" 
-                                                    id="id-status-orderdetail" 
-                                                    class="form-control input-sm" 
-                                                    onchange="window.location = 'admin/orders/confirmstatusOrderDetail/${orderdetail.ordersDetailID}/' + this.value + '.html';">
-                                                <option value="0" <c:out value="selected"/>>Not Change</option>
-                                                <option value="1">Canceled</option>
-                                                <option value="2">New</option>
-                                            </select>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                     <tfoot>
-                        <c:if test="${order.status == 2}">
-                            <tr>
-                                <td colspan="9" align="center"><a style="width: 100%;" href="admin/orders/ordersdetailadd/${order.ordersID}.html" type="button" class="btn btn-primary"><b>ADD</b></a></td>
-                            </tr>
-                        </c:if>
                         <tr>
                             <td colspan="7" align="right"><b>Order Discount</b></td>
                             <td class="text-center fs-valign-middle">
@@ -147,12 +107,10 @@
                                 %>
                                 -$<%= df.format(orders.getOrderDiscountPrice())%>
                             </td>
-                            <td></td>
                         </tr>
                         <tr>
                             <td colspan="7" align="right"><b>Order Total</b></td>
                             <td class="text-center fs-valign-middle">$${order.getPaymentTotal()}</td>
-                            <td></td>
                         </tr>
                     </tfoot>
                 </table>

@@ -797,7 +797,7 @@ $(document).ready(function () {
         var productName = $("#fs-product-name").val();
         var price = $("#fs-product-price").val();
         var mainImg = $("#fs-product-main-img").val();
-//        var discount = $("#fs-product-discount").val();
+        var discount = $("#fs-product-discount").val();
 //        var discount = 0;
 
         var count = 0;
@@ -847,25 +847,25 @@ $(document).ready(function () {
             $("#fs-product-price-error").text("");
         }
 
-//        if (discount == "") {
-//            $("#fs-product-discount-error").text("Discount cannot be empty!");
-//            $("#fs-product-discount").focus();
-//            count++;
-//        } else if (isNaN(discount)) {
-//            $("#fs-product-discount-error").text("Discount must be a number!");
-//            $("#fs-product-discount").focus();
-//            count++;
-//        } else if (!(discount % 1 === 0)) {
-//            $("#fs-product-discount-error").text("Discount must be Integer!");
-//            $("#fs-product-discount").focus();
-//            count++;
-//        } else if (discount < 0 || discount > 100) {
-//            $("#fs-product-discount-error").text("Discount must be from 0-100!.");
-//            $("#fs-product-discount").focus();
-//            count++;
-//        } else {
-//            $("#fs-product-discount-error").text("");
-//        }
+        if (discount == "") {
+            $("#fs-product-discount-error").text("Discount cannot be empty!");
+            $("#fs-product-discount").focus();
+            count++;
+        } else if (isNaN(discount)) {
+            $("#fs-product-discount-error").text("Discount must be a number!");
+            $("#fs-product-discount").focus();
+            count++;
+        } else if (!(discount % 1 === 0)) {
+            $("#fs-product-discount-error").text("Discount must be Integer!");
+            $("#fs-product-discount").focus();
+            count++;
+        } else if (discount < 0 || discount > 100) {
+            $("#fs-product-discount-error").text("Discount must be from 0-100!.");
+            $("#fs-product-discount").focus();
+            count++;
+        } else {
+            $("#fs-product-discount-error").text("");
+        }
 
         if (mainImg == "") {
             $("#fs-error-mess-product-main-img").text("Image cannot be empty!");
@@ -4109,7 +4109,7 @@ $(document).ready(function () {
     //Thiết lập cho bảng order details list
     $('#tableOrderDetails').DataTable({
         responsive: true,
-        columnDefs: [{"orderable": false, "targets": [2, 3, 8]}]
+        columnDefs: [{"orderable": false, "targets": [2, 3]}]
     });
     //Thiết lập cho bảng discount list
     $('#tableDiscountList').DataTable({

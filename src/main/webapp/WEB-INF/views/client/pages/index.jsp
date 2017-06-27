@@ -237,7 +237,7 @@
                             <h4><a href="./blog-detail/${blog.blogID}.html">${blog.blogTitle}</a></h4>
                             <div class="hp-meta">
 <!--                                <span><i class="fa fa-edit"></i>${blog.postedDate}</span>  -->
-                                <span><fmt:formatDate pattern="dd/MM/yyyy" value="${blog.postedDate}"/></span>
+                                <span><fmt:formatDate pattern="MM/dd/yyyy" value="${blog.postedDate}"/></span>
                             </div>
                             <p>${blog.blogSummary}</p>
                         </div>

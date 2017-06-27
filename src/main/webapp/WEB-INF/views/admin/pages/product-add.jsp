@@ -72,6 +72,15 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Discount</label>
+                                <p class="help-block" id="fs-product-discount-error"></p>
+                                <span class="input-group">
+                                    <input name="discount" id="fs-product-discount" class="form-control" placeholder="Discount" value="0">
+                                    <span class="input-group-addon"><i class="fa fa-percent" aria-hidden="true"></i></span>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
                                 <label>Image <span class="fs-color-red">*</span></label>
                                 <p id="fs-error-mess-product-main-img" class="help-block"></p>
                                 <input name="urlImg" type="file" id="fs-product-main-img">

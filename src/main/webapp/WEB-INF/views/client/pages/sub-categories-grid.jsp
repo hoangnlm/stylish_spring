@@ -140,12 +140,12 @@
                                             </h4>
                                             <span class="product-price">
                                                 <c:if test="${product.productDiscount > 0}">
-                                                    <small class="cutprice">$ ${product.price}0 </small>  $
+                                                    <small class="cutprice">$ ${product.price} </small>  $
                                                     <fmt:formatNumber type="number" maxFractionDigits="2" value="${product.price - (product.price*product.productDiscount/100)}" var="prodPrice"/>
                                                     ${fn:replace(prodPrice, ",", ".")}
                                                 </c:if>
                                                 <c:if test="${product.productDiscount == 0}">
-                                                    $ ${product.price}0
+                                                    $ ${product.price}
                                                 </c:if>
                                             </span>
                                             <div class="item-colors" style="height: 25px;">

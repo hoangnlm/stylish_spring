@@ -30,7 +30,7 @@
                                         <a href="${wl.product.productID}-${wl.product.productColorList[0].colorID}-${wl.product.productNameNA}.html"><p><b> ${wl.product.productName}</b></p></a>
                                         <p>CATE NAME: ${wl.product.category.cateName}</p>
                                         <p>SUBCATE NAME: ${wl.product.subCate.subCateName}</p>
-                                        <p>DATE ADD WISHLIST: <fmt:formatDate pattern="dd/MM/yyyy" value="${wl.createDate}"/></p>
+                                        <p>DATE ADD WISHLIST: <fmt:formatDate pattern="MM/dd/yyyy" value="${wl.createDate}"/></p>
                                     </td>
                                     <td class="text-center" style="text-align: center;">${wl.product.price}</td>
                                     <td class="text-center">

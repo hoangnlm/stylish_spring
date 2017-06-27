@@ -79,7 +79,7 @@
                                     <img class="responsive" style="width: 100px" src="assets/images/products/${product.urlImg}" alt="${product.urlImg}"/>
                                 </td>
                                 <td class="text-center fs-valign-middle">
-                                    <fmt:formatDate pattern="dd/MM/yyyy" value="${product.postedDate}"/>
+                                    <fmt:formatDate pattern="MM/dd/yyyy" value="${product.postedDate}"/>
                                 </td>
 
                                 <td class="text-center fs-valign-middle">

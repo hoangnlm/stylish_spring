@@ -81,15 +81,14 @@
                                 </td>
                                 <td class="text-center fs-valign-middle">
                                     <c:choose>
-                                        <c:when test="${order.status == 1}">
-                                            <select name="status-order" id="id-status-order" class="form-control input-sm" style="color: #00cc66;"
-                                                    onchange="window.location = 'admin/orders/confirmstatusOrder/${order.ordersID}/' + this.value + '.html';">
-                                                <option value="1" <c:out value="selected"/>>Completed</option>
-                                                <option value="2">Pending</option>
-                                                <option value="3">Confirmed</option>
-                                                <option value="0">Canceled</option>
-                                            </select>
+                                        <c:when test="${order.status == 0}">
+                                            Canceled
                                         </c:when>
+                                        
+                                        <c:when test="${order.status == 1}">
+                                            Completed
+                                        </c:when>
+                                        
                                         <c:when test="${order.status == 2}">
                                             <select name="status-order" id="id-status-order" class="form-control input-sm" 
                                                     onchange="window.location = 'admin/orders/confirmstatusOrder/${order.ordersID}/' + this.value + '.html';">
@@ -99,6 +98,7 @@
                                                 <option value="0">Canceled</option>
                                             </select>
                                         </c:when>
+                                        
                                         <c:when test="${order.status == 3}">
                                             <select name="status-order" id="id-status-order" class="form-control input-sm" style="color: blue;"
                                                     onchange="window.location = 'admin/orders/confirmstatusOrder/${order.ordersID}/' + this.value + '.html';">
@@ -108,15 +108,6 @@
                                                 <option value="0">Canceled</option>
                                             </select>
                                         </c:when>
-                                        <c:otherwise>
-                                            <select name="status-order" id="id-status-order" class="form-control input-sm" style="color: red;" 
-                                                    onchange="window.location = 'admin/orders/confirmstatusOrder/${order.ordersID}/' + this.value + '.html';">
-                                                <option value="1">Completed</option>
-                                                <option value="2">Pending</option>
-                                                <option value="3">Confirmed</option>
-                                                <option value="0"  <c:out value="selected"/>>Canceled</option>
-                                            </select>
-                                        </c:otherwise>
                                     </c:choose>
                                 </td>
                             </tr>
