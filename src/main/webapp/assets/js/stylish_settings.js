@@ -64,7 +64,7 @@ $(function () {
 /* DEFINE CONSTANTS */
 var RE_HUMAN_NAME = /^[A-Za-z ]+$/;
 var RE_PHONE_NUMBER_VN = /^(\+84|0)\d{9,11}$/;
-var RE_ADDRESS = /^[A-Za-z \.\/\-\d]+$/;
+var RE_ADDRESS = /^[A-Za-z \.\/\-\d,]+$/;
 var RE_DATE_MMDDYYYY = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/; // from 1900-2099
 var RE_DISCOUNT_COUNT = /^VOU\d+$/; // VOU01
 

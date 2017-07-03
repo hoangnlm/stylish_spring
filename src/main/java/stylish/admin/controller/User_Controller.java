@@ -68,12 +68,19 @@ public class User_Controller {
     public String userRoleAdd(ModelMap model) {
         Roles role = new Roles();
         model.addAttribute("role", role);
+        model.addAttribute("fList", functionsSB.getList());
         return "admin/pages/user-role-add";
     }
 
     @RequestMapping(value = "role/create", method = RequestMethod.POST)
-    public String userRoleAdd(@ModelAttribute("role") Roles newRole,
+    public String userRoleAdd(
+            @ModelAttribute("role") Roles newRole,
+            @RequestParam("_functionsList") Integer[] _functionsList,
             RedirectAttributes redirectAttributes) {
+
+        if (_functionsList != null) {
+            newRole.setFunctionsList(functionsSB.getListById(_functionsList));
+        }
 
         int error = rolesStateLessBean.addRoles(newRole);
 
@@ -82,7 +89,7 @@ public class User_Controller {
                 redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-success\">Create New Roles Successfully!</div>");
                 break;
             case 2:
-                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Exitsted! </div>");
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Existed! </div>");
                 break;
             case 0:
                 redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error was happened!</div>");
@@ -90,6 +97,7 @@ public class User_Controller {
             default:
                 break;
         }
+
         redirectAttributes.addFlashAttribute("role", newRole);
         return "redirect:/admin/user/role/create.html";
 
@@ -136,14 +144,18 @@ public class User_Controller {
 //        System.out.println("roleupdate: " + roleupdate.toString());
 //        System.out.println("_functionsList: " + Arrays.toString(_functionsList));
 //        System.out.println("functionsSB: " + functionsSB.getListById(_functionsList));
-        roleupdate.setFunctionsList(functionsSB.getListById(_functionsList));
+
+        if (_functionsList != null) {
+            roleupdate.setFunctionsList(functionsSB.getListById(_functionsList));
+        }
+        
         int error = rolesStateLessBean.editRoles(roleupdate);
         switch (error) {
             case 1:
                 redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-success\">Update Roles Successfully!</div>");
                 break;
             case 2:
-                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Exitsted! </div>");
+                redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Roles Existed! </div>");
                 break;
             case 0:
                 redirectAttributes.addFlashAttribute("error", "<div class=\"col-md-12  alert alert-danger\">FAILED!. Error was happened!</div>");

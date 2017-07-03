@@ -40,6 +40,16 @@ $(function () {
             {searchable: false, targets: [0, 1, 4]} // Search by name only
         ]
     });
+    /* User list table config */
+    $("#fs-user-dataTables").DataTable({//cấu hình datatable
+        responsive: true,
+        order: [[0, 'desc']],
+        columnDefs: [
+            {searchable: false, targets: [0, 1, 2, 4, 5, 6, 7, 8, 9]},
+            {className: "none", targets: -1}
+        ]
+    });
+
 });
 /* DEFINE CONSTANTS */
 var RE_HUMAN_NAME = /^[A-Za-z ]+$/;
@@ -742,7 +752,7 @@ $(document).ready(function () {
             {"width": "17%", "targets": 4},
             {"width": "5%", "targets": 5},
             {"width": "20%", "targets": 6},
-            {"searchable": false, "targets": [0, 1, 2, 4, 5, 6]}    //chi search product name
+            {"searchable": false, "targets": [0, 1, 4, 5, 6]}    //chi search product name
         ],
         //Tạo DOM cho các component trong datatable
         dom: '<"row text-center"<"col-lg-4"l><"#fs_product_filter.col-lg-4"><"col-lg-4"f>><"row"<"col-lg-12">t><"row"<"col-xs-4"i><"col-xs-8"p>>',
@@ -750,16 +760,18 @@ $(document).ready(function () {
         initComplete: function () {
             this.api().columns(2).every(function () {
                 var column = this;
+
                 var select = $('<select class="form-control"><option value="">-- Filter by Category - SubCategory --</option></select>')
                         .appendTo($("#fs_product_filter").empty())
                         .on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                    );
-                            column
-                                    .search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+//                            console.log("val: ====" + val);
+                            column.search(val ? '^' + val + '$' : '', true, false).draw();
+//                            console.log($(this).val());
+//                            column.search(val ? $(this).val() : '').draw();
+//                            column.search('Shirts - Shirts').draw();
                         });
+
                 column.data().unique().sort().each(function (d, j) {
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
@@ -3679,7 +3691,7 @@ $(document).ready(function () {
     /* 
      * AJAX - EVENT ONCHANGE SELECT USER "ROLE" 
      */
-    $(".fs-select-user-role").on("change", function () {
+    $("#fs-user-dataTables").on("change", ".fs-select-user-role", function () {
         var roleID = $(this).val();
         var userID = $(this).attr("fs-user");
         $.ajax({
@@ -3702,13 +3714,13 @@ $(document).ready(function () {
      * FORMATTING FUNCTION FOR ROW DETAIL - MODIFY AS YOU NEED
      */
 
-    var fs_user_table = $("#fs-user-dataTables").DataTable({//cấu hình datatable
-        responsive: true,
-        columnDefs: [
-            {searchable: false, targets: [0, 1, 2, 3, 5]},
-            {className: "none", targets: -1}
-        ]
-    });
+//    var fs_user_table = $("#fs-user-dataTables").DataTable({//cấu hình datatable
+//        responsive: true,
+//        columnDefs: [
+//            {searchable: false, targets: [0, 1, 2, 4, 5, 6, 7, 8, 9]},
+//            {className: "none", targets: -1}
+//        ]
+//    });
 
     //function load data từ 1 dataSource lên table
 //    function renderTableFromJson(json) {
@@ -3814,22 +3826,22 @@ $(document).ready(function () {
 //        }
 //    });
     // HIỂN THỊ BẢNG THÔNG TIN CỦA USER
-    $("#fs-user-dataTables tbody").on("click", ".fs-detail-user", function () {
-        var userID = $(this).attr("fs-userID");
-        $.ajax({
-            url: "admin/user/ajax/getUsersByID.html",
-            method: "POST",
-            data: {userID: userID},
-            dataType: "JSON",
-            success: function (response) {
-                console.log(response);
-                //vòng lặp foreach của jquery
-                var jsonStringBD = response[0].birthday;
-                var jsonObjectBD = JSON.parse(jsonStringBD);
-                var newFormattedDateBD = $.datepicker.formatDate('mm/dd/yy', new Date(jsonObjectBD));
-                var jsonStringRG = response[0].registrationDate;
-                var jsonObjectRG = JSON.parse(jsonStringRG);
-                var newFormattedDateRG = $.datepicker.formatDate('mm/dd/yy', new Date(jsonObjectRG));
+//    $("#fs-user-dataTables tbody").on("click", ".fs-detail-user", function () {
+//        var userID = $(this).attr("fs-userID");
+//        $.ajax({
+//            url: "admin/user/ajax/getUsersByID.html",
+//            method: "POST",
+//            data: {userID: userID},
+//            dataType: "JSON",
+//            success: function (response) {
+//                console.log(response);
+//                //vòng lặp foreach của jquery
+//                var jsonStringBD = response[0].birthday;
+//                var jsonObjectBD = JSON.parse(jsonStringBD);
+//                var newFormattedDateBD = $.datepicker.formatDate('mm/dd/yy', new Date(jsonObjectBD));
+//                var jsonStringRG = response[0].registrationDate;
+//                var jsonObjectRG = JSON.parse(jsonStringRG);
+//                var newFormattedDateRG = $.datepicker.formatDate('mm/dd/yy', new Date(jsonObjectRG));
 //                    var dataStr = $('');
 //                    $(dataStr).append('<tr id="fs-tr" style="border-bottom: 1px solid #cccccc;">');
 //                    $(dataStr).append('<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + item.firstName + '</td>');
@@ -3839,15 +3851,15 @@ $(document).ready(function () {
 //                    $(dataStr).append('</tr>');
 
 //                    $(".heavyTable").append(dataStr);
-                var dataStr = "";
-                dataStr += '<tr id="fs-tr" style="border-bottom: 1px solid #cccccc;">' +
-                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + response[0].firstName + '</td>' +
-                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + response[0].lastName + '</td>' +
-                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + newFormattedDateBD + '</td>' +
-                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + newFormattedDateRG + '</td>' +
-                        '</tr>';
-                $("#fs-tbody-table-in-user-detail-info").html(dataStr);
-                $('#fs-user-detail-info').modal('show');
+//                var dataStr = "";
+//                dataStr += '<tr id="fs-tr" style="border-bottom: 1px solid #cccccc;">' +
+//                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + response[0].firstName + '</td>' +
+//                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + response[0].lastName + '</td>' +
+//                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + newFormattedDateBD + '</td>' +
+//                        '<td class="text-center" id="fs-td" style="border-right: 1px solid #cccccc;padding: 10px;transition: all 0.2s;">' + newFormattedDateRG + '</td>' +
+//                        '</tr>';
+//                $("#fs-tbody-table-in-user-detail-info").html(dataStr);
+//                $('#fs-user-detail-info').modal('show');
 //    var beginStr = '<table class="table">' ;
 //    var endStr = '</table>';
 //    var dataStr ='';
@@ -3857,13 +3869,20 @@ $(document).ready(function () {
 //                    timer: 4000,
 //                    showConfirmButton: false
 //                        });
-            }
+//            }
 //            
 //            
-        });
-    });
+//        });
+//    });
     // BẮT VALIDATION FORM ADD ROLE BẰNG CLICK
     $("#fs-button-create-role").click(function (e) {
+        var permissionCheck = false;
+        $("input[name=_functionsList]").each(function (i, e) {
+            if (e.checked) {
+                permissionCheck = true;
+                exit;
+            }
+        })
         e.preventDefault();
         var roleName = $("#fs-roleName-create").val().trim();
         if (roleName == "") {
@@ -3881,6 +3900,9 @@ $(document).ready(function () {
             $("#glypcn-fs-roleName-create").remove();
             div.addClass("has-error has-feedback");
             div.append('<span id="glypcn-fs-roleName-create" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+            return false;
+        } else if (!permissionCheck) {
+            swal('Warning', 'You have to select at least 01 permission!', 'warning')
             return false;
         } else {
             $("#fs-form-create-role").submit();
@@ -3974,37 +3996,47 @@ $(document).ready(function () {
     });
     // BẮT VALIDATION FORM UPDATE ROLE
 
-//    $("#fs-button-update-role").click(function (e) {
-//        e.preventDefault();
-//        var roleName = $("#fs-roleName-update").val().trim();
-//        if (roleName == "") {
-//            $("#fs-update-roleName-error").text("Role Name cannot be empty!");
-//            var div = $("#fs-roleName-update").closest("div.fa-ccc");
-//            div.removeClass("has-success");
-//            $("#glypcn-fs-roleName-update").remove();
-//            div.addClass("has-error has-feedback");
-//            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-//            return false;
-//        } else if (roleName.length < 2 || roleName.length > 25) {
-//            $("#fs-update-roleName-error").text("Role Name has 2 - 25 characters!");
-//            var div = $("#fs-roleName-update").closest("div.fa-ccc");
-//            div.removeClass("has-success");
-//            $("#glypcn-fs-roleName-update").remove();
-//            div.addClass("has-error has-feedback");
-//            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
-//            return false;
-//        } else {
-//            $("#fs-form-update-role").submit();
-//            var div = $("#fs-roleName-update").closest("div.fa-ccc");
-//            div.removeClass("has-error");
-//            div.addClass("has-success has-feedback");
-//            $("#glypcn-fs-roleName-update").remove();
-//            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-ok form-control-feedback"></span>');
-//            return true;
-//
-//        }
-//
-//    });
+    $("#fs-button-update-role").click(function (e) {
+        var permissionCheck = false;
+        $("input[name=_functionsList]").each(function (i, e) {
+            if (e.checked) {
+                permissionCheck = true;
+                exit;
+            }
+        })
+        e.preventDefault();
+        var roleName = $("#fs-roleName-update").val().trim();
+        if (roleName == "") {
+            $("#fs-update-roleName-error").text("Role Name cannot be empty!");
+            var div = $("#fs-roleName-update").closest("div.fa-ccc");
+            div.removeClass("has-success");
+            $("#glypcn-fs-roleName-update").remove();
+            div.addClass("has-error has-feedback");
+            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+            return false;
+        } else if (roleName.length < 2 || roleName.length > 25) {
+            $("#fs-update-roleName-error").text("Role Name has 2 - 25 characters!");
+            var div = $("#fs-roleName-update").closest("div.fa-ccc");
+            div.removeClass("has-success");
+            $("#glypcn-fs-roleName-update").remove();
+            div.addClass("has-error has-feedback");
+            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+            return false;
+        } else if (!permissionCheck) {
+            swal('Warning', 'You have to select at least 01 permission!', 'warning')
+            return false;
+        } else {
+            $("#fs-form-update-role").submit();
+            var div = $("#fs-roleName-update").closest("div.fa-ccc");
+            div.removeClass("has-error");
+            div.addClass("has-success has-feedback");
+            $("#glypcn-fs-roleName-update").remove();
+            div.append('<span id="glypcn-fs-roleName-update" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+            return true;
+
+        }
+
+    });
 
     $("#fs-roleName-update").keyup(function () {
         var roleName = $("#fs-roleName-update").val().trim();
